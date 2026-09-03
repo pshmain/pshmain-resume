@@ -46,7 +46,7 @@ html[data-gate='dissolving'] [data-gate-hide] {
 
 /* Transparent so the fixed ash canvas (z-index -1) shows through the page. */
 body {
-  min-height: 100dvh;
+  min-height: 100svh; /* stable on mobile while the address bar collapses; see Hero.module.css */
   background: transparent;
   font-size: var(--text-base);
 }

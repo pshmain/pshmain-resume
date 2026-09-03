@@ -161,6 +161,12 @@ only below the width where the handoff's layout stops working, and above it noth
   "Peter Shmain" wraps onto two balanced lines. At a true 375px phone it stays on one.
 - **Contact separators trail their item** (`li:not(:last-child)::after`) rather than leading
   the next one, so a wrapped row ends with `·` instead of starting a line with it.
+- **Hero height is `100svh`, not the handoff's `100dvh`.** On phones `dvh` follows the address
+  bar, so the hero grew while the bar collapsed mid-scroll and the browser's scroll anchoring
+  then snapped the page to compensate, which read as the screen teleporting once the scroll
+  stopped. `svh` is the height with the bar showing and never changes during a gesture. With
+  the bar collapsed the hero is shorter than the screen by the bar's height; the strip below it
+  is the same ground and ash, so nothing reads as a gap. The body's minimum height follows.
 
 ## Type
 

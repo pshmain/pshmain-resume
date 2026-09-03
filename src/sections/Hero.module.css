@@ -1,6 +1,9 @@
+/* svh, not the handoff's dvh: the small viewport height ignores the mobile address bar, so the
+   hero keeps one size while the bar collapses mid-scroll instead of growing and triggering a
+   scroll-anchoring jump. See DEVIATIONS.md, "Small screens". */
 .hero {
   position: relative;
-  height: 100dvh;
+  height: 100svh;
   min-height: var(--hero-min-height);
   cursor: crosshair;
 }
