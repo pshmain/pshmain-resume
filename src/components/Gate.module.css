@@ -1,0 +1,244 @@
+/* Full-viewport layer above the hero. Pointer events pass through everywhere except the card,
+   so the page underneath still sees the cursor. The layer exists only while <html data-gate> is
+   locked or dissolving; with no attribute (no JavaScript, a deep link, a session that already
+   opened it) or once open, it is gone. */
+.gate {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-gate);
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  pointer-events: none;
+}
+
+:global(html:not([data-gate='locked']):not([data-gate='dissolving'])) .gate {
+  display: none;
+}
+
+.card {
+  position: relative;
+  pointer-events: auto;
+  width: min(100%, var(--gate-width));
+  padding: var(--space-8) var(--space-6);
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  background: var(--color-gate-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+  transition:
+    opacity var(--duration-gate) var(--ease),
+    transform var(--duration-gate) var(--ease);
+}
+
+/* Breakpoint: --bp-gate-padding in tokens.css (media queries cannot read custom properties). */
+@media (min-width: 640px) {
+  .card {
+    padding: var(--space-8);
+  }
+}
+
+/* The reveal copy runs longer than the riddle. */
+.wide {
+  width: min(100%, var(--gate-width-reveal));
+}
+
+:global(html[data-gate='dissolving']) .card {
+  opacity: 0;
+  transform: scale(var(--gate-recede));
+}
+
+.rule {
+  width: var(--gate-rule-width);
+  height: var(--hairline);
+  background: var(--color-rule);
+}
+
+.kicker {
+  font-size: var(--text-kicker);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--color-link);
+}
+
+.riddle {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-display);
+  font-size: var(--text-riddle);
+  line-height: var(--leading-riddle);
+  letter-spacing: normal;
+  max-width: var(--measure-riddle);
+  text-wrap: balance;
+}
+
+.line {
+  display: block;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  margin-top: var(--space-1);
+}
+
+.answer {
+  width: 100%;
+  max-width: var(--gate-input-width);
+  padding: var(--space-2) var(--space-4);
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-card-bg);
+  font-family: var(--font-body);
+  font-size: var(--text-body); /* 16px: anything smaller makes iOS zoom the page on focus */
+  line-height: var(--leading-base);
+  text-align: center;
+  color: var(--color-text);
+  transition: border-color var(--duration-hover) var(--ease);
+}
+
+.answer::placeholder {
+  color: var(--color-paper-50);
+  font-style: italic;
+}
+
+/* The gold border is the focus indicator here; the global ring would double it. */
+.answer:focus-visible {
+  outline: none;
+  border-color: var(--color-focus);
+}
+
+.answer[aria-invalid='true'] {
+  border-color: var(--color-accent);
+}
+
+/* Reserved height so a wrong answer never moves the buttons. */
+.feedback {
+  min-height: calc(var(--text-small) * var(--leading-card));
+  font-size: var(--text-small);
+  font-style: italic;
+  color: var(--color-paper-68);
+}
+
+/* Same shape as the footer's download button. */
+.enter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  border: var(--hairline) solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-button);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-button);
+  color: var(--color-text);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease);
+}
+
+.enter:hover {
+  background: var(--color-button-bg-hover);
+  color: var(--color-link-hover);
+}
+
+.quiet {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.dot {
+  font-size: var(--text-meta);
+  color: var(--color-paper-45);
+}
+
+/* Same treatment as the "Visit" links in Experience. */
+.quietButton {
+  padding: 0 0 var(--hairline);
+  border: 0;
+  border-bottom: var(--hairline) solid var(--color-visit-underline);
+  background: none;
+  font-family: var(--font-body);
+  font-size: var(--text-meta);
+  line-height: var(--leading-base);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-paper-55);
+  cursor: pointer;
+  transition:
+    color var(--duration-hover) var(--ease),
+    border-color var(--duration-hover) var(--ease);
+}
+
+.quietButton:hover {
+  color: var(--color-link-hover);
+  border-bottom-color: var(--color-link-hover);
+}
+
+/* Hint panel, anchored under the card so nothing inside the card moves while it is read. */
+.hint {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + var(--space-3));
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(100vw - 2 * var(--gutter), var(--gate-hint-width));
+  padding: var(--space-3) var(--space-4);
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-gate-bg);
+  font-size: var(--text-small);
+  font-style: italic;
+  line-height: var(--leading-card);
+  color: var(--color-paper-68);
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--duration-hover) var(--ease),
+    visibility 0s linear var(--duration-hover);
+}
+
+.hintOpen {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.revealText {
+  max-width: var(--measure-reveal);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--color-paper-75);
+  text-wrap: pretty;
+}
+
+.closing {
+  margin-top: var(--space-1);
+}
+
+.reveal .enter {
+  margin-top: var(--space-2);
+}
+
+@media print {
+  .gate {
+    display: none;
+  }
+}

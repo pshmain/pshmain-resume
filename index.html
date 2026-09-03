@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Peter Shmain — Full-Stack Engineer</title>
+    <meta
+      name="description"
+      content="Résumé of Peter Shmain, a full-stack engineer in Los Angeles: Provenance, CoDriverHQ, and Sneakerhead. Selected work, experience, skills, and contact."
+    />
+    <meta name="color-scheme" content="dark" />
+    <!-- Page ground: color-mix(#2d2b2b 78%, black) = #232222. Meta tags cannot read CSS tokens. -->
+    <meta name="theme-color" content="#232222" />
+    <!-- Riddle gate (src/components/Gate.tsx). Lock the page before first paint unless this tab
+         already opened it or the URL deep-links to a section. Without JavaScript the attribute
+         never appears and the résumé renders in full. The storage key mirrors Gate.tsx. -->
+    <script>
+      (function () {
+        try {
+          if (location.hash || sessionStorage.getItem('gate') === 'open') return;
+        } catch (e) {
+          /* storage unavailable: lock as on a first visit */
+        }
+        document.documentElement.dataset.gate = 'locked';
+      })();
+    </script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Peter Shmain — Full-Stack Engineer" />
+    <meta
+      property="og:description"
+      content="Full-stack engineer in Los Angeles. Selected work, experience, skills, and contact."
+    />
+    <!-- scripts/prerender.mjs makes og:image absolute and fills the social marker with og:url +
+         canonical when SITE_URL or VERCEL_PROJECT_PRODUCTION_URL is set at build time. -->
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <!--social-->
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- Every face is used above the fold (name, subtitle, contact row). -->
+    <link rel="preload" href="/fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/lora-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/lora-italic-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Hero frame sheet: start the download before the script that consumes it. Browsers
+         that cannot decode AVIF skip this preload and the engine fetches the WebP instead. -->
+    <link rel="preload" href="/src/assets/hero-frames.avif" as="image" type="image/avif" fetchpriority="low" />
+  </head>
+  <body>
+    <div id="root"><!--app--></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

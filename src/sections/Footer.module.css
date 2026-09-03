@@ -1,0 +1,105 @@
+.footer {
+  margin-top: var(--space-6);
+  border-top: var(--hairline) solid var(--color-hairline);
+  padding: var(--footer-padding-top) var(--gutter) var(--footer-padding-bottom);
+}
+
+.inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.rule {
+  width: var(--footer-rule-width);
+  height: var(--hairline);
+  background: var(--color-rule);
+}
+
+.name {
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-footer);
+  text-transform: uppercase;
+  color: var(--color-paper-72);
+}
+
+/* Why the ruins, for anyone who arrived past the riddle gate. */
+.colophon {
+  max-width: var(--measure-colophon);
+  font-style: italic;
+  font-size: var(--text-card);
+  color: var(--color-paper-68);
+  text-wrap: balance;
+}
+
+.button {
+  margin-top: var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-6);
+  border: var(--hairline) solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-button);
+  letter-spacing: var(--tracking-button);
+  color: var(--color-text);
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease);
+}
+
+.button:hover {
+  background: var(--color-button-bg-hover);
+  color: var(--color-link-hover);
+}
+
+.icon {
+  flex: none;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.label {
+  white-space: nowrap;
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--color-paper-45);
+}
+
+.contact li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.contact li:not(:last-child)::after {
+  content: '·';
+}
+
+.phone {
+  font-feature-settings: 'tnum';
+}
+
+@media print {
+  .button {
+    display: none;
+  }
+}

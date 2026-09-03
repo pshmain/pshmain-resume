@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.vite/
+.vercel/
+.DS_Store
+Thumbs.db
+*.log
+
+# Duplicate of the handoff already unpacked into design/
+Resume website with hero video.zip

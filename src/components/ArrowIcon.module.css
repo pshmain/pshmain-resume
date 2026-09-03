@@ -1,0 +1,12 @@
+/* Sized in em so it takes the surrounding text size: 13px in the cards, 12px in "Visit". */
+.arrow {
+  display: inline-block;
+  width: var(--arrow-size);
+  height: var(--arrow-size);
+  vertical-align: var(--arrow-baseline-shift);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--arrow-stroke);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}

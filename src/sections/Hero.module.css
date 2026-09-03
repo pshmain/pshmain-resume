@@ -1,0 +1,232 @@
+.hero {
+  position: relative;
+  height: 100dvh;
+  min-height: var(--hero-min-height);
+  cursor: crosshair;
+}
+
+/* Behind the riddle gate the cursor field is off, so the crosshair would promise nothing. */
+:global(html[data-gate='locked']) .hero,
+:global(html[data-gate='dissolving']) .hero {
+  cursor: auto;
+}
+
+/* z-index -1 on a non-stacking-context parent: painted above the page ground and the fixed
+   ash canvas (earlier in the tree), below all content. The engine sets data-shown once the
+   first frame renders; while the riddle gate is up the canvas stays dark regardless, and when
+   the gate opens the ruins take the longer reveal fade. */
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--duration-hero-fade) var(--ease);
+  pointer-events: none;
+}
+
+.canvas[data-shown] {
+  opacity: 1;
+}
+
+:global(html[data-gate='open']) .canvas {
+  transition-duration: var(--duration-reveal);
+}
+
+:global(html[data-gate='locked']) .canvas,
+:global(html[data-gate='dissolving']) .canvas {
+  opacity: 0;
+}
+
+/* Warm glow at the centre of the locked screen, under the card. Fades with the reveal. */
+.ember {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--duration-reveal) var(--ease);
+  pointer-events: none;
+  background: radial-gradient(38% 34% at 50% 50%, var(--color-ember), transparent 70%);
+}
+
+:global(html[data-gate='locked']) .ember,
+:global(html[data-gate='dissolving']) .ember {
+  opacity: 1;
+  transition: none;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    var(--vignette-shape),
+    var(--color-vignette) var(--vignette-inner-stop),
+    transparent var(--vignette-outer-stop)
+  );
+}
+
+.cue {
+  position: absolute;
+  right: var(--gutter);
+  bottom: var(--hero-inset-bottom);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  pointer-events: none;
+}
+
+.cueLabel {
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-cue);
+  text-transform: uppercase;
+  color: var(--color-paper-75);
+  writing-mode: vertical-rl;
+}
+
+.cueTrack {
+  position: relative;
+  width: var(--cue-width);
+  height: var(--cue-track-height);
+  overflow: hidden;
+  border-radius: var(--radius-cue);
+  background: var(--color-paper-22);
+}
+
+.cueRunner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--cue-width);
+  height: var(--cue-runner-height);
+  background: var(--color-accent-300);
+  box-shadow: var(--glow-cue);
+  animation: drift var(--duration-cue) ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%,
+  15% {
+    transform: translateY(calc(-1 * var(--cue-runner-height)));
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(var(--cue-track-height));
+    opacity: 0;
+  }
+}
+
+.nameBlock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--hero-inset-bottom);
+}
+
+/* On narrow screens the scroll cue shares the bottom edge with the contact row, so the name
+   block keeps clear of it; from tablet widths up the 920px container never reaches the cue. */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 calc(var(--gutter) + var(--cue-clearance)) 0 var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+/* Breakpoint: --bp-cue-clear in tokens.css (media queries cannot read custom properties). */
+@media (min-width: 640px) {
+  .container {
+    padding-right: var(--gutter);
+  }
+}
+
+.name {
+  font-weight: var(--weight-display);
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: var(--tracking-h1);
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.rule {
+  width: var(--hero-rule-width);
+  height: var(--hairline);
+  background: var(--color-rule);
+}
+
+.subtitle {
+  font-style: italic;
+  font-size: var(--text-subtitle);
+  color: var(--color-paper-68);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-contact);
+  color: var(--color-paper-62);
+}
+
+.contact li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+/* Separator trails each item, so a wrapped row ends with it rather than starting with it. */
+.contact li:not(:last-child)::after {
+  content: '·';
+}
+
+.phone {
+  font-feature-settings: 'tnum';
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cueRunner {
+    display: none;
+  }
+}
+
+@media print {
+  /* The container carries the gutter, so the hero itself gets none. */
+  .hero {
+    height: auto;
+    min-height: 0;
+    cursor: auto;
+  }
+
+  .canvas,
+  .vignette,
+  .ember,
+  .cue {
+    display: none;
+  }
+
+  .nameBlock {
+    position: static;
+  }
+
+  .name {
+    font-size: var(--text-h1-print);
+  }
+}

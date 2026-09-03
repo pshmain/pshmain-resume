@@ -1,0 +1,6 @@
+.credential {
+  margin-top: var(--space-1);
+  font-style: italic;
+  font-size: var(--text-card);
+  color: var(--color-paper-68);
+}

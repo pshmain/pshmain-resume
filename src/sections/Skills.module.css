@@ -1,0 +1,36 @@
+/* Phones: label above value. The handoff's two-column grid needs ~560px to give the value
+   column a readable measure; below that it forced five-line wraps. */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: var(--space-6);
+}
+
+.row {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--space-1);
+  padding: var(--space-3) 0;
+  border-top: var(--hairline) solid var(--color-hairline);
+}
+
+/* Breakpoint: --bp-skills-columns in tokens.css (media queries cannot read custom properties). */
+@media (min-width: 560px) {
+  .grid {
+    grid-template-columns: var(--skills-label-column) 1fr;
+  }
+}
+
+.label {
+  padding-top: var(--skills-label-offset);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-caps-wide);
+  text-transform: uppercase;
+  color: var(--color-accent-300);
+}
+
+.value {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-card);
+}

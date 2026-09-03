@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="_ds/classical-954ea210-9481-4c09-aefa-76d07854d0d2/styles.css">
+  <script src="_ds/classical-954ea210-9481-4c09-aefa-76d07854d0d2/_ds_bundle.js"></script>
+  <style>
+    html { background: color-mix(in srgb, var(--color-neutral-900, #2a2723) 78%, black); }
+    html, body { margin: 0; padding: 0; color: var(--color-bg, #f3f2f2); }
+    body { background: transparent; }
+    a { color: var(--color-accent-300, #dcb887); }
+    a:hover { color: var(--color-accent-200, #e9d0ab); }
+    @keyframes scrollDrift { 0%, 15% { transform: translateY(-28px); opacity: 0; } 35% { opacity: 1; } 75% { opacity: 1; } 100% { transform: translateY(64px); opacity: 0; } }
+  </style>
+</helmet>
+<canvas ref="{{ ashRef }}" style="position:fixed; inset:0; width:100%; height:100%; display:block; z-index:-1;"></canvas>
+<section data-screen-label="Hero" ref="{{ secRef }}" style="position:relative; height:100dvh; min-height:560px; cursor:crosshair;">
+  <canvas ref="{{ canvasRef }}" style="position:absolute; left:0; top:0; width:100%; height:100%; display:block; opacity:0; transition:opacity 1.4s ease; z-index:-1; pointer-events:none;"></canvas>
+  <div style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(72% 68% at 16% 84%, color-mix(in srgb, var(--color-neutral-900) 80%, black) 10%, transparent 60%);"></div>
+  <div style="position:absolute; right:clamp(20px, 5vw, 72px); bottom:clamp(24px, 6vh, 64px); display:flex; flex-direction:column; align-items:center; gap:var(--space-2); pointer-events:none;">
+    <span style="font-family:var(--font-body); font-size:11px; letter-spacing:0.24em; text-transform:uppercase; color:color-mix(in srgb, var(--color-bg) 75%, transparent); writing-mode:vertical-rl;">Scroll</span>
+    <div style="position:relative; width:2px; height:64px; background:color-mix(in srgb, var(--color-bg) 22%, transparent); overflow:hidden; border-radius:1px;">
+      <div style="position:absolute; left:0; top:0; width:2px; height:28px; background:var(--color-accent-300); box-shadow:0 0 8px var(--color-accent); animation:scrollDrift 2.2s ease-in-out infinite;"></div>
+    </div>
+  </div>
+  <div style="position:absolute; left:0; right:0; bottom:clamp(24px, 6vh, 64px);">
+  <div style="max-width:920px; margin:0 auto; padding:0 clamp(20px, 5vw, 72px); display:flex; flex-direction:column; align-items:flex-start; gap:var(--space-4);">
+    <h1 style="margin:0; font-family:var(--font-heading); font-weight:400; font-size:clamp(56px, 8.5vw, 118px); line-height:0.95; letter-spacing:-0.015em; color:var(--color-bg); text-wrap:balance;">Peter Shmain</h1>
+    <div style="width:72px; height:1px; background:var(--color-accent);"></div>
+    <p style="margin:0; font-family:var(--font-body); font-style:italic; font-size:clamp(15px, 1.4vw, 19px); color:color-mix(in srgb, var(--color-bg) 68%, transparent);">Full-Stack Engineer — <span style="white-space:nowrap;">Los Angeles, CA</span></p>
+    <p style="margin:0; font-family:var(--font-body); font-size:13px; letter-spacing:0.02em; color:color-mix(in srgb, var(--color-bg) 62%, transparent); display:flex; flex-wrap:wrap; gap:var(--space-2); align-items:baseline;"><a href="mailto:petershmain@gmail.com" style="text-decoration:none;">petershmain@gmail.com</a><span>·</span><a href="tel:+13234224866" style="text-decoration:none; font-feature-settings:'tnum'; white-space:nowrap;">(323) 422-4866</a><span>·</span><a href="https://www.linkedin.com/in/peter-shmain" target="_blank" rel="noopener" style="text-decoration:none;">LinkedIn</a></p>
+  </div>
+  </div>
+</section>
+<main style="max-width:920px; margin:0 auto; padding:clamp(40px, 7vh, 88px) clamp(20px, 5vw, 72px) 0;">
+  <section data-screen-label="Profile" style="padding:var(--space-4) 0 var(--space-8);">
+    <div style="display:flex; align-items:baseline; gap:var(--space-3); margin-bottom:var(--space-4);">
+      <span style="font-family:var(--font-heading); font-weight:400; font-size:52px; line-height:0.75; font-feature-settings:'tnum'; letter-spacing:-0.02em; color:color-mix(in srgb, var(--color-accent) 38%, transparent);">I</span>
+      <h2 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:27px; letter-spacing:-0.015em;">Profile</h2>
+    </div>
+    <p style="margin:0; max-width:68ch; font-family:var(--font-body); font-size:16px; line-height:1.7; text-align:justify; hyphens:auto; text-wrap:pretty;">As a full stack developer on small scrappy startup teams, my primary experience has been full ownership from scoping to shipping. I am well versed in AI and have made it my mission to be as efficient and effective with Claude Code and Cursor as possible.</p>
+  </section>
+  <section data-screen-label="Selected Work" style="border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent); padding:var(--space-6) 0 var(--space-8);">
+    <div style="display:flex; align-items:baseline; gap:var(--space-3); margin-bottom:var(--space-6);">
+      <span style="font-family:var(--font-heading); font-weight:400; font-size:52px; line-height:0.75; font-feature-settings:'tnum'; letter-spacing:-0.02em; color:color-mix(in srgb, var(--color-accent) 38%, transparent);">II</span>
+      <h2 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:27px; letter-spacing:-0.015em;">Selected Work</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:var(--space-4);">
+      <a href="https://provenance.co/" target="_blank" rel="noopener" style="display:flex; flex-direction:column; gap:var(--space-3); padding:var(--space-6); border:1px solid color-mix(in srgb, var(--color-bg) 18%, transparent); border-radius:var(--radius-md); text-decoration:none; color:inherit; background:color-mix(in srgb, var(--color-neutral-900) 22%, transparent); transition:border-color 0.25s ease, background 0.25s ease;" style-hover="border-color:var(--color-accent); background:color-mix(in srgb, var(--color-accent) 10%, transparent);" style-focus="outline:2px solid var(--color-accent); outline-offset:2px;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:var(--space-3);">
+          <span style="font-family:var(--font-body); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--color-accent-300);">Full-Stack Engineer</span>
+          <span style="font-family:var(--font-body); font-size:13px; color:var(--color-accent-300);">↗</span>
+        </div>
+        <h3 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:26px; line-height:1.05; letter-spacing:-0.01em;">Provenance</h3>
+        <p style="margin:0; font-family:var(--font-body); font-size:14px; line-height:1.6; color:color-mix(in srgb, var(--color-bg) 68%, transparent); text-wrap:pretty;">Ordination-documents suite rebuilt as a first-party pipeline, cutting delivery time by two-thirds on a $750K revenue line.</p>
+        <span style="margin-top:auto; padding-top:var(--space-2); font-family:var(--font-body); font-size:12px; color:color-mix(in srgb, var(--color-bg) 45%, transparent); font-feature-settings:'tnum';">provenance.co</span>
+      </a>
+      <a href="https://codriverhq.com/" target="_blank" rel="noopener" style="display:flex; flex-direction:column; gap:var(--space-3); padding:var(--space-6); border:1px solid color-mix(in srgb, var(--color-bg) 18%, transparent); border-radius:var(--radius-md); text-decoration:none; color:inherit; background:color-mix(in srgb, var(--color-neutral-900) 22%, transparent); transition:border-color 0.25s ease, background 0.25s ease;" style-hover="border-color:var(--color-accent); background:color-mix(in srgb, var(--color-accent) 10%, transparent);" style-focus="outline:2px solid var(--color-accent); outline-offset:2px;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:var(--space-3);">
+          <span style="font-family:var(--font-body); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--color-accent-300);">Co-Founder</span>
+          <span style="font-family:var(--font-body); font-size:13px; color:var(--color-accent-300);">↗</span>
+        </div>
+        <h3 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:26px; line-height:1.05; letter-spacing:-0.01em;">CoDriverHQ</h3>
+        <p style="margin:0; font-family:var(--font-body); font-size:14px; line-height:1.6; color:color-mix(in srgb, var(--color-bg) 68%, transparent); text-wrap:pretty;">AI car-buying advisor on Next.js, PostgreSQL, Stripe, and the Claude API — from buyer profiling to live listing analysis.</p>
+        <span style="margin-top:auto; padding-top:var(--space-2); font-family:var(--font-body); font-size:12px; color:color-mix(in srgb, var(--color-bg) 45%, transparent); font-feature-settings:'tnum';">codriverhq.com</span>
+      </a>
+      <a href="https://sneakerheadmelrose.com/" target="_blank" rel="noopener" style="display:flex; flex-direction:column; gap:var(--space-3); padding:var(--space-6); border:1px solid color-mix(in srgb, var(--color-bg) 18%, transparent); border-radius:var(--radius-md); text-decoration:none; color:inherit; background:color-mix(in srgb, var(--color-neutral-900) 22%, transparent); transition:border-color 0.25s ease, background 0.25s ease;" style-hover="border-color:var(--color-accent); background:color-mix(in srgb, var(--color-accent) 10%, transparent);" style-focus="outline:2px solid var(--color-accent); outline-offset:2px;">
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:var(--space-3);">
+          <span style="font-family:var(--font-body); font-size:10.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--color-accent-300);">Full-Stack Engineer</span>
+          <span style="font-family:var(--font-body); font-size:13px; color:var(--color-accent-300);">↗</span>
+        </div>
+        <h3 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:26px; line-height:1.05; letter-spacing:-0.01em;">Sneakerhead</h3>
+        <p style="margin:0; font-family:var(--font-body); font-size:14px; line-height:1.6; color:color-mix(in srgb, var(--color-bg) 68%, transparent); text-wrap:pretty;">Ecommerce storefront with Stripe checkout and a real-time Clover POS inventory sync for a Melrose vintage clothing brand.</p>
+        <span style="margin-top:auto; padding-top:var(--space-2); font-family:var(--font-body); font-size:12px; color:color-mix(in srgb, var(--color-bg) 45%, transparent); font-feature-settings:'tnum';">sneakerheadmelrose.com</span>
+      </a>
+    </div>
+  </section>
+  <section data-screen-label="Experience" style="border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent); padding:var(--space-6) 0 var(--space-8);">
+    <div style="display:flex; align-items:baseline; gap:var(--space-3); margin-bottom:var(--space-2);">
+      <span style="font-family:var(--font-heading); font-weight:400; font-size:52px; line-height:0.75; font-feature-settings:'tnum'; letter-spacing:-0.02em; color:color-mix(in srgb, var(--color-accent) 38%, transparent);">III</span>
+      <h2 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:27px; letter-spacing:-0.015em;">Experience</h2>
+    </div>
+    <article style="padding:var(--space-6) 0;">
+      <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--space-2) var(--space-4);">
+        <h3 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:21px; display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--space-3);">Full-Stack Engineer · Provenance <a href="https://provenance.co/" target="_blank" rel="noopener" style="font-family:var(--font-body); font-weight:400; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);" style-hover="border-bottom-color:var(--color-accent-200);">Visit ↗</a></h3>
+        <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-feature-settings:'tnum'; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Aug 2025 — Present</span>
+      </div>
+      <p style="margin:var(--space-1) 0 var(--space-3); font-family:var(--font-body); font-style:italic; font-size:13px; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Remote</p>
+      <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:var(--space-3); max-width:74ch;">
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Lead developer on the ordination-documents suite. Rebuilt a failing third-party pipeline handling a significant amount of the company's customers and revenue into a first-party system, cutting document processing and delivery time by roughly two-thirds on a $750K annual revenue line.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Scoped and prioritized work directly with the CTO and Head of Product. Continuously cross collaborated across the organization in order to pivot to most needed ongoing product improvements.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Consolidated customer records scattered across three disconnected third-party tools into one first-party database, migrating all historical data and eliminating the duplicate shipments and multi-month backlogs the old system produced.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Created a native intake flow to replace the third-party form, cutting redundant customer service questions and adding the validation, error handling, and data structuring the old form lacked.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Built the admin panel the team now runs the product on, covering order tracking, search, and status management, plus secure customer document uploads.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Fixed a PDF generator that was exhausting server memory and producing blank shipping labels, reworking it to merge every document for an order into one printable batch.</span></li>
+      </ul>
+    </article>
+    <article style="border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent); padding:var(--space-6) 0;">
+      <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--space-2) var(--space-4);">
+        <h3 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:21px; display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--space-3);">Co-Founder &amp; Full-Stack Engineer · CoDriverHQ <a href="https://codriverhq.com/" target="_blank" rel="noopener" style="font-family:var(--font-body); font-weight:400; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);" style-hover="border-bottom-color:var(--color-accent-200);">Visit ↗</a></h3>
+        <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-feature-settings:'tnum'; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Jan 2025 — Present</span>
+      </div>
+      <p style="margin:var(--space-1) 0 var(--space-3); font-family:var(--font-body); font-style:italic; font-size:13px; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Los Angeles, CA</p>
+      <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:var(--space-3); max-width:74ch;">
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Co-founded an AI-powered car-buying advisor that educates buyers from research through deal analysis, aggregating data on nearly every vehicle on the market and distilling it into what each buyer actually needs.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Built the product end to end on Next.js, TypeScript, PostgreSQL, Stripe, and the Claude API, covering architecture, data model, authentication, and subscription billing.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Designed the schema and user-profiling system behind the recommendation engine. A guided intake builds a buyer profile, then batched API calls evaluate live listings on price, history, and market trends, returning matches with plain-language reasoning.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Wrote a streaming chat assistant that walks buyers through car-buying topics it hasn't covered yet, with guardrails that keep it on-topic and resistant to off-domain misuse.</span></li>
+      </ul>
+    </article>
+    <article style="border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent); padding:var(--space-6) 0;">
+      <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--space-2) var(--space-4);">
+        <h3 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:21px; display:flex; flex-wrap:wrap; align-items:baseline; gap:var(--space-3);">Full-Stack Engineer · Sneakerhead LLC <a href="https://sneakerheadmelrose.com/" target="_blank" rel="noopener" style="font-family:var(--font-body); font-weight:400; font-size:12px; letter-spacing:0.08em; text-transform:uppercase; text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);" style-hover="border-bottom-color:var(--color-accent-200);">Visit ↗</a></h3>
+        <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-feature-settings:'tnum'; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Oct 2024 — Dec 2025</span>
+      </div>
+      <p style="margin:var(--space-1) 0 var(--space-3); font-family:var(--font-body); font-style:italic; font-size:13px; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Los Angeles, CA</p>
+      <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:var(--space-3); max-width:74ch;">
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Designed and built several ecommerce platforms for a brick-and-mortar vintage clothing brand, covering storefront, catalog, search and filtering, cart, and Stripe checkout on a photo-heavy mobile-first catalog.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Set up a real-time inventory sync between the in-store Clover POS and the web catalog, running every 10 minutes so a sale on either channel updates availability on the other.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Maintained an active catalog of thousands of items, handling schema mapping, deduplication, and data integrity across both systems, while owning hosting, deploys, and monitoring.</span></li>
+      </ul>
+    </article>
+    <article style="border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent); padding:var(--space-6) 0 0;">
+      <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--space-2) var(--space-4);">
+        <h3 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:21px;">Co-Founder &amp; Operator · Shmizzys Garage LLC</h3>
+        <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-feature-settings:'tnum'; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Aug 2022 — Nov 2024</span>
+      </div>
+      <p style="margin:var(--space-1) 0 var(--space-3); font-family:var(--font-body); font-style:italic; font-size:13px; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Los Angeles, CA</p>
+      <ul style="margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:var(--space-3); max-width:74ch;">
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Co-founded and ran an independent dealership acquiring, reconditioning, and reselling vehicles, applying a mechanical engineering background to scope repairs and performance modifications while running acquisition, pricing, and vendor negotiation.</span></li>
+        <li style="display:flex; gap:var(--space-3);"><span style="color:var(--color-accent); flex:none;">—</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.65; text-align:justify; hyphens:auto;">Automated inventory, cost, and margin tracking to replace manual record-keeping, which became the entry point into software engineering.</span></li>
+      </ul>
+    </article>
+  </section>
+  <section data-screen-label="Skills" style="border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent); padding:var(--space-6) 0 var(--space-8);">
+    <div style="display:flex; align-items:baseline; gap:var(--space-3); margin-bottom:var(--space-4);">
+      <span style="font-family:var(--font-heading); font-weight:400; font-size:52px; line-height:0.75; font-feature-settings:'tnum'; letter-spacing:-0.02em; color:color-mix(in srgb, var(--color-accent) 38%, transparent);">IV</span>
+      <h2 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:27px; letter-spacing:-0.015em;">Technical Skills</h2>
+    </div>
+    <div style="display:grid; grid-template-columns:minmax(130px, 190px) 1fr; column-gap:var(--space-6);">
+      <div style="grid-column:1 / -1; display:grid; grid-template-columns:subgrid; padding:var(--space-3) 0; border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent);"><span style="font-family:var(--font-body); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent-300); padding-top:3px;">Frontend</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.6;">React, Next.js, TypeScript, JavaScript, Tailwind, HTML/CSS</span></div>
+      <div style="grid-column:1 / -1; display:grid; grid-template-columns:subgrid; padding:var(--space-3) 0; border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent);"><span style="font-family:var(--font-body); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent-300); padding-top:3px;">Backend</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.6;">Node.js, Express, Sequelize, Prisma, REST APIs</span></div>
+      <div style="grid-column:1 / -1; display:grid; grid-template-columns:subgrid; padding:var(--space-3) 0; border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent);"><span style="font-family:var(--font-body); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent-300); padding-top:3px;">Databases</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.6;">PostgreSQL, MySQL, Supabase</span></div>
+      <div style="grid-column:1 / -1; display:grid; grid-template-columns:subgrid; padding:var(--space-3) 0; border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent);"><span style="font-family:var(--font-body); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent-300); padding-top:3px;">Cloud &amp; Tools</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.6;">AWS S3, Vercel, Docker, CircleCI, Git, Stripe, Clover POS API</span></div>
+      <div style="grid-column:1 / -1; display:grid; grid-template-columns:subgrid; padding:var(--space-3) 0; border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent);"><span style="font-family:var(--font-body); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent-300); padding-top:3px;">AI Engineering</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.6;">Claude API, LLM application architecture, structured outputs, reliability handling</span></div>
+      <div style="grid-column:1 / -1; display:grid; grid-template-columns:subgrid; padding:var(--space-3) 0; border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent);"><span style="font-family:var(--font-body); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--color-accent-300); padding-top:3px;">AI-Assisted Dev</span><span style="font-family:var(--font-body); font-size:14.5px; line-height:1.6;">Claude Code and Cursor in daily production work</span></div>
+    </div>
+  </section>
+  <section data-screen-label="Education" style="border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent); padding:var(--space-6) 0 var(--space-8);">
+    <div style="display:flex; align-items:baseline; gap:var(--space-3); margin-bottom:var(--space-4);">
+      <span style="font-family:var(--font-heading); font-weight:400; font-size:52px; line-height:0.75; font-feature-settings:'tnum'; letter-spacing:-0.02em; color:color-mix(in srgb, var(--color-accent) 38%, transparent);">V</span>
+      <h2 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:27px; letter-spacing:-0.015em;">Education</h2>
+    </div>
+    <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--space-2) var(--space-4);">
+      <h3 style="margin:0; font-family:var(--font-heading); font-weight:600; font-size:21px;">California State University, Northridge</h3>
+      <span style="font-family:var(--font-body); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; font-feature-settings:'tnum'; color:color-mix(in srgb, var(--color-bg) 55%, transparent);">Class of 2022</span>
+    </div>
+    <p style="margin:var(--space-1) 0 0; font-family:var(--font-body); font-style:italic; font-size:14px; color:color-mix(in srgb, var(--color-bg) 68%, transparent);">Mechanical Engineering</p>
+  </section>
+</main>
+<footer data-screen-label="Colophon" style="margin-top:var(--space-6); border-top:1px solid color-mix(in srgb, var(--color-bg) 15%, transparent); padding:calc(var(--space-8) * 1.4) clamp(20px, 5vw, 72px) calc(var(--space-8) * 1.2);">
+  <div style="max-width:920px; margin:0 auto; display:flex; flex-direction:column; align-items:center; gap:var(--space-4); text-align:center;">
+    <div style="width:44px; height:1px; background:var(--color-accent);"></div>
+    <span style="font-family:var(--font-body); font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:color-mix(in srgb, var(--color-bg) 72%, transparent);">Peter Shmain</span>
+    <a href="Peter_Shmain_Resume.docx" download="Peter_Shmain_Resume.docx" style="margin-top:var(--space-2); display:inline-flex; align-items:center; gap:var(--space-3); padding:var(--space-3) var(--space-6); border:1px solid var(--color-accent); border-radius:var(--radius-sm); text-decoration:none; font-family:var(--font-heading); font-weight:600; font-size:18px; letter-spacing:0.01em; color:var(--color-bg); transition:background 0.25s ease, color 0.25s ease;" style-hover="background:color-mix(in srgb, var(--color-accent) 16%, transparent); color:var(--color-accent-200);" style-focus="outline:2px solid var(--color-accent); outline-offset:2px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg><span style="white-space:nowrap;">Download résumé</span></a>
+    <span style="font-family:var(--font-body); font-size:13px; display:flex; flex-wrap:wrap; justify-content:center; gap:var(--space-2); align-items:baseline; color:color-mix(in srgb, var(--color-bg) 45%, transparent);"><a href="mailto:petershmain@gmail.com" style="text-decoration:none; color:var(--color-accent-300);" style-hover="color:var(--color-accent-200);">petershmain@gmail.com</a><span>·</span><a href="tel:+13234224866" style="text-decoration:none; font-feature-settings:'tnum'; color:var(--color-accent-300);" style-hover="color:var(--color-accent-200);">(323) 422-4866</a><span>·</span><a href="https://www.linkedin.com/in/peter-shmain" target="_blank" rel="noopener" style="text-decoration:none; color:var(--color-accent-300);" style-hover="color:var(--color-accent-200);">linkedin.com/in/peter-shmain</a></span>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;pixelSize&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 8, &quot;min&quot;: 5, &quot;max&quot;: 16, &quot;step&quot;: 1, &quot;unit&quot;: &quot;px&quot;, &quot;section&quot;: &quot;Dither&quot;, &quot;tsType&quot;: &quot;number&quot;},
+  &quot;dotScale&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 0.85, &quot;min&quot;: 0.6, &quot;max&quot;: 1, &quot;step&quot;: 0.01, &quot;section&quot;: &quot;Dither&quot;, &quot;tsType&quot;: &quot;number&quot;},
+  &quot;levels&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 5, &quot;min&quot;: 2, &quot;max&quot;: 6, &quot;step&quot;: 1, &quot;section&quot;: &quot;Dither&quot;, &quot;tsType&quot;: &quot;number&quot;},
+  &quot;contrast&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 22, &quot;min&quot;: 0, &quot;max&quot;: 60, &quot;step&quot;: 1, &quot;section&quot;: &quot;Dither&quot;, &quot;tsType&quot;: &quot;number&quot;},
+  &quot;invert&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: false, &quot;section&quot;: &quot;Dither&quot;, &quot;tsType&quot;: &quot;boolean&quot;},
+  &quot;inkMode&quot;: {&quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;sampled&quot;, &quot;blended&quot;, &quot;gold&quot;, &quot;paper&quot;], &quot;default&quot;: &quot;sampled&quot;, &quot;section&quot;: &quot;Colour&quot;, &quot;tsType&quot;: &quot;string&quot;},
+  &quot;ashDensity&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 1, &quot;min&quot;: 0, &quot;max&quot;: 2, &quot;step&quot;: 0.1, &quot;section&quot;: &quot;Body ash&quot;, &quot;tsType&quot;: &quot;number&quot;}
+}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.frames = []; this.mode = 'boot'; this.acc = 0; this.idx = 0; this.F = 0;
+    this.ptr = { x: -9e3, y: -9e3, tx: -9e3, ty: -9e3, s: 0, on: false };
+    this.lastSig = '';
+  }
+  renderVals() {
+    return { secRef: (el) => { this.sec = el; }, canvasRef: (el) => { this.cv = el; }, ashRef: (el) => { this.ashCv = el; } };
+  }
+  componentDidMount() { this.boot().catch((e) => console.error('dither boot failed', e)); }
+  componentWillUnmount() {
+    this.dead = true; cancelAnimationFrame(this.raf);
+    if (this.ro) this.ro.disconnect();
+    if (this.video) this.video.pause();
+    if (this._vpm) { window.removeEventListener('pointermove', this._vpm); window.removeEventListener('pointerout', this._vpo); window.removeEventListener('resize', this._vrs); }
+  }
+  parseColor(str) {
+    const x = this._pc || (this._pc = document.createElement('canvas').getContext('2d'));
+    x.fillStyle = '#000'; x.fillStyle = str; const v = x.fillStyle;
+    if (v[0] === '#') { const n = parseInt(v.slice(1), 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+    const m = v.match(/[\d.]+/g) || [0, 0, 0]; return [+m[0], +m[1], +m[2]];
+  }
+  readColors() {
+    const cs = getComputedStyle(document.body);
+    const get = (n, fb) => (cs.getPropertyValue(n).trim() || fb);
+    this.paperC = this.parseColor(get('--color-bg', '#f3f2f2'));
+    this.goldC = this.parseColor(get('--color-accent', '#b68235'));
+    this.deepC = this.parseColor(get('--color-accent-800', '#5e3f10'));
+    this.sepiaC = [get('--color-accent-800', '#5e3f10'), get('--color-accent-700', '#7a5518'), get('--color-accent-500', '#b68235')];
+  }
+  buildBayer() {
+    // 8x8 Bayer built by recursing the 2x2 base: M2n = [[4M+0, 4M+2],[4M+3, 4M+1]]
+    let m = [[0, 2], [3, 1]];
+    for (let s = 2; s < 8; s *= 2) {
+      const n = s * 2, out = [];
+      for (let y = 0; y < n; y++) { out[y] = []; for (let x = 0; x < n; x++) {
+        out[y][x] = 4 * m[y % s][x % s] + [[0, 2], [3, 1]][y < s ? 0 : 1][x < s ? 0 : 1];
+      } }
+      m = out;
+    }
+    this.bT = new Float64Array(64);
+    for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) this.bT[y * 8 + x] = (m[y][x] + 0.5) / 64;
+  }
+  setupCanvas() {
+    this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    this.ctx = this.cv.getContext('2d');
+    const rs = () => {
+      const r = this.sec.getBoundingClientRect();
+      this.W = Math.max(2, Math.round(r.width * this.dpr));
+      this.heroH = Math.max(2, Math.round(r.height * this.dpr));
+      this.H = this.heroH;
+      if (this.cv.width !== this.W) this.cv.width = this.W;
+      if (this.cv.height !== this.H) this.cv.height = this.H;
+    };
+    this._rsHero = rs; rs();
+    this.ro = new ResizeObserver(rs); this.ro.observe(this.sec);
+    this.sec.addEventListener('pointermove', (e) => {
+      const r = this.sec.getBoundingClientRect();
+      this.ptr.tx = (e.clientX - r.left) * this.dpr;
+      this.ptr.ty = (e.clientY - r.top) * this.dpr;
+      if (!this.ptr.on && this.ptr.s < 0.01) { this.ptr.x = this.ptr.tx; this.ptr.y = this.ptr.ty; }
+      this.ptr.on = true;
+    });
+    this.sec.addEventListener('pointerleave', () => { this.ptr.on = false; });
+  }
+  sample() {
+    this.mctx.drawImage(this.video, this.crop.x, this.crop.y, this.crop.w, this.crop.h, 0, 0, this.mw, this.mh);
+    // watermark patch: clone the sky strip just above the bottom-right corner over it
+    const w = this.wm;
+    if (w) this.mctx.drawImage(this.mctx.canvas, w.x, w.y - w.h, w.w, w.h, w.x, w.y, w.w, w.h);
+    return this.mctx.getImageData(0, 0, this.mw, this.mh);
+  }
+  seekTo(t) {
+    return new Promise((res) => {
+      const v = this.video, on = () => { v.removeEventListener('seeked', on); res(); };
+      v.addEventListener('seeked', on); v.currentTime = t;
+    });
+  }
+  async boot() {
+    this.buildBayer(); this.readColors(); this.setupCanvas(); this.initAsh();
+    this.loop = this.loop.bind(this); this.prev = performance.now();
+    this.raf = requestAnimationFrame(this.loop);
+    const v = document.createElement('video');
+    v.muted = true; v.playsInline = true; v.preload = 'auto';
+    v.src = 'uploads/Dense_ash_falls_continuously_o.mp4';
+    this.video = v;
+    await new Promise((res, rej) => {
+      v.addEventListener('loadedmetadata', res, { once: true });
+      v.addEventListener('error', rej, { once: true });
+    });
+    // crop the baked-in parchment border off the source before sampling
+    const C = 0.075, vw = v.videoWidth, vh = v.videoHeight;
+    this.crop = { x: vw * C, y: vh * C, w: vw * (1 - 2 * C), h: vh * (1 - 2 * C) };
+    this.mw = 208; this.mh = Math.max(8, Math.round(this.mw * this.crop.h / this.crop.w));
+    const mc = document.createElement('canvas'); mc.width = this.mw; mc.height = this.mh;
+    this.mctx = mc.getContext('2d', { willReadFrequently: true });
+    this.wm = { x: Math.round(this.mw * 0.75), y: Math.round(this.mh * 0.85) };
+    this.wm.w = this.mw - this.wm.x; this.wm.h = this.mh - this.wm.y;
+    // pre-pass: pin auto-levels (2nd/98th pct) across 5 spread frames, once, for the whole sequence
+    const d = v.duration, hist = new Uint32Array(256); let cnt = 0;
+    for (const f of [0.02, 0.25, 0.5, 0.75, 0.97]) {
+      await this.seekTo(f * d);
+      const im = this.sample().data;
+      for (let i = 0; i < im.length; i += 4) {
+        hist[Math.min(255, (0.2126 * im[i] + 0.7152 * im[i + 1] + 0.0722 * im[i + 2]) | 0)]++; cnt++;
+      }
+    }
+    const pct = (p) => { const tgt = cnt * p; let a = 0; for (let i = 0; i < 256; i++) { a += hist[i]; if (a >= tgt) return i; } return 255; };
+    this.lo = pct(0.02); this.hi = pct(0.98);
+    if (this.hi - this.lo < 10) { this.lo = Math.max(0, this.lo - 5); this.hi = Math.min(255, this.hi + 5); }
+    this.FPS = 11; this.maxFrames = Math.ceil(Math.min(d, 16) * this.FPS);
+    await this.seekTo(0);
+    v.addEventListener('ended', () => this.finalize(), { once: true });
+    try { await v.play(); this.mode = 'live'; }
+    catch (e) { await this.seekCapture(); }
+  }
+  async seekCapture() { // autoplay-blocked fallback: extract frames by seeking
+    const v = this.video, d = v.duration, n = Math.min(this.maxFrames, Math.ceil(d * this.FPS));
+    for (let k = 0; k < n; k++) {
+      if (this.dead) return;
+      await this.seekTo(Math.min(d - 0.001, k / this.FPS));
+      this.live = this.sample(); this.frames.push(this.live);
+    }
+    this.finalize();
+  }
+  finalize() {
+    if (this.mode === 'loop' || this.dead) return;
+    const n = this.frames.length;
+    if (!n) return;
+    this.F = n > 10 ? Math.min(8, Math.floor(n / 3)) : 0;
+    this.idx = this.F % n; this.acc = 0; this.mode = 'loop';
+    this.live = null; this.video.removeAttribute('src'); this.video.load();
+  }
+  loop(now) {
+    if (this.dead) return;
+    this.raf = requestAnimationFrame(this.loop);
+    const dt = Math.min(0.1, (now - this.prev) / 1000); this.prev = now;
+    if (this.W <= 2 && this._rsHero) this._rsHero(); // re-measure if we mounted at zero size
+    if (this.aW <= 2 && this._vrs) this._vrs();
+    const p = this.ptr;
+    p.s += ((p.on ? 1 : 0) - p.s) * Math.min(1, dt * 5);
+    if (p.on || p.s > 0.004) { p.x += (p.tx - p.x) * Math.min(1, dt * 9); p.y += (p.ty - p.y) * Math.min(1, dt * 9); }
+    this.ashTick(dt);
+    let a = 0, b = null, base = null, frameKey = -1;
+    if (this.mode === 'live') {
+      const v = this.video;
+      if (v.readyState >= 2) {
+        base = this.live = this.sample();
+        while (!this.capped && v.currentTime >= this.frames.length / this.FPS) {
+          this.frames.push(base);
+          if (this.frames.length >= this.maxFrames) this.capped = true;
+        }
+        // crossfade the wrap even on the first (live) pass, using already-captured opening frames
+        const d = v.duration, F = Math.min(8, Math.floor(this.frames.length / 3)), tail = F / this.FPS;
+        if (F > 2 && v.currentTime > d - tail) {
+          a = Math.min(1, (v.currentTime - (d - tail)) / tail);
+          b = this.frames[Math.min(F - 1, Math.floor(a * F))];
+        }
+        frameKey = now;
+      } else if (this.live) { base = this.live; frameKey = now; }
+    } else if (this.mode === 'loop') {
+      const n = this.frames.length, step = 1 / this.FPS;
+      this.acc += dt;
+      while (this.acc >= step) { this.acc -= step; this.idx++; if (this.idx >= n) this.idx = this.F < n ? this.F : 0; }
+      base = this.frames[this.idx];
+      if (this.F > 0 && this.idx >= n - this.F) {
+        a = (this.idx - (n - this.F) + 1) / (this.F + 1);
+        b = this.frames[this.idx - (n - this.F)];
+      }
+      frameKey = this.idx;
+    } else if (this.live) { base = this.live; frameKey = 0; }
+    if (!base) return;
+    const pr = this.props || {};
+    const sig = frameKey + '|' + (a ? a.toFixed(3) : '0') + '|' + this.W + 'x' + this.H + '|' + (pr.pixelSize ?? 8) + '|' + (pr.dotScale ?? 0.85) + '|' + (pr.levels ?? 5) + '|' + (pr.inkMode ?? 'sampled') + '|' + (pr.invert ?? false) + '|' + (pr.contrast ?? 22);
+    const ptrActive = p.s > 0.004;
+    if (sig === this.lastSig && !ptrActive) return;
+    this.lastSig = sig;
+    this.render(base, b, a);
+  }
+  render(imgA, imgB, alpha) {
+    const pr = this.props || {}, ctx = this.ctx, W = this.W, H = this.H;
+    const p = Math.max(3, Math.min(30, +pr.pixelSize || 8)) * this.dpr;
+    const L = Math.max(2, Math.min(8, +pr.levels || 5)), Lm1 = L - 1;
+    const ds = Math.max(0.3, Math.min(1.2, pr.dotScale == null ? 0.85 : +pr.dotScale));
+    const inv = pr.invert == null ? false : !!pr.invert;
+    const k = (100 + (pr.contrast == null ? 22 : +pr.contrast)) / 100;
+    const mode = pr.inkMode || 'sampled';
+    const lo = this.lo, rng = Math.max(1, this.hi - this.lo);
+    const cols = Math.ceil(W / p), rows = Math.ceil(H / p);
+    const hH = this.heroH || H;
+    const mw = this.mw, mh = this.mh, aC = W / hH, aM = mw / mh;
+    let sw, sh, ox, oy; // cover-fit mapping canvas → master buffer
+    if (aC > aM) { sw = mw; sh = mw / aC; ox = 0; oy = (mh - sh) / 2; }
+    else { sh = mh; sw = mh * aC; oy = 0; ox = (mw - sw) / 2; }
+    const dA = imgA.data, dB = imgB ? imgB.data : null;
+    const ptr = this.ptr, warpOn = ptr.s > 0.004;
+    const R = 0.6 * Math.max(W, H), amp = 0.055 * R * ptr.s;
+    const rMax = p * 0.34, paper = this.paperC, gold = this.goldC;
+
+    const buckets = new Map();
+    for (let gy = 0; gy < rows; gy++) {
+      const cy = (gy + 0.5) * p, rowB = (gy & 7) * 8;
+      for (let gx = 0; gx < cols; gx++) {
+        const cx = (gx + 0.5) * p;
+        let sx = cx, sy = cy;
+        if (warpOn) { // circular field: displace SAMPLING coords radially from cursor, soft eased falloff
+          const dx = cx - ptr.x, dy = cy - ptr.y, dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < R && dist > 1) {
+            const t = 1 - dist / R, e = t * t * (3 - 2 * t) * amp / dist;
+            sx -= dx * e; sy -= dy * e;
+          }
+        }
+        let u = sx / W; if (u < 0) u = 0; else if (u > 1) u = 1;
+        let vv = sy / hH, fade = 1;
+        if (vv > 0.9) { // feather the field's last 10% so the frame has no hard edge
+          const s = (1 - vv) / 0.1;
+          fade = s <= 0 ? 0 : (s >= 1 ? 1 : s * s * (3 - 2 * s));
+          if (fade <= 0) continue;
+        }
+        if (vv < 0) vv = 0; else if (vv > 1) vv = 1;
+        const mx = Math.min(mw - 1, (ox + u * sw) | 0), my = Math.min(mh - 1, (oy + vv * sh) | 0);
+        const i = (my * mw + mx) * 4;
+        let r = dA[i], g = dA[i + 1], bl = dA[i + 2];
+        if (dB) { r += (dB[i] - r) * alpha; g += (dB[i + 1] - g) * alpha; bl += (dB[i + 2] - bl) * alpha; }
+        let v = ((0.2126 * r + 0.7152 * g + 0.0722 * bl) - lo) / rng;
+        if (v < 0) v = 0; else if (v > 1) v = 1;
+        if (inv) v = 1 - v;
+        v = (v - 0.5) * k + 0.5;
+        if (v <= 0.02) continue; // floor: kill residual background haze
+        if (v > 1) v = 1;
+        if (fade < 1) { v *= fade; if (v <= 0.02) continue; }
+        const xL = v * Lm1, bse = xL | 0, fr = xL - bse;
+        let q = bse + (fr > this.bT[rowB + (gx & 7)] ? 1 : 0);
+        if (q < 1) continue; if (q > Lm1) q = Lm1;
+        let cr, cg, cb, key;
+        if (mode === 'paper') { cr = paper[0]; cg = paper[1]; cb = paper[2]; key = q; }
+        else if (mode === 'gold') { cr = gold[0]; cg = gold[1]; cb = gold[2]; key = q + 8; }
+        else {
+          let fr2, fg2, fb2;
+          if (mode === 'blended') { const m = 0.25; fr2 = (r * m + gold[0] * (1 - m)) | 0; fg2 = (g * m + gold[1] * (1 - m)) | 0; fb2 = (bl * m + gold[2] * (1 - m)) | 0; }
+          else { fr2 = r | 0; fg2 = g | 0; fb2 = bl | 0; }
+          cr = (fr2 & 240) + 8; cg = (fg2 & 240) + 8; cb = (fb2 & 240) + 8;
+          key = q * 16777216 + (cr << 16) + (cg << 8) + cb;
+        }
+        let bk = buckets.get(key);
+        if (!bk) { bk = { c: 'rgb(' + cr + ',' + cg + ',' + cb + ')', r: rMax * ds * (q / Lm1), p: new Path2D() }; buckets.set(key, bk); }
+        bk.p.moveTo(cx + bk.r, cy);
+        bk.p.arc(cx, cy, bk.r, 0, 6.28319);
+      }
+    }
+    ctx.clearRect(0, 0, W, H);
+    for (const bk of buckets.values()) { ctx.fillStyle = bk.c; ctx.fill(bk.p); }
+    if (!this.shown) { this.shown = true; this.cv.style.opacity = '1'; }
+  }
+  initAsh() {
+    const cv = this.ashCv; if (!cv) return;
+    this.actx = cv.getContext('2d');
+    this.vptr = { x: -9e3, y: -9e3, tx: -9e3, ty: -9e3, s: 0, on: false };
+    window.addEventListener('pointermove', this._vpm = (e) => {
+      this.vptr.tx = e.clientX * this.dpr; this.vptr.ty = e.clientY * this.dpr;
+      if (!this.vptr.on && this.vptr.s < 0.01) { this.vptr.x = this.vptr.tx; this.vptr.y = this.vptr.ty; }
+      this.vptr.on = true;
+      if (this.sec) { // drive the hero-canvas warp from anywhere on the page (its field overhangs the hero)
+        const r = this.sec.getBoundingClientRect();
+        this.ptr.tx = (e.clientX - r.left) * this.dpr; this.ptr.ty = (e.clientY - r.top) * this.dpr;
+        if (!this.ptr.on && this.ptr.s < 0.01) { this.ptr.x = this.ptr.tx; this.ptr.y = this.ptr.ty; }
+        this.ptr.on = true;
+      }
+    });
+    window.addEventListener('pointerout', this._vpo = (e) => { if (!e.relatedTarget) { this.vptr.on = false; this.ptr.on = false; } });
+    const rs = () => {
+      this.aW = Math.max(2, Math.round(window.innerWidth * this.dpr));
+      this.aH = Math.max(2, Math.round(window.innerHeight * this.dpr));
+      cv.width = this.aW; cv.height = this.aH;
+      this.seedAsh();
+    };
+    window.addEventListener('resize', this._vrs = rs); rs();
+    this.ashAcc = 0; this.ashT = 0;
+  }
+  seedAsh() {
+    const area = (this.aW * this.aH) / (this.dpr * this.dpr);
+    const n = Math.round(area / 5000);
+    this.ash = [];
+    for (let i = 0; i < n; i++) this.ash.push(this.spawnAsh(true));
+  }
+  spawnAsh(anywhere) {
+    return {
+      x: Math.random() * (this.aW / this.dpr),
+      y: anywhere ? Math.random() * (this.aH / this.dpr) : -10,
+      spd: 14 + Math.random() * 26,
+      amp: 6 + Math.random() * 18,
+      frq: 0.15 + Math.random() * 0.4,
+      ph: Math.random() * 6.283,
+      r: 0.8 + Math.random() * 1.2,
+      tone: 0.55 + Math.random() * 0.45,
+    };
+  }
+  ashTick(dt) {
+    if (!this.actx || !this.ash) return;
+    const pr = this.props || {};
+    const dens = pr.ashDensity == null ? 1 : Math.max(0, Math.min(2, +pr.ashDensity));
+    if (dens <= 0) { if (!this._ashOff) { this.actx.clearRect(0, 0, this.aW, this.aH); this._ashOff = true; } return; }
+    this._ashOff = false;
+    const vp = this.vptr;
+    vp.s += ((vp.on ? 1 : 0) - vp.s) * Math.min(1, dt * 5);
+    if (vp.on || vp.s > 0.004) { vp.x += (vp.tx - vp.x) * Math.min(1, dt * 9); vp.y += (vp.ty - vp.y) * Math.min(1, dt * 9); }
+    const step = 1 / (this.FPS || 11);
+    this.ashAcc += dt;
+    let stepped = false;
+    while (this.ashAcc >= step) {
+      this.ashAcc -= step; this.ashT += step; stepped = true;
+      const H = this.aH / this.dpr, W = this.aW / this.dpr;
+      for (const a of this.ash) {
+        a.y += a.spd * step;
+        if (a.y > H + 12) { Object.assign(a, this.spawnAsh(false)); a.x = Math.random() * W; }
+      }
+    }
+    const sig = (pr.pixelSize ?? 8) + '|' + (pr.dotScale ?? 0.85) + '|' + dens + '|' + this.aW + 'x' + this.aH + '|' + Math.round((window.scrollY || 0) / 24);
+    if (!stepped && vp.s <= 0.004 && sig === this._ashSig) return;
+    this._ashSig = sig;
+    this.drawAsh(dens);
+  }
+  drawAsh(dens) {
+    const pr = this.props || {}, ctx = this.actx, W = this.aW, H = this.aH;
+    const p = Math.max(3, Math.min(30, +pr.pixelSize || 8)) * this.dpr;
+    const ds = Math.max(0.3, Math.min(1.2, pr.dotScale == null ? 0.85 : +pr.dotScale));
+    const cols = Math.ceil(W / p), rows = Math.ceil(H / p), n = cols * rows;
+    if (!this.agrid || this.agrid.length !== n) this.agrid = new Float32Array(n);
+    const g = this.agrid; g.fill(0);
+    const vp = this.vptr, warpOn = vp.s > 0.004;
+    const R = 0.6 * Math.max(W, H), amp = 0.055 * R * vp.s;
+    const t = this.ashT;
+    const scY = (window.scrollY || 0) * this.dpr, hB = this.heroH || 0;
+    for (const a of this.ash) {
+      let px = (a.x + Math.sin(t * a.frq * 6.283 + a.ph) * a.amp) * this.dpr;
+      let py = a.y * this.dpr;
+      let bw = 1; // hand-off boost: ash densest at the hero boundary, decaying below it
+      if (hB) {
+        const rel = (py + scY - hB) / (hB * 0.5);
+        if (rel > -0.25 && rel < 1) {
+          const up = rel < 0 ? 1 + rel / 0.25 : 1 - rel;
+          const uu = up < 0 ? 0 : up, ss = uu * uu * (3 - 2 * uu);
+          bw = 1 + 2.0 * ss;
+        }
+      }
+      if (warpOn) {
+        const dx = px - vp.x, dy = py - vp.y, dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < R && dist > 1) { const tt = 1 - dist / R, e = tt * tt * (3 - 2 * tt) * amp / dist; px += dx * e; py += dy * e; }
+      }
+      const cx = px / p - 0.5, cy = py / p - 0.5;
+      const x0 = Math.round(cx), y0 = Math.round(cy), rr = a.r;
+      for (let oy = -1; oy <= 1; oy++) for (let ox = -1; ox <= 1; ox++) {
+        const gx = x0 + ox, gy = y0 + oy;
+        if (gx < 0 || gy < 0 || gx >= cols || gy >= rows) continue;
+        const ddx = gx - cx, ddy = gy - cy, w = a.tone * dens * bw * Math.exp(-(ddx * ddx + ddy * ddy) / (0.45 * rr * rr));
+        if (w > 0.02) { const ix = gy * cols + gx; if ((g[ix] += w) > 1) g[ix] = 1; }
+      }
+    }
+    const Lm1 = 3, rMax = p * 0.34;
+    const paths = [null, new Path2D(), new Path2D(), new Path2D()];
+    for (let gy = 0; gy < rows; gy++) {
+      const rowB = (gy & 7) * 8, cy = (gy + 0.5) * p, off = gy * cols;
+      for (let gx = 0; gx < cols; gx++) {
+        const v = g[off + gx];
+        if (v <= 0.02) continue;
+        const xL = v * Lm1, bse = xL | 0, fr = xL - bse;
+        let q = bse + (fr > this.bT[rowB + (gx & 7)] ? 1 : 0);
+        if (q < 1) continue; if (q > Lm1) q = Lm1;
+        const rad = rMax * ds * (q / Lm1), cx = (gx + 0.5) * p;
+        paths[q].moveTo(cx + rad, cy); paths[q].arc(cx, cy, rad, 0, 6.28319);
+      }
+    }
+    ctx.clearRect(0, 0, W, H);
+    for (let q = 1; q <= 3; q++) { ctx.fillStyle = this.sepiaC[q - 1]; ctx.fill(paths[q]); }
+  }
+}
+</script>
+</body>
+</html>

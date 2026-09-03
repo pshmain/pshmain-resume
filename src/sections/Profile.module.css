@@ -1,0 +1,8 @@
+.text {
+  max-width: var(--measure-profile);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  text-align: justify;
+  hyphens: auto;
+  text-wrap: pretty;
+}

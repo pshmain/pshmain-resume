@@ -1,0 +1,256 @@
+/* Design tokens. The single source of truth for colour, type, spacing, radius and motion.
+   Every value here comes from design/handoff.md (the Classical token sheet). Nothing outside
+   this file may contain a raw colour, font, or spacing value; everything references var(--...). */
+
+/* ---- Fonts (self-hosted latin subsets from Google Fonts). Cormorant is a variable file
+   covering 300-700; the two Lora files are static 400 cuts, the only weight the design uses. ---- */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/cormorant-garamond-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/lora-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Lora';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/lora-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  color-scheme: dark;
+
+  /* ---- Palette (plain hex only: the canvas engines read these at runtime) ---- */
+  --color-paper: #f3f2f2;
+  --color-neutral-900: #2d2b2b;
+  --color-accent: #b68235;
+  --color-accent-200: #ffe3bf;
+  --color-accent-300: #facb8d;
+  --color-accent-500: #c28d41;
+  --color-accent-700: #7d5411;
+  --color-accent-800: #5a3b0a;
+
+  /* ---- Roles ---- */
+  --color-ground: color-mix(in srgb, var(--color-neutral-900) 78%, black);
+  --color-text: var(--color-paper);
+  --color-link: var(--color-accent-300);
+  --color-link-hover: var(--color-accent-200);
+  --color-rule: var(--color-accent);
+  --color-focus: var(--color-accent);
+  --color-selection: color-mix(in srgb, var(--color-accent) 30%, transparent);
+
+  --color-hairline: color-mix(in srgb, var(--color-paper) 15%, transparent);
+  --color-card-border: color-mix(in srgb, var(--color-paper) 18%, transparent);
+  --color-card-bg: color-mix(in srgb, var(--color-neutral-900) 22%, transparent);
+  --color-card-border-hover: var(--color-accent);
+  --color-card-bg-hover: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  --color-button-bg-hover: color-mix(in srgb, var(--color-accent) 16%, transparent);
+  --color-visit-underline: color-mix(in srgb, var(--color-accent) 45%, transparent);
+  --color-numeral: color-mix(in srgb, var(--color-accent) 38%, transparent);
+  --color-vignette: color-mix(in srgb, var(--color-neutral-900) 80%, black);
+  --color-gate-bg: color-mix(in srgb, var(--color-ground) 90%, transparent);
+  --color-ember: color-mix(in srgb, var(--color-accent-700) 20%, transparent);
+  /* Hero vignette: darkens the lower-left behind the name. */
+  --vignette-shape: 72% 68% at 16% 84%;
+  --vignette-inner-stop: 10%;
+  --vignette-outer-stop: 60%;
+
+  /* Muted paper, by alpha. Names carry the handoff percentage. */
+  --color-paper-75: color-mix(in srgb, var(--color-paper) 75%, transparent);
+  --color-paper-72: color-mix(in srgb, var(--color-paper) 72%, transparent);
+  --color-paper-68: color-mix(in srgb, var(--color-paper) 68%, transparent);
+  --color-paper-62: color-mix(in srgb, var(--color-paper) 62%, transparent);
+  --color-paper-55: color-mix(in srgb, var(--color-paper) 55%, transparent);
+  /* 50% is the lowest alpha that clears WCAG AA (4.62:1) for small text on the ground;
+     the handoff's 45% (4.01:1) is kept for decorative separators only. See DEVIATIONS.md. */
+  --color-paper-50: color-mix(in srgb, var(--color-paper) 50%, transparent);
+  --color-paper-45: color-mix(in srgb, var(--color-paper) 45%, transparent);
+  --color-paper-22: color-mix(in srgb, var(--color-paper) 22%, transparent);
+
+  /* ---- Type ---- */
+  --font-heading: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
+  --font-body: 'Lora', Georgia, 'Times New Roman', serif;
+  --weight-display: 400;
+  --weight-heading: 600;
+  --weight-body: 400;
+
+  /* Sizes: handoff px, expressed in rem so browser font-size preferences still apply. */
+  --text-base: 0.9375rem; /* 15px: the Classical body baseline, inherited by unstyled glyphs */
+  --text-kicker: 0.65625rem; /* 10.5px */
+  --text-label: 0.6875rem; /* 11px */
+  --text-meta: 0.75rem; /* 12px */
+  --text-small: 0.8125rem; /* 13px */
+  --text-card: 0.875rem; /* 14px */
+  --text-body-sm: 0.90625rem; /* 14.5px */
+  --text-body: 1rem; /* 16px */
+  --text-button: 1.125rem; /* 18px */
+  --text-h3: 1.3125rem; /* 21px */
+  --text-card-title: 1.625rem; /* 26px */
+  --text-h2: 1.6875rem; /* 27px */
+  --text-numeral: 3.25rem; /* 52px */
+  --text-subtitle: clamp(0.9375rem, 1.4vw, 1.1875rem); /* 15-19px */
+  --text-h1: clamp(3.5rem, 8.5vw, 7.375rem); /* 56-118px */
+  --text-h1-print: 3rem;
+  --text-riddle: clamp(1.3125rem, 2vw, 1.5rem); /* 21-24px */
+
+  --leading-h1: 0.95;
+  --leading-tight: 1.05;
+  --leading-heading: 1.12;
+  --leading-body: 1.7;
+  --leading-bullets: 1.65;
+  --leading-card: 1.6;
+  --leading-numeral: 0.75;
+  --leading-base: 1.55;
+  --leading-none: 1;
+  --leading-riddle: 1.45;
+
+  --tracking-h1: -0.015em;
+  --tracking-heading: -0.015em;
+  --tracking-card-title: -0.01em;
+  --tracking-numeral: -0.02em;
+  --tracking-button: 0.01em;
+  --tracking-contact: 0.02em;
+  --tracking-caps: 0.08em;
+  --tracking-caps-wide: 0.12em;
+  --tracking-kicker: 0.16em;
+  --tracking-footer: 0.18em;
+  --tracking-cue: 0.24em;
+
+  --measure-profile: 68ch;
+  --measure-bullets: 74ch;
+  --measure-riddle: 34ch;
+  --measure-reveal: 44ch;
+  --measure-colophon: 52ch;
+
+  /* ---- Spacing (Classical 4.6px scale) ---- */
+  --space-1: 4.6px;
+  --space-2: 9.2px;
+  --space-3: 13.8px;
+  --space-4: 18.4px;
+  --space-6: 27.6px;
+  --space-8: 36.8px;
+
+  /* ---- Layout ---- */
+  --container: 920px;
+  --gutter: clamp(20px, 5vw, 72px);
+  --hero-min-height: 560px;
+  --hero-inset-bottom: clamp(24px, 6vh, 64px);
+  --main-padding-top: clamp(40px, 7vh, 88px);
+  --footer-padding-top: calc(var(--space-8) * 1.4); /* 51.5px */
+  --footer-padding-bottom: calc(var(--space-8) * 1.2); /* 44px */
+  --hero-rule-width: 72px;
+  --footer-rule-width: 44px;
+  --hairline: 1px;
+  --card-min-width: 240px;
+  --skills-label-column: minmax(130px, 190px);
+  --skills-label-offset: 3px;
+  --cue-track-height: 64px;
+  --cue-runner-height: 28px;
+  --cue-width: 2px;
+  --cue-clearance: 40px; /* room the hero name block leaves for the cue on phones */
+  --icon-size: 16px;
+  --icon-stroke: 1.75;
+  --arrow-size: 1em; /* the handoff sets the arrow glyph at the surrounding text size */
+  --arrow-stroke: 1.5;
+  --arrow-baseline-shift: -0.1em;
+  --size-hidden: 1px; /* visually-hidden helpers */
+
+  /* Riddle gate (src/components/Gate.tsx) */
+  --gate-width: 440px;
+  --gate-width-reveal: 520px;
+  --gate-input-width: 260px;
+  --gate-hint-width: 420px;
+  --gate-rule-width: 44px;
+  --z-gate: 10;
+
+  /* Breakpoints. CSS cannot use custom properties inside @media, so these are documentation:
+     the same numbers appear literally in Hero.module.css, Skills.module.css and Gate.module.css. */
+  --bp-skills-columns: 560px;
+  --bp-cue-clear: 640px;
+  --bp-gate-padding: 640px;
+
+  /* ---- Shape ---- */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-cue: 1px;
+
+  /* ---- Motion ---- */
+  --ease: ease;
+  --duration-hover: 0.25s;
+  --duration-hero-fade: 1.4s;
+  --duration-cue: 2.2s;
+  --duration-instant: 0.01ms; /* what every animation collapses to under reduced motion */
+  --glow-cue: 0 0 8px var(--color-accent);
+  /* Riddle gate: the card recedes over --duration-gate; the ruins then fade in over
+     --duration-reveal (the engine reads this token to ease the ash back at the same time) and
+     the page text follows after --delay-gate-content. */
+  --duration-gate: 1.4s;
+  --duration-reveal: 2.4s;
+  --delay-gate-content: 0.8s;
+  --gate-recede: 0.97;
+
+  /* ---- Print ---- */
+  /* @page cannot read custom properties; base.css repeats this value literally. */
+  --print-page-margin: 16mm;
+
+  /* ---- Focus ---- */
+  --focus-ring: 2px solid var(--color-focus);
+  --focus-offset: 2px;
+}
+
+/* Browsers without color-mix() (Safari < 16.2, Chrome < 111, Firefox < 113) would otherwise
+   drop the ground to white under paper-coloured text. Same values, pre-mixed. */
+@supports not (color: color-mix(in srgb, red, blue)) {
+  :root {
+    --color-ground: #232222;
+    --color-selection: rgba(182, 130, 53, 0.3);
+    --color-hairline: rgba(243, 242, 242, 0.15);
+    --color-card-border: rgba(243, 242, 242, 0.18);
+    --color-card-bg: rgba(45, 43, 43, 0.22);
+    --color-card-bg-hover: rgba(182, 130, 53, 0.1);
+    --color-button-bg-hover: rgba(182, 130, 53, 0.16);
+    --color-visit-underline: rgba(182, 130, 53, 0.45);
+    --color-numeral: rgba(182, 130, 53, 0.38);
+    --color-vignette: #242222;
+    --color-gate-bg: rgba(35, 34, 34, 0.9);
+    --color-ember: rgba(125, 84, 17, 0.2);
+    --color-paper-75: rgba(243, 242, 242, 0.75);
+    --color-paper-72: rgba(243, 242, 242, 0.72);
+    --color-paper-68: rgba(243, 242, 242, 0.68);
+    --color-paper-62: rgba(243, 242, 242, 0.62);
+    --color-paper-55: rgba(243, 242, 242, 0.55);
+    --color-paper-50: rgba(243, 242, 242, 0.5);
+    --color-paper-45: rgba(243, 242, 242, 0.45);
+    --color-paper-22: rgba(243, 242, 242, 0.22);
+  }
+}
+
+/* Print re-theme: the same tokens, on paper. Everything derived from them follows. */
+@media print {
+  :root {
+    color-scheme: light;
+    --color-paper: #111111;
+    --color-ground: #ffffff;
+    --color-link: var(--color-accent-800);
+    --color-link-hover: var(--color-accent-800);
+    --color-card-bg: transparent;
+    --color-numeral: rgba(182, 130, 53, 0.55); /* accent at 55%, pre-mixed so print needs no color-mix */
+  }
+}
