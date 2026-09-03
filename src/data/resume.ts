@@ -262,7 +262,7 @@ export const resume: Resume = {
     answerKicker: 'Arch',
     reveal: ["Rome wasn't built in a day.", 'Rome built infrastructure that outlasted the empire.'],
     closing: ['An arch stands by leaning on itself.', 'So does good software.'],
-    enter: 'Enter',
+    enter: 'View résumé',
   },
   colophon:
     'The ruins are deliberate. Rome built infrastructure to last, and rebuilding infrastructure is the work.',
