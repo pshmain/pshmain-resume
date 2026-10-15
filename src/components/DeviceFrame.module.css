@@ -1,0 +1,67 @@
+/* Device chrome around screenshots (design/dashboard.md, "Gallery"). Drawn in CSS so it scales
+   with the image and needs no asset. */
+.browser {
+  overflow: hidden;
+  border: var(--hairline) solid var(--color-frame-edge);
+  border-radius: var(--radius-md);
+  background: var(--color-frame);
+}
+
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--frame-bar-height);
+  padding: 0 var(--space-2);
+  border-bottom: var(--hairline) solid var(--color-frame-edge);
+}
+
+.dots {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.dots span {
+  width: var(--frame-dot);
+  height: var(--frame-dot);
+  border-radius: var(--radius-round);
+  background: var(--color-frame-dot);
+}
+
+.address {
+  flex: 0 1 var(--frame-pill-width);
+  min-width: 0;
+  margin: 0 auto;
+  padding: 0 var(--space-2);
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: var(--color-ground);
+  font-size: var(--text-label);
+  line-height: var(--leading-card);
+  letter-spacing: var(--tracking-contact);
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--color-paper-68);
+}
+
+.address:hover {
+  color: var(--color-link-hover);
+}
+
+.screen {
+  background: var(--color-image-bg);
+}
+
+.phone {
+  padding: var(--phone-bezel);
+  border: var(--hairline) solid var(--color-frame-edge);
+  border-radius: var(--phone-radius);
+  background: var(--color-frame);
+}
+
+.phoneScreen {
+  overflow: hidden;
+  border-radius: calc(var(--phone-radius) - var(--phone-bezel));
+  background: var(--color-image-bg);
+}

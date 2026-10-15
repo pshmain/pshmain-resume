@@ -1,0 +1,129 @@
+/* At a glance (design/dashboard.md): profile beside four stat tiles from 1100px, stacked below. */
+.grid {
+  display: grid;
+  gap: var(--space-6);
+}
+
+/* Breakpoint: --bp-wide in tokens.css. */
+@media (min-width: 1100px) {
+  .grid {
+    grid-template-columns: 4fr 8fr;
+    align-items: center;
+  }
+}
+
+.profile {
+  max-width: var(--measure-profile);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  text-wrap: pretty;
+  hyphens: auto;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+/* Breakpoint: --bp-two-up in tokens.css. */
+@media (min-width: 768px) {
+  .stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.stats li {
+  display: flex;
+}
+
+.tile {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card-bg);
+  color: inherit;
+  transition:
+    border-color var(--duration-hover) var(--ease),
+    background-color var(--duration-hover) var(--ease);
+}
+
+.tile:hover {
+  border-color: var(--color-card-border-hover);
+  background: var(--color-card-bg-hover);
+  color: inherit;
+}
+
+/* Hero figures: proportional, not tabular (a lone number should not be spaced like a column). */
+.value {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-stat);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-stat);
+  font-variant-numeric: proportional-nums diagonal-fractions;
+  color: var(--color-text);
+}
+
+.part {
+  display: inline-flex;
+  align-items: center;
+}
+
+.arrow {
+  width: 0.6em;
+  height: 0.6em;
+  margin: 0 0.15em;
+  color: var(--color-accent);
+}
+
+.label {
+  font-size: var(--text-small);
+  line-height: var(--leading-card);
+  color: var(--color-paper-68);
+  text-wrap: pretty;
+}
+
+@media print {
+  .stats {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .tile {
+    padding: 0;
+    border: 0;
+  }
+}
+
+/* ---- Motion (design/dashboard.md, "Motion") ---- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .tile {
+    transition:
+      border-color var(--duration-hover) var(--ease),
+      background-color var(--duration-hover) var(--ease),
+      translate var(--duration-hover) var(--ease-out);
+  }
+
+  .tile:hover {
+    translate: 0 var(--lift);
+  }
+
+  /* "3 → 1": the arrow and the 1 arrive just after the tile does (--enter-step is inherited). */
+  :global(html[data-js]) .part + .part {
+    animation: arrive var(--duration-enter) var(--ease-out) both;
+    animation-delay: calc(var(--enter-step, 0) * var(--stagger) + var(--duration-enter) * 0.6);
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--enter-distance) * -1));
+  }
+}

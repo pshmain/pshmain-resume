@@ -1,10 +1,15 @@
-/* svh, not the handoff's dvh: the small viewport height ignores the mobile address bar, so the
-   hero keeps one size while the bar collapses mid-scroll instead of growing and triggering a
-   scroll-anchoring jump. See DEVIATIONS.md, "Small screens". */
+/* The ruins banner (design/dashboard.md, "Banner"). Shorter than the handoff's full-screen hero
+   so the dashboard starts on the first screen. A minimum, not a fixed height: on phones the
+   wrapped action row needs more room, and the banner grows rather than covering the ruins. svh,
+   not dvh: the small viewport height ignores the mobile address bar, so the banner keeps one
+   size while the bar collapses mid-scroll. */
 .hero {
   position: relative;
-  height: 100svh;
-  min-height: var(--hero-min-height);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: var(--banner-height);
+  padding: var(--banner-padding-top) 0 var(--hero-inset-bottom);
   cursor: crosshair;
 }
 
@@ -37,87 +42,18 @@
   );
 }
 
-.cue {
-  position: absolute;
-  right: var(--gutter);
-  bottom: var(--hero-inset-bottom);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-  pointer-events: none;
-}
-
-.cueLabel {
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-cue);
-  text-transform: uppercase;
-  color: var(--color-paper-75);
-  writing-mode: vertical-rl;
-}
-
-.cueTrack {
-  position: relative;
-  width: var(--cue-width);
-  height: var(--cue-track-height);
-  overflow: hidden;
-  border-radius: var(--radius-cue);
-  background: var(--color-paper-22);
-}
-
-.cueRunner {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: var(--cue-width);
-  height: var(--cue-runner-height);
-  background: var(--color-accent-300);
-  box-shadow: var(--glow-cue);
-  animation: drift var(--duration-cue) ease-in-out infinite;
-}
-
-@keyframes drift {
-  0%,
-  15% {
-    transform: translateY(calc(-1 * var(--cue-runner-height)));
-    opacity: 0;
-  }
-  35% {
-    opacity: 1;
-  }
-  75% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(var(--cue-track-height));
-    opacity: 0;
-  }
-}
-
-.nameBlock {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: var(--hero-inset-bottom);
-}
-
-/* On narrow screens the scroll cue shares the bottom edge with the contact row, so the name
-   block keeps clear of it; from tablet widths up the 920px container never reaches the cue. */
+/* Positioned so it paints above the absolutely positioned vignette. */
 .container {
-  max-width: var(--container);
+  position: relative;
+  width: 100%;
+  max-width: var(--container-wide);
   margin: 0 auto;
-  padding: 0 calc(var(--gutter) + var(--cue-clearance)) 0 var(--gutter);
+  padding: 0 var(--gutter);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-4);
-}
-
-/* Breakpoint: --bp-cue-clear in tokens.css (media queries cannot read custom properties). */
-@media (min-width: 640px) {
-  .container {
-    padding-right: var(--gutter);
-  }
+  gap: var(--space-3);
+  cursor: auto;
 }
 
 .name {
@@ -145,25 +81,84 @@
   white-space: nowrap;
 }
 
-.contact {
+/* ---- Action row ---- */
+
+.actions {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: stretch;
   gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.primary,
+.action {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--action-height);
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    border-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease);
+}
+
+.primary {
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+  border: var(--hairline) solid var(--color-accent);
+  background: var(--color-bar-bg);
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-action-primary);
+  letter-spacing: var(--tracking-button);
+  color: var(--color-text);
+}
+
+.primary :global(svg) {
+  color: var(--color-accent);
+}
+
+.primary:hover {
+  background: var(--color-button-bg-hover);
+  color: var(--color-link-hover);
+}
+
+.action {
+  border: var(--hairline) solid var(--color-card-border);
+  background: var(--color-bar-bg);
   font-size: var(--text-small);
   letter-spacing: var(--tracking-contact);
-  color: var(--color-paper-62);
+  color: var(--color-paper-75);
 }
 
-.contact li {
-  display: flex;
-  align-items: baseline;
+.action:hover {
+  border-color: var(--color-accent);
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
   gap: var(--space-2);
+  align-self: stretch;
+  padding: 0 var(--space-3);
+  color: inherit;
 }
 
-/* Separator trails each item, so a wrapped row ends with it rather than starting with it. */
-.contact li:not(:last-child)::after {
-  content: '·';
+.actionLink :global(svg),
+.copy {
+  color: var(--color-accent-300);
+}
+
+.actionLink:hover {
+  color: var(--color-link-hover);
+}
+
+/* The copy button shares the email chip, set off by a hairline. */
+.copy {
+  align-self: stretch;
+  padding: 0 var(--space-3);
+  border-left: var(--hairline) solid var(--color-card-border);
 }
 
 .phone {
@@ -171,31 +166,35 @@
   white-space: nowrap;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .cueRunner {
-    display: none;
-  }
-}
-
 @media print {
   /* The container carries the gutter, so the hero itself gets none. */
   .hero {
-    height: auto;
     min-height: 0;
+    padding: 0;
     cursor: auto;
   }
 
   .canvas,
   .vignette,
-  .cue {
+  .primary {
     display: none;
-  }
-
-  .nameBlock {
-    position: static;
   }
 
   .name {
     font-size: var(--text-h1-print);
+  }
+
+  .action {
+    border: 0;
+    background: none;
+    min-height: 0;
+  }
+
+  .actionLink {
+    padding: 0;
+  }
+
+  .actionLink :global(svg) {
+    display: none;
   }
 }

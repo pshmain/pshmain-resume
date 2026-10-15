@@ -1,0 +1,31 @@
+.copy {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.copy:hover,
+.copy[data-copied] {
+  color: var(--color-link-hover);
+}
+
+.copied {
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-contact);
+}
+
+/* Progressive enhancement: without JavaScript there is nothing to copy with. */
+:global(html:not([data-js])) .copy {
+  display: none;
+}
+
+@media print {
+  .copy {
+    display: none;
+  }
+}

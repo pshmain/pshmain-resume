@@ -1,0 +1,130 @@
+/* Hidden above the viewport until the banner leaves it (design/dashboard.md, "Sticky bar").
+   Without JavaScript it never appears: the banner and footer carry the same links. */
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-bar);
+  height: var(--bar-height);
+  border-bottom: var(--hairline) solid var(--color-hairline);
+  background: var(--color-bar-bg);
+  backdrop-filter: blur(var(--bar-blur));
+  transform: translateY(-100%);
+  visibility: hidden;
+  transition:
+    transform var(--duration-bar) var(--ease),
+    visibility 0s linear var(--duration-bar);
+}
+
+.bar[data-shown] {
+  transform: none;
+  visibility: visible;
+  transition:
+    transform var(--duration-bar) var(--ease),
+    visibility 0s;
+}
+
+.inner {
+  height: 100%;
+  max-width: var(--container-wide);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.name {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-button);
+  letter-spacing: var(--tracking-heading);
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.name:hover {
+  color: var(--color-link-hover);
+}
+
+.links {
+  display: none;
+  gap: var(--space-4);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+
+.links a {
+  color: var(--color-paper-68);
+}
+
+.links a:hover {
+  color: var(--color-link-hover);
+}
+
+/* Breakpoint: --bp-two-up in tokens.css. */
+@media (min-width: 768px) {
+  .links {
+    display: flex;
+  }
+}
+
+.actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.icon,
+.download {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--action-height);
+  border-radius: var(--radius-sm);
+}
+
+.icon {
+  justify-content: center;
+  min-width: var(--action-height);
+  color: var(--color-accent-300);
+}
+
+.download {
+  padding: 0 var(--space-3);
+  border: var(--hairline) solid var(--color-accent);
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-action-primary);
+  color: var(--color-text);
+  transition: background-color var(--duration-hover) var(--ease);
+}
+
+.download :global(svg) {
+  color: var(--color-accent);
+}
+
+.download:hover {
+  background: var(--color-button-bg-hover);
+  color: var(--color-link-hover);
+}
+
+:global(html:not([data-js])) .bar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .bar[data-shown] {
+    transition: none;
+  }
+}
+
+@media print {
+  .bar {
+    display: none;
+  }
+}

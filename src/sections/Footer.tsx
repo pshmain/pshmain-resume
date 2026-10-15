@@ -3,29 +3,13 @@ import { ExternalLink } from '@/components/ExternalLink';
 import styles from './Footer.module.css';
 
 export function Footer() {
-  const { name, contact, download, colophon } = resume;
+  const { name, contact, colophon } = resume;
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} data-reveal>
       <div className={styles.inner}>
         <div className={styles.rule} aria-hidden="true" />
         <span className={styles.name}>{name}</span>
         <p className={styles.colophon}>{colophon}</p>
-        <a href={download.href} download={download.filename} className={styles.button}>
-          {/* Lucide "download" */}
-          <svg
-            className={styles.icon}
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path d="M12 15V3" />
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-            <path d="m7 10 5 5 5-5" />
-          </svg>
-          <span className={styles.label}>{download.label}</span>
-        </a>
         <ul className={styles.contact} role="list">
           <li>
             <a href={`mailto:${contact.email}`}>{contact.email}</a>

@@ -1,0 +1,263 @@
+/* Role gallery (design/dashboard.md, "Gallery"). Without JavaScript every slide shows, stacked,
+   and the controls are hidden; [data-js] turns it into one slide at a time. */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stage {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.slide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@media screen {
+  :global(html[data-js]) .slide:not([data-current]) {
+    display: none;
+  }
+}
+
+.caption {
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-paper-55);
+}
+
+/* With the slide picker on screen the caption would repeat its label; keep it for assistive
+   tech only. */
+:global(html[data-js]) .caption {
+  position: absolute;
+  width: var(--size-hidden);
+  height: var(--size-hidden);
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* ---- Desktop + phone pair: the phone overlaps the browser's bottom-right corner ---- */
+.pair {
+  position: relative;
+}
+
+.withPhone {
+  padding: 0 calc(var(--phone-width) * 0.35) var(--space-8) 0;
+}
+
+.phoneSlot {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--phone-width);
+}
+
+.zoom {
+  position: relative;
+  display: block;
+  cursor: zoom-in;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.zoomHint {
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  display: grid;
+  place-items: center;
+  width: var(--gallery-button);
+  height: var(--gallery-button);
+  border-radius: var(--radius-sm);
+  background: var(--color-bar-bg);
+  color: var(--color-accent-300);
+  opacity: 0;
+  transition: opacity var(--duration-hover) var(--ease);
+}
+
+.zoom:hover .zoomHint,
+.zoom:focus-visible .zoomHint {
+  opacity: 1;
+}
+
+.phoneShot .zoomHint {
+  display: none;
+}
+
+/* ---- Controls ---- */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+:global(html:not([data-js])) .controls {
+  display: none;
+}
+
+.picker {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-1);
+}
+
+.pick,
+.arrowButton {
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    border-color var(--duration-hover) var(--ease),
+    background-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease);
+}
+
+.pick {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-contact);
+  color: var(--color-paper-68);
+}
+
+.pick:hover {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+.pick[aria-current] {
+  border-color: var(--color-accent);
+  background: var(--color-selected-bg);
+  color: var(--color-text);
+}
+
+.arrowButton {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: var(--gallery-button);
+  height: var(--gallery-button);
+  color: var(--color-accent-300);
+}
+
+.arrowButton:hover {
+  border-color: var(--color-accent);
+}
+
+/* ---- Lightbox: the dialog itself is the full-screen scrim, so a click on it (not the image)
+   closes it, and no ::backdrop custom-property support is needed. ---- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--space-8) var(--gutter);
+  border: 0;
+  background: var(--color-scrim);
+  color: var(--color-text);
+}
+
+.lightbox[open] {
+  display: grid;
+  place-items: center;
+}
+
+.lightbox::backdrop {
+  background: transparent;
+}
+
+.zoomFigure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: var(--lightbox-width);
+}
+
+.zoomImage {
+  display: block;
+  max-width: 100%;
+  max-height: var(--lightbox-height);
+  width: auto;
+  height: auto;
+  border-radius: var(--radius-md);
+}
+
+.zoomCaption {
+  max-width: var(--measure-profile);
+  font-size: var(--text-small);
+  text-align: center;
+  color: var(--color-paper-75);
+}
+
+.close,
+.zoomNav {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: var(--action-height);
+  height: var(--action-height);
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bar-bg);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.close:hover,
+.zoomNav:hover {
+  border-color: var(--color-accent);
+}
+
+.close {
+  top: var(--space-3);
+  right: var(--space-3);
+}
+
+.zoomNav {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.zoomPrev {
+  left: var(--space-2);
+}
+
+.zoomNext {
+  right: var(--space-2);
+}
+
+@media print {
+  .gallery {
+    display: none;
+  }
+}
+
+/* ---- Motion: the incoming slide fades in (display none -> block restarts it each time) ---- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  :global(html[data-motion]) .slide[data-current] {
+    animation: fade var(--duration-panel) var(--ease-out) both;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}

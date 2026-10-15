@@ -18,6 +18,44 @@ The LinkedIn link is `https://www.linkedin.com/in/peter-shmain` (display text
 was replaced everywhere it appeared: the handoff, the prototype, and the contact line inside
 both docx files.
 
+Since 2026-10-15:
+
+- **Provenance has no captures and no Visit link.** Its work was internal tooling (pipeline,
+  database, admin panel), so its panel leads with the "What I rebuilt" diagram and its tab card
+  shows the monogram.
+- **Company names drop "LLC"** (Sneakerhead, Shmizzys Garage). They now appear as card titles and
+  timeline labels, where the suffix was noise.
+- **Dashboard-only copy** (stat tiles, impact chips, diagram nodes, slide labels) is condensed
+  from the résumé bullets and adds no new claims. CoDriverHQ's chips say "Stripe billing" rather
+  than repeating the bullet's "subscription billing", because the live site sells one-time
+  passes.
+
+## Dashboard layout (replaces the handoff's single column)
+
+On 2026-10-15 the page became a recruiter-facing dashboard: no riddle, a compact banner, stat
+tiles, a tabbed Work explorer with screenshots and "how it works" diagrams, a career timeline,
+and highlightable skills. `design/dashboard.md` is the spec for all of it. The handoff still
+governs tokens, type, colour and both engines. Departures from it worth naming:
+
+- **Banner, not a full-screen hero.** At least `clamp(280px, 36svh, 420px)` tall instead of
+  `100svh`, and it grows on phones where the action row wraps. The name is 44-84px instead of
+  56-118px. The scroll cue is gone, because the content now starts on the first screen.
+- **Contact as buttons.** The hero's dotted contact line became an action row (download,
+  email with copy, LinkedIn, phone). The footer keeps the handoff's contact line but drops its
+  download button, since the banner and the sticky bar both carry one.
+- **Wider container.** 1200px for the banner and dashboard (`--container-wide`). The footer
+  keeps 920px.
+- **Bullets set ragged-right** (`text-wrap: pretty`), not justified. In the narrower details
+  column, justification opened rivers.
+- **Experience, Selected Work and Profile sections** merged into the Work explorer and the At a
+  glance row. Section numerals run I-IV from Work; At a glance has a hidden heading. Shmizzys
+  Garage is not in the Work explorer (no site, nothing to show); it stays on the career
+  timeline.
+- **Motion.** The handoff allows no page animation beyond the scroll cue. The dashboard adds a
+  first-screen entrance, scroll-in reveals, a count-up, timeline and diagram sequences, and
+  hover lifts, all one-shot and all off under reduced motion and in print. See
+  `design/dashboard.md`, "Motion".
+
 ## Footer colophon (addition)
 
 A one-line colophon under the footer name explains the ruins (`colophon` in
@@ -80,25 +118,27 @@ in the repo; the numbers above are what it printed on 2026-09-02.
 
 ## Accessibility
 
-- **Card domain line: 50% paper instead of 45%.** `rgba(243,242,242,0.45)` on the page ground
-  measures 4.01:1, below the WCAG AA 4.5:1 minimum for 12px text. 50% measures 4.62:1 and is the
-  lowest alpha that passes. The footer's 45% is kept: it colours only the decorative `·`
-  separators there. Every other text colour in the handoff passes (55% paper is 5.28:1, the
-  gold link colour is 10.6:1).
+- **No text below 55% paper.** `rgba(243,242,242,0.45)` on the page ground measures 4.01:1,
+  below the WCAG AA 4.5:1 minimum for small text, so 45% colours only decorative separators and
+  diagram arrows. 55% paper is 5.28:1, the gold link colour 10.6:1. Dimmed states (a skill that
+  a role did not use) fade thumbnails and bars, never text below 55%.
 - **`prefers-reduced-motion`.** The handoff notes the prototype does not handle it and
-  recommends freezing both canvases to one dithered frame and hiding the scroll-cue runner.
-  Done: the hero shows the middle frame, the ash field is drawn once (it still redraws on
-  resize and scroll so the hand-off boost stays in place), the cursor field is off, and the
-  runner is hidden.
+  recommends freezing both canvases to one dithered frame. Done: the hero shows the middle
+  frame, the ash field is drawn once (it still redraws on resize and scroll so the hand-off
+  boost stays in place), and the cursor field is off. Smooth anchor scrolling and the sticky
+  bar's slide are off too.
+- **Work explorer is a WAI-ARIA tablist** with automatic activation (arrows, Home, End). The
+  tabs are links to their panels, so they still jump without JavaScript. Timeline bars and stat
+  tiles are links to the same panels.
 - **"Visit ↗" sits beside the `<h3>`, not inside it.** Same flex row, same visual position, but
   the heading's accessible name is just the role and company. The link's accessible name is
-  "Visit <company> (opens in a new tab)".
+  "Visit <domain> (opens in a new tab)".
 - **Contact rows are lists** (`role="list"`, since `list-style: none` drops list semantics in
   Safari). The `·` separators are CSS pseudo-elements, so assistive tech reads three links
-  rather than three links and two dots. Ghost numerals, the em-dash bullets, the arrows, the
-  scroll cue and both canvases are `aria-hidden`.
+  rather than three links and two dots. Ghost numerals, the em-dash bullets, the arrows, icons
+  and both canvases are `aria-hidden`.
 - **The hero is a `<header>`.** It holds the page's one `<h1>` and contact links; `<main>` holds
-  the five body sections. Each section is labelled by its `<h2>`.
+  the body sections. Each section is labelled by its `<h2>`.
 - **External links use `rel="noopener noreferrer"`**; the handoff says `noopener`.
 
 ## Assets
@@ -118,24 +158,15 @@ in the repo; the numbers above are what it printed on 2026-09-02.
 
 ## Small screens
 
-The handoff gives one layout for every width. Three places needed a phone rule; each kicks in
-only below the width where the handoff's layout stops working, and above it nothing changes.
+The dashboard's responsive rules are in `design/dashboard.md`. Two older notes still apply:
 
-- **Skills stack below 560px.** The two-column `minmax(130px, 190px) 1fr` grid left a 177px
-  value column at 375px, wrapping "React, Next.js, TypeScript, JavaScript, Tailwind, HTML/CSS"
-  onto five lines. Below 560px the label sits above its value.
-- **Hero name block keeps 40px clear of the scroll cue below 640px.** Both sit on the hero's
-  bottom edge; at 375px the contact row otherwise runs into the cue's vertical label. A side
-  effect: below about 363px of layout width (a 360px phone, or 375px with a desktop scrollbar)
-  "Peter Shmain" wraps onto two balanced lines. At a true 375px phone it stays on one.
 - **Contact separators trail their item** (`li:not(:last-child)::after`) rather than leading
   the next one, so a wrapped row ends with `·` instead of starting a line with it.
-- **Hero height is `100svh`, not the handoff's `100dvh`.** On phones `dvh` follows the address
-  bar, so the hero grew while the bar collapsed mid-scroll and the browser's scroll anchoring
+- **Viewport units are `svh`, never `dvh`.** On phones `dvh` follows the address bar, so a
+  `dvh`-sized hero grew while the bar collapsed mid-scroll and the browser's scroll anchoring
   then snapped the page to compensate, which read as the screen teleporting once the scroll
-  stopped. `svh` is the height with the bar showing and never changes during a gesture. With
-  the bar collapsed the hero is shorter than the screen by the bar's height; the strip below it
-  is the same ground and ash, so nothing reads as a gap. The body's minimum height follows.
+  stopped. `svh` is the height with the bar showing and never changes during a gesture. The
+  banner's height and the body's minimum height both use it.
 
 ## Type
 
@@ -147,14 +178,19 @@ only below the width where the handoff's layout stops working, and above it noth
 
 ## Print
 
-- Canvases, the scroll cue and the download button are hidden; the tokens re-theme to ink on
-  paper; articles and bullets avoid page breaks.
+- Canvases, the download buttons, the sticky bar, tab cards, galleries, diagrams, the timeline
+  and every control are hidden. Every role prints expanded with its bullets, and skills print
+  as comma-separated text. The tokens re-theme to ink on paper; articles and bullets avoid page
+  breaks.
 
 ## Delivery
 
 - **Prerendered HTML.** The React tree is baked into `dist/index.html` at build time and
   hydrated on load, so the full résumé is present before any JavaScript runs (repo rule: no
-  JS-dependent content). The canvases are the only JavaScript-dependent elements.
+  JS-dependent content). An inline script sets `<html data-js>` before first paint, and only
+  under it do panels and slides collapse into the interactive layout. Without JavaScript every
+  role and slide shows expanded. The canvases, copy buttons and sticky bar are the only
+  JavaScript-dependent elements.
 - **`color-mix()` fallback.** Browsers without `color-mix()` get the same colours pre-mixed
   from a `@supports not` block in `tokens.css`; without it the page ground fell back to white
   under paper-coloured text.

@@ -1,0 +1,442 @@
+/* II · Work (design/dashboard.md): tab cards, then the selected role's panel. */
+
+/* ---- Tab cards ---- */
+.tabs {
+  display: grid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+/* Phones: each card is a row, thumbnail beside the text. Breakpoint: --bp-narrow in tokens.css. */
+.tab {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  overflow: hidden;
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card-bg);
+  color: inherit;
+  transition:
+    border-color var(--duration-hover) var(--ease),
+    background-color var(--duration-hover) var(--ease);
+}
+
+.tab:hover {
+  border-color: var(--color-card-border-hover);
+  color: inherit;
+}
+
+.selected {
+  border-color: var(--color-accent);
+  background: var(--color-selected-bg);
+}
+
+.selected::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: var(--selected-bar);
+  background: var(--color-accent);
+}
+
+.thumb {
+  display: block;
+  aspect-ratio: var(--thumb-ratio);
+  overflow: hidden;
+  border-right: var(--hairline) solid var(--color-card-border);
+  background: var(--color-image-bg);
+  transition: opacity var(--duration-hover) var(--ease);
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* No site to show: the role's monogram on a dot field in the dither palette. */
+.monogram {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-stat);
+  letter-spacing: var(--tracking-stat);
+  color: var(--color-accent-300);
+  background: radial-gradient(
+      circle,
+      var(--color-monogram-dot) var(--monogram-dot-size),
+      transparent calc(var(--monogram-dot-size) * 1.4)
+    )
+    0 0 / var(--monogram-dot-gap) var(--monogram-dot-gap);
+}
+
+.tabText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+}
+
+@media (min-width: 560px) {
+  .tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tab {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .thumb {
+    border-right: 0;
+    border-bottom: var(--hairline) solid var(--color-card-border);
+  }
+
+  .tabText {
+    justify-content: flex-start;
+    padding: var(--space-3) var(--space-3) var(--space-4);
+  }
+}
+
+.kicker {
+  font-size: var(--text-kicker);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--color-accent-300);
+}
+
+.company {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-tab-title);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-card-title);
+  transition: color var(--duration-hover) var(--ease);
+}
+
+.former {
+  font-size: var(--text-meta);
+  font-style: italic;
+  color: var(--color-paper-55);
+}
+
+.dates {
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  font-feature-settings: 'tnum';
+  color: var(--color-paper-55);
+}
+
+/* A skill is active and this role did not use it. Text stays above AA. */
+.dim .thumb {
+  opacity: var(--dim-opacity);
+}
+
+.dim .company {
+  color: var(--color-paper-55);
+}
+
+/* ---- Panel ---- */
+/* Gallery and summary side by side from 1100px, bullets across the full width below them, so
+   neither column trails off into empty space. Stacked in the same order on narrower screens. */
+.panel {
+  display: grid;
+  grid-template-areas:
+    'media'
+    'summary'
+    'bullets';
+  gap: var(--space-6);
+}
+
+@media screen {
+  :global(html[data-js]) .panel:not([data-active]) {
+    display: none;
+  }
+}
+
+/* Without JavaScript every panel shows; rule them apart like the old Experience entries. */
+:global(html:not([data-js])) .panel + .panel {
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: var(--hairline) solid var(--color-hairline);
+}
+
+/* Breakpoint: --bp-wide in tokens.css. */
+@media (min-width: 1100px) {
+  .panel {
+    grid-template-columns: 7fr 5fr;
+    grid-template-areas:
+      'media summary'
+      'bullets bullets';
+    align-items: start;
+    column-gap: var(--space-8);
+  }
+}
+
+.media {
+  grid-area: media;
+  min-width: 0;
+}
+
+.summary {
+  grid-area: summary;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.heading {
+  font-size: var(--text-h3);
+}
+
+.formerLine {
+  font-size: var(--text-small);
+  font-style: italic;
+  color: var(--color-paper-55);
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+}
+
+.metaDates {
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  font-feature-settings: 'tnum';
+  color: var(--color-paper-55);
+}
+
+.location {
+  font-size: var(--text-small);
+  font-style: italic;
+  color: var(--color-paper-55);
+}
+
+.visit {
+  margin-top: var(--space-2);
+  font-size: var(--text-meta);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  border-bottom: var(--hairline) solid var(--color-visit-underline);
+  transition:
+    color var(--duration-hover) var(--ease),
+    border-color var(--duration-hover) var(--ease);
+}
+
+.visit:hover {
+  border-bottom-color: var(--color-link-hover);
+}
+
+.impact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.impactChip {
+  padding: var(--space-1) var(--space-3);
+  border: var(--hairline) solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-small);
+  color: var(--color-accent-300);
+}
+
+/* Two newspaper columns from 768px keep each line at a comfortable measure across the width. */
+.bullets {
+  grid-area: bullets;
+  column-gap: var(--space-8);
+}
+
+/* Breakpoint: --bp-two-up in tokens.css. */
+@media (min-width: 768px) {
+  .bullets {
+    columns: 2;
+  }
+}
+
+/* Padded into the gutter so a marked bullet's tint does not crowd its text. */
+.bullet {
+  display: flex;
+  break-inside: avoid;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+  margin: 0 calc(var(--space-2) * -1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--duration-hover) var(--ease);
+}
+
+.marked {
+  background: var(--color-mark);
+  box-shadow: inset var(--mark-rule) 0 0 var(--color-accent);
+}
+
+.dash {
+  flex: none;
+  font-size: var(--text-base);
+  color: var(--color-accent);
+}
+
+.bulletText {
+  font-size: var(--text-body-sm);
+  line-height: var(--leading-bullets);
+  text-wrap: pretty;
+  hyphens: auto;
+}
+
+.subhead {
+  margin-bottom: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: var(--weight-body);
+  font-size: var(--text-kicker);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--color-paper-55);
+}
+
+.stackChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+}
+
+.stackChip {
+  padding: var(--space-1) var(--space-2);
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-meta);
+  color: var(--color-paper-75);
+  transition:
+    border-color var(--duration-hover) var(--ease),
+    background-color var(--duration-hover) var(--ease);
+}
+
+.lit {
+  border-color: var(--color-accent);
+  background: var(--color-selected-bg);
+  color: var(--color-text);
+}
+
+@media print {
+  .tabs,
+  .impact {
+    display: none;
+  }
+
+  .panel {
+    display: block;
+  }
+
+  .bullets {
+    columns: 1;
+  }
+
+  .panel + .panel {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: var(--hairline) solid var(--color-hairline);
+  }
+
+  .marked {
+    background: none;
+    box-shadow: none;
+  }
+
+  .stackChip {
+    padding: 0;
+    border: 0;
+  }
+
+  .stackChip:not(:last-child)::after {
+    content: ',';
+  }
+}
+
+/* ---- Motion (design/dashboard.md, "Motion") ---- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* Translate, not transform: the cards' entrance animation owns transform. */
+  .tab {
+    transition:
+      border-color var(--duration-hover) var(--ease),
+      background-color var(--duration-hover) var(--ease),
+      translate var(--duration-hover) var(--ease-out);
+  }
+
+  .tab:hover {
+    translate: 0 var(--lift);
+  }
+
+  .thumb img {
+    transition: transform var(--duration-panel) var(--ease-out);
+  }
+
+  .tab:hover .thumb img {
+    transform: scale(var(--thumb-zoom));
+  }
+
+  .selected::before {
+    transform-origin: left;
+    animation: draw var(--duration-panel) var(--ease-out) both;
+  }
+
+  /* A panel switching in: gallery, summary, then bullets rise in turn. Display going from none
+     to grid restarts these, so they replay on every switch. */
+  :global(html[data-motion]) .panel[data-active] > * {
+    animation: rise var(--duration-panel) var(--ease-out) both;
+  }
+
+  :global(html[data-motion]) .panel[data-active] > .summary {
+    animation-delay: var(--stagger);
+  }
+
+  :global(html[data-motion]) .panel[data-active] > .bullets {
+    animation-delay: calc(var(--stagger) * 2);
+  }
+
+  /* The bullet a stat tile points at flashes, then settles into its mark. */
+  .marked {
+    animation: flash calc(var(--duration-panel) * 3) var(--ease-out);
+  }
+}
+
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--enter-distance) * 0.6));
+  }
+}
+
+@keyframes flash {
+  from {
+    background-color: var(--color-mark-flash);
+  }
+}

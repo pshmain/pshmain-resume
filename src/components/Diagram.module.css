@@ -1,0 +1,243 @@
+/* "How it works" flow (design/dashboard.md, "Diagram slide"). Arrows are pseudo-elements on
+   each node: ::after is the shaft, ::before the head (a bordered square turned 45 degrees). */
+.diagram {
+  container-type: inline-size;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: var(--space-4);
+  border: var(--hairline) solid var(--color-card-border);
+  border-radius: var(--radius-md);
+  background: var(--color-card-bg);
+}
+
+/* ---- Lane tones ---- */
+.muted {
+  --node-border: var(--color-paper-22);
+  --node-text: var(--color-paper-55);
+  --lane-label: var(--color-paper-55);
+  --arrow: var(--color-paper-45);
+}
+
+.accent {
+  --node-border: var(--color-accent);
+  --node-text: var(--color-text);
+  --lane-label: var(--color-accent-300);
+  --arrow: var(--color-accent);
+}
+
+.plain {
+  --node-border: var(--color-card-border);
+  --node-text: var(--color-paper-75);
+  --lane-label: var(--color-paper-55);
+  --arrow: var(--color-paper-45);
+}
+
+.laneLabel {
+  margin-bottom: var(--space-2);
+  font-size: var(--text-kicker);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--lane-label);
+}
+
+/* ---- Nodes: a column by default ---- */
+.nodes {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--diagram-arrow);
+}
+
+.node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: var(--hairline) solid var(--node-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-ground);
+  color: var(--node-text);
+}
+
+.muted .node {
+  border-style: dashed;
+}
+
+.nodeLabel {
+  font-size: var(--text-small);
+  line-height: var(--leading-heading);
+}
+
+.note {
+  font-size: var(--text-label);
+  font-style: italic;
+  line-height: var(--leading-heading);
+  color: var(--color-paper-55);
+}
+
+/* Shaft and head below each node but the last. */
+.flow .node:not(:last-child)::after,
+.loop .node:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  width: var(--hairline);
+  height: var(--diagram-arrow);
+  background: var(--arrow);
+}
+
+.flow .node:not(:last-child)::before,
+.loop .node:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: calc(100% + var(--diagram-arrow) - var(--diagram-arrow-head) * 0.75);
+  width: var(--diagram-arrow-head);
+  height: var(--diagram-arrow-head);
+  border-right: var(--hairline) solid var(--arrow);
+  border-bottom: var(--hairline) solid var(--arrow);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Loop: a return bracket down the right side, its head pointing back at the first node. */
+.loop .nodes {
+  padding-right: var(--space-6);
+}
+
+.loop .nodes::after {
+  content: '';
+  position: absolute;
+  top: var(--space-4);
+  bottom: var(--space-4);
+  right: 0;
+  width: var(--space-6);
+  border: var(--hairline) solid var(--arrow);
+  border-left: 0;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.loop .nodes::before {
+  content: '';
+  position: absolute;
+  top: var(--space-4);
+  right: calc(var(--space-6) - var(--diagram-arrow-head) * 0.75);
+  width: var(--diagram-arrow-head);
+  height: var(--diagram-arrow-head);
+  border-right: var(--hairline) solid var(--arrow);
+  border-bottom: var(--hairline) solid var(--arrow);
+  transform: translate(50%, -50%) rotate(135deg);
+}
+
+/* Set: parts that sit alongside each other, no arrows. */
+.set .nodes {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ---- Row layout once there is room (breakpoint: --bp-diagram-row in tokens.css) ---- */
+@container (min-width: 480px) {
+  .flow .nodes,
+  .loop .nodes {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .flow .node,
+  .loop .node {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .flow .node:not(:last-child)::after,
+  .loop .node:not(:last-child)::after {
+    left: 100%;
+    top: 50%;
+    width: var(--diagram-arrow);
+    height: var(--hairline);
+  }
+
+  .flow .node:not(:last-child)::before,
+  .loop .node:not(:last-child)::before {
+    left: calc(100% + var(--diagram-arrow) - var(--diagram-arrow-head) * 0.75);
+    top: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  /* The return bracket runs under the row, from the last node's centre back to the first's.
+     --count (set inline) is the number of nodes, so each centre can be found. */
+  .loop .nodes {
+    padding-right: 0;
+    padding-bottom: var(--space-6);
+  }
+
+  .loop .nodes::after {
+    --half: calc((100% - (var(--count) - 1) * var(--diagram-arrow)) / var(--count) / 2);
+    top: auto;
+    bottom: 0;
+    left: var(--half);
+    right: var(--half);
+    width: auto;
+    height: var(--space-6);
+    border: var(--hairline) solid var(--arrow);
+    border-top: 0;
+    border-radius: 0 0 var(--radius-md) var(--radius-md);
+  }
+
+  .loop .nodes::before {
+    top: auto;
+    right: auto;
+    bottom: calc(var(--space-6) - var(--diagram-arrow-head) * 0.75);
+    left: calc((100% - (var(--count) - 1) * var(--diagram-arrow)) / var(--count) / 2);
+    transform: translate(-50%, 50%) rotate(-135deg);
+  }
+}
+
+.outcome {
+  padding-left: var(--space-3);
+  border-left: var(--mark-rule) solid var(--color-accent);
+  font-size: var(--text-card);
+  font-style: italic;
+  line-height: var(--leading-card);
+  color: var(--color-paper-75);
+}
+
+/* ---- Motion: once the diagram is on screen its nodes arrive in reading order (--i set inline),
+   and each node of the system that was built lights up in turn, like work moving through it.
+   Showing the slide again replays it. ---- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  :global(html[data-motion]) .diagram:not([data-inview]) .node {
+    opacity: 0;
+  }
+
+  :global(html[data-motion]) .diagram[data-inview] .node {
+    animation: arrive var(--duration-panel) var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * var(--flow-step));
+  }
+
+  :global(html[data-motion]) .diagram[data-inview] .accent .node {
+    animation:
+      arrive var(--duration-panel) var(--ease-out) both,
+      light var(--duration-flow) var(--ease);
+    animation-delay:
+      calc(var(--i, 0) * var(--flow-step)),
+      calc(var(--i, 0) * var(--flow-step) + var(--duration-panel));
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--enter-distance) * 0.4));
+  }
+}
+
+@keyframes light {
+  40% {
+    border-color: var(--color-accent-300);
+    box-shadow: var(--glow-node);
+  }
+}

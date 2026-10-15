@@ -22,6 +22,14 @@ html {
   /* Reserve the scrollbar's space so content that changes height (a panel opening) never
      shifts the layout sideways or reseeds the ash field. */
   scrollbar-gutter: stable;
+  /* Anchor jumps land below the sticky bar instead of under it. */
+  scroll-padding-top: var(--bar-height);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 /* Transparent so the fixed ash canvas (z-index -1) shows through the page. */

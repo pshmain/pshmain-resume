@@ -1,0 +1,51 @@
+/* Page-wide motion (design/dashboard.md, "Motion"). Consumes tokens only.
+
+   Two mechanisms, both progressive:
+   - [data-enter]: the first screen rises into place on load. Pure CSS keyed on html[data-js],
+     which the inline script in index.html sets before first paint, so it plays even if the
+     bundle is slow, and ends visible even if it never arrives (fill-mode both).
+   - [data-reveal]: blocks further down fade up as they scroll into view. src/lib/useReveal.ts
+     sets html[data-motion] after hydration and data-inview on each block as it arrives, so
+     without JavaScript nothing is ever hidden. Blocks already on screen are marked at once.
+   --enter-step / --reveal-step (set inline) order a staggered group.
+
+   Everything sits inside screen + no-preference, so print and reduced motion get the plain
+   page. Component-specific motion lives in each module's own no-preference block. */
+
+@media screen and (prefers-reduced-motion: no-preference) {
+  html[data-js] [data-enter] {
+    animation: enter var(--duration-enter) var(--ease-out) both;
+    animation-delay: calc(var(--enter-step, 0) * var(--stagger));
+  }
+
+  /* Rules draw out from the left instead of rising. */
+  html[data-js] [data-enter='grow'] {
+    transform-origin: left;
+    animation-name: grow;
+  }
+
+  html[data-motion] [data-reveal] {
+    transition:
+      opacity var(--duration-reveal) var(--ease-out),
+      transform var(--duration-reveal) var(--ease-out);
+    transition-delay: calc(var(--reveal-step, 0) * var(--stagger));
+  }
+
+  html[data-motion] [data-reveal]:not([data-inview]) {
+    opacity: 0;
+    transform: translateY(var(--enter-distance));
+  }
+}
+
+@keyframes enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--enter-distance));
+  }
+}
+
+@keyframes grow {
+  from {
+    transform: scaleX(0);
+  }
+}

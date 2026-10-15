@@ -1,0 +1,159 @@
+/* Career Gantt (design/dashboard.md, "III · Career"). Label above track on phones, a label
+   column beside it from 560px. */
+.timeline {
+  margin: 0;
+}
+
+.row {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-2) 0;
+  border-top: var(--hairline) solid var(--color-hairline);
+}
+
+.row:first-child {
+  border-top: 0;
+}
+
+.axis {
+  display: grid;
+  padding-top: var(--space-1);
+}
+
+/* Breakpoint: --bp-narrow in tokens.css. */
+@media (min-width: 560px) {
+  .row,
+  .axis {
+    grid-template-columns: var(--timeline-label) 1fr;
+    column-gap: var(--space-4);
+    align-items: center;
+  }
+
+  .axisTrack {
+    grid-column: 2;
+  }
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+}
+
+.company {
+  font-family: var(--font-heading);
+  font-weight: var(--weight-heading);
+  font-size: var(--text-button);
+  line-height: var(--leading-tight);
+  transition: color var(--duration-hover) var(--ease);
+}
+
+.kicker {
+  margin-top: var(--space-1);
+  font-size: var(--text-kicker);
+  letter-spacing: var(--tracking-kicker);
+  text-transform: uppercase;
+  color: var(--color-accent-300);
+}
+
+.dates {
+  white-space: nowrap;
+  font-size: var(--text-meta);
+  font-feature-settings: 'tnum';
+  color: var(--color-paper-55);
+}
+
+.track {
+  position: relative;
+  height: var(--timeline-row);
+}
+
+.grid {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: var(--hairline);
+  background: var(--color-hairline);
+}
+
+/* The link is the full row height (the hit area); the visible bar is its ::before. */
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--left);
+  width: var(--width);
+}
+
+.bar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--timeline-bar);
+  transform: translateY(-50%);
+  border-radius: var(--radius-sm);
+  background: var(--color-gantt-bar);
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    opacity var(--duration-hover) var(--ease);
+}
+
+a.bar:hover::before,
+.selected .bar::before {
+  background: var(--color-gantt-bar-selected);
+}
+
+.selected .company {
+  color: var(--color-link);
+}
+
+.dim .bar::before {
+  opacity: var(--dim-opacity);
+}
+
+.dim .company {
+  color: var(--color-paper-55);
+}
+
+.axisTrack {
+  position: relative;
+  height: var(--timeline-row);
+}
+
+.tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: var(--text-label);
+  font-feature-settings: 'tnum';
+  color: var(--color-paper-55);
+}
+
+/* Paper gets the labels only: a plain list of roles and dates. */
+@media print {
+  .row {
+    display: block;
+  }
+
+  .track,
+  .axis {
+    display: none;
+  }
+}
+
+/* ---- Motion: bars draw out from their start month once the chart is on screen, one row after
+   another (--row set inline). Before that they are collapsed to their left edge. ---- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  :global(html[data-motion]) .bar::before {
+    transform-origin: left;
+    transition:
+      transform var(--duration-grow) var(--ease-out) calc(var(--row, 0) * var(--stagger) * 2),
+      background-color var(--duration-hover) var(--ease),
+      opacity var(--duration-hover) var(--ease);
+  }
+
+  :global(html[data-motion]) .timeline:not([data-inview]) .bar::before {
+    transform: translateY(-50%) scaleX(0);
+  }
+}

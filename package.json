@@ -10,7 +10,8 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && node scripts/prerender.mjs",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "shots": "node scripts/capture-shots.mjs"
   },
   "dependencies": {
     "react": "^19.2.8",

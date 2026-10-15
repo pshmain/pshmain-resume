@@ -3,8 +3,10 @@
 Design source of truth for the site. When the handoff and the code disagree, the handoff wins
 unless a deliberate deviation is recorded in `DEVIATIONS.md`.
 
-- `handoff.md` - the Claude Design handoff: tokens, type, spacing, layout, copy, and the two
-  canvas engines' behaviour.
+- `handoff.md` - the Claude Design handoff: tokens, type, spacing, copy, and the two canvas
+  engines' behaviour. Its single-column layout was replaced on 2026-10-15.
+- `dashboard.md` - the current layout and interaction spec (the recruiter dashboard). Governs
+  layout wherever it and the handoff disagree.
 - `DEVIATIONS.md` - every place the build knowingly departs from the handoff, with the reason.
 - `prototype/` - the working HTML prototype (`Resume.dc.html`) plus the runtime it needs to open
   locally (`support.js`, `_ds/`). Reference only; nothing here ships.

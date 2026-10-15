@@ -9,7 +9,45 @@
 }
 
 .main {
-  max-width: var(--container);
+  max-width: var(--container-wide);
   margin: 0 auto;
   padding: var(--main-padding-top) var(--gutter) 0;
+}
+
+/* Career, Skills, Education: stacked in reading order on narrow screens; from 1100px Career and
+   Education share the left column and Skills takes the right (design/dashboard.md). */
+.columns {
+  display: grid;
+  grid-template-areas:
+    'career'
+    'skills'
+    'education';
+}
+
+/* Breakpoint: --bp-wide in tokens.css. */
+@media (min-width: 1100px) {
+  .columns {
+    grid-template-columns: 7fr 5fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'career skills'
+      'education skills';
+    column-gap: var(--space-8);
+    align-items: start;
+  }
+}
+
+.career {
+  grid-area: career;
+  min-width: 0;
+}
+
+.skills {
+  grid-area: skills;
+  min-width: 0;
+}
+
+.education {
+  grid-area: education;
+  min-width: 0;
 }
