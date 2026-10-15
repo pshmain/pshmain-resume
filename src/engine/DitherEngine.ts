@@ -9,10 +9,6 @@
  * Both go through the same 8x8 Bayer matrix and are drawn as antialiased discs. Both react to
  * the cursor with a circular displacement bulge.
  *
- * While the riddle gate is locked (src/components/Gate.tsx) the hero field is not drawn, the
- * cursor field is off, and the ash runs at its denser locked setting; setGate(false) eases the
- * ash back over the reveal duration and lets the hero and cursor fields through again.
- *
  * The frames arrive as a single sprite-sheet image extracted from the video at build time (see
  * src/assets/heroFrames.ts and design/DEVIATIONS.md), so there is no media element, autoplay,
  * seeking, or tab-visibility state to get wrong: the loop starts as soon as the image decodes.
@@ -39,12 +35,8 @@ export interface DitherOptions {
   inkMode: InkMode;
   /** Ambient ash density (0-2, default 1). 0 hides the layer. */
   ashDensity: number;
-  /** Ash density while the riddle gate is locked and the ash is all there is to see. */
-  ashDensityLocked: number;
   /** Freeze both fields to one dithered frame and disable the cursor field. */
   reducedMotion: boolean;
-  /** Start locked: no hero field, no cursor field, ash at the locked density. */
-  gateLocked: boolean;
 }
 
 /** A grid of equally sized frames in one image, read left to right, top to bottom. */
@@ -71,9 +63,7 @@ export const DEFAULT_DITHER_OPTIONS: DitherOptions = {
   invert: false,
   inkMode: 'sampled',
   ashDensity: 1,
-  ashDensityLocked: 1.8,
   reducedMotion: false,
-  gateLocked: false,
 };
 
 /* ---- constants from the handoff ---- */
@@ -167,13 +157,6 @@ function buildBayer(): Float64Array {
   return t;
 }
 
-/** A CSS <time> ("2.4s", "800ms") in milliseconds; 0 for anything unparseable. */
-function parseDuration(str: string): number {
-  const v = parseFloat(str);
-  if (Number.isNaN(v)) return 0;
-  return str.trim().endsWith('ms') ? v : v * 1000;
-}
-
 let colorProbe: CanvasRenderingContext2D | null | undefined;
 
 /** Normalise any CSS colour string to RGB via the canvas parser. */
@@ -264,26 +247,12 @@ export class DitherEngine {
   private ashCleared = false;
   private readonly vptr = newPointer();
 
-  /* riddle gate */
-  private gateLocked: boolean;
-  private revealMs = 0;
-  /** Current ash density, eased between the locked and open settings. */
-  private dens: number;
-  private densFrom: number;
-  private densTo: number;
-  private densT = 0;
-  private densDur = 0;
-
   constructor(targets: DitherTargets, sheet: FrameSheet, opts: DitherOptions) {
     this.hero = targets.hero;
     this.heroCanvas = targets.heroCanvas;
     this.ashCanvas = targets.ashCanvas;
     this.sheet = sheet;
     this.opts = opts;
-    this.gateLocked = opts.gateLocked;
-    this.dens = opts.gateLocked ? opts.ashDensityLocked : opts.ashDensity;
-    this.densFrom = this.dens;
-    this.densTo = this.dens;
   }
 
   start(): void {
@@ -303,31 +272,6 @@ export class DitherEngine {
     this.frames = [];
     this.still = null;
     delete this.heroCanvas.dataset.shown;
-  }
-
-  /**
-   * Lock or open the riddle gate. Locked: the hero field stops drawing (its frame index keeps
-   * advancing), pointer input is ignored, and the ash jumps to its locked density. Open: the
-   * ash eases back to normal over the `--duration-reveal` token and both fields resume.
-   */
-  setGate(locked: boolean): void {
-    if (locked === this.gateLocked) return;
-    this.gateLocked = locked;
-    if (locked) {
-      this.ptr.on = false;
-      this.vptr.on = false;
-      this.easeAsh(this.opts.ashDensityLocked, 0);
-    } else {
-      this.easeAsh(this.opts.ashDensity, this.revealMs);
-    }
-  }
-
-  private easeAsh(target: number, ms: number): void {
-    this.densFrom = this.dens;
-    this.densTo = target;
-    this.densT = 0;
-    this.densDur = this.opts.reducedMotion ? 0 : ms / 1000;
-    if (this.densDur <= 0) this.dens = target;
   }
 
   /* ------------------------------------------------------------------ boot */
@@ -438,7 +382,6 @@ export class DitherEngine {
   private readTokens(): void {
     const cs = getComputedStyle(document.documentElement);
     const get = (name: string): string => cs.getPropertyValue(name).trim();
-    this.revealMs = parseDuration(get('--duration-reveal'));
     this.paper = parseColor(get('--color-paper'));
     this.gold = parseColor(get('--color-accent'));
     this.sepia = [
@@ -509,7 +452,6 @@ export class DitherEngine {
     if (this.opts.reducedMotion) return;
     const move = (e: PointerEvent): void => {
       if (e.pointerType === 'touch') return; // no cursor on touch; avoids a stuck bulge
-      if (this.gateLocked) return; // no cursor field behind the riddle
       const dpr = this.dpr;
       const vp = this.vptr;
       vp.tx = e.clientX * dpr;
@@ -593,7 +535,7 @@ export class DitherEngine {
     // Re-render only when the frame, blend, size, or the eased cursor changes.
     const sig = `${frameKey}|${alpha.toFixed(3)}|${this.W}x${this.H}`;
     if (sig === this.lastSig && !pointerBusy(this.ptr) && !this.heroSurface?.dirty) return;
-    if (!this.heroVisible || this.gateLocked) return;
+    if (!this.heroVisible) return;
     this.lastSig = sig;
     this.renderHero(base, next, alpha);
   };
@@ -772,13 +714,7 @@ export class DitherEngine {
   private ashTick(dt: number): void {
     const s = this.ashSurface;
     if (!s) return;
-    if (this.densDur > 0) {
-      this.densT += dt;
-      const k = Math.min(1, this.densT / this.densDur);
-      this.dens = this.densFrom + (this.densTo - this.densFrom) * smoothstep(k);
-      if (k >= 1) this.densDur = 0;
-    }
-    const dens = clamp(this.dens, 0, 2);
+    const dens = clamp(this.opts.ashDensity, 0, 2);
     if (dens <= 0) {
       if (!this.ashCleared) {
         s.clear();

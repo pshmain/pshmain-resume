@@ -19,29 +19,9 @@ html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
-  /* Keep the scrollbar's space reserved while the riddle gate holds the page still, so opening
-     it does not shift the layout or reseed the ash field. */
+  /* Reserve the scrollbar's space so content that changes height (a panel opening) never
+     shifts the layout sideways or reseeds the ash field. */
   scrollbar-gutter: stable;
-}
-
-/* ---- Riddle gate. The state lives on <html> as data-gate, set before first paint by the
-   inline script in index.html and advanced by src/components/Gate.tsx: locked, dissolving,
-   open. Elements marked data-gate-hide stay invisible until the gate opens, then fade in once
-   the ruins have begun to appear. No attribute (JavaScript off, a deep link, a session that
-   already opened it) means none of this applies. ---- */
-html[data-gate='locked'],
-html[data-gate='dissolving'] {
-  overflow: hidden;
-}
-
-[data-gate-hide] {
-  transition: opacity var(--duration-gate) var(--ease) var(--delay-gate-content);
-}
-
-html[data-gate='locked'] [data-gate-hide],
-html[data-gate='dissolving'] [data-gate-hide] {
-  opacity: 0;
-  visibility: hidden;
 }
 
 /* Transparent so the fixed ash canvas (z-index -1) shows through the page. */
@@ -134,16 +114,6 @@ svg {
 
   html {
     background: var(--color-ground);
-  }
-
-  /* The riddle gate never reaches paper: the whole résumé prints whatever state it is in. */
-  html[data-gate] {
-    overflow: visible;
-  }
-
-  html[data-gate] [data-gate-hide] {
-    opacity: 1;
-    visibility: visible;
   }
 
   canvas {

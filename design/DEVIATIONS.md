@@ -18,43 +18,12 @@ The LinkedIn link is `https://www.linkedin.com/in/peter-shmain` (display text
 was replaced everywhere it appeared: the handoff, the prototype, and the contact line inside
 both docx files.
 
-## Riddle gate (addition)
+## Footer colophon (addition)
 
-The handoff has no gate and says the scroll cue is the page's only animation. Added 2026-09-02
-at the owner's request: the page opens locked behind a one-word riddle, and the résumé appears
-only once it is solved or skipped. Copy lives in `src/data/resume.ts` (`gate`, `colophon`);
-the component is `src/components/Gate.tsx`; the state is `<html data-gate>`.
-
-- **Locked look.** The ruins are not drawn at all. Only the ambient ash runs, at density 1.8
-  instead of 1, over a faint ember glow centred under the card (`--color-ember`). The cursor
-  field is off, the hero's crosshair cursor is dropped, and the hero name block, scroll cue,
-  `<main>` and footer are `visibility: hidden` (which also removes them from tab order and
-  assistive tech). Scrolling is disabled; `scrollbar-gutter: stable` keeps the scrollbar's
-  space reserved so opening the gate causes no layout shift and no ash reseed.
-- **Card.** Dead centre, 440px (520px for the reveal), the work-card border and radius on a
-  90% ground. Kicker, riddle in Cormorant 400 at 21-24px, a 16px text field (smaller makes iOS
-  zoom), the footer-button style for Enter, and "Hint · Skip the riddle" in the Experience
-  "Visit" style. The hint opens on hover, focus, or tap, anchored under the card. Near-miss
-  answers get a nudge line; anything else gets "Not quite." Escape closes the hint, then skips.
-- **Reveal.** Solving or skipping swaps the card to the answer and the explanation with an
-  Enter button. Then: card recedes over `--duration-gate` (1.4s); the ruins fade in over
-  `--duration-reveal` (2.4s) while the engine eases the ash back to density 1 and the ember
-  fades; the page text fades in over 1.4s starting `--delay-gate-content` (0.8s) later.
-  Scrolling and the cursor field return as the ruins begin. With the gate open the hero
-  canvas fade uses 2.4s instead of the handoff's 1.4s; ungated loads keep 1.4s.
-- **Persistence.** Once per browser tab session (`sessionStorage`), so a refresh stays open and
-  a new visit locks again. Any URL with a hash bypasses the gate, so links straight to a
-  section work as sent.
-- **Delivery.** The lock is set before first paint by an inline script in `index.html`, so
-  the prerendered résumé never flashes. Without JavaScript the attribute never appears and the
-  full page renders. Print ignores the gate entirely. The gate's markup is identical on the
-  server and the client, so hydration is unaffected.
-- **Engine.** `DitherEngine.setGate()` skips hero rendering, ignores the pointer, and eases the
-  ash density; the hero canvas now reveals through a `data-shown` attribute (CSS) instead of
-  an inline opacity, so the gate's stylesheet can hold it dark. The reveal duration is read
-  from the `--duration-reveal` token so CSS and the engine cannot drift.
-- **Footer.** A one-line colophon explaining the ruins sits under the name, for anyone who
-  arrives past the gate.
+A one-line colophon under the footer name explains the ruins (`colophon` in
+`src/data/resume.ts`). It arrived on 2026-09-02 together with a riddle gate that locked the page
+until a one-word riddle was solved or skipped. The gate was removed on 2026-10-15 so a recruiter
+lands straight on the content; the colophon stays.
 
 ## Hero source: a frame sheet instead of a live video
 

@@ -5,7 +5,7 @@ import styles from './Footer.module.css';
 export function Footer() {
   const { name, contact, download, colophon } = resume;
   return (
-    <footer className={styles.footer} data-gate-hide>
+    <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.rule} aria-hidden="true" />
         <span className={styles.name}>{name}</span>

@@ -65,8 +65,6 @@
   --color-visit-underline: color-mix(in srgb, var(--color-accent) 45%, transparent);
   --color-numeral: color-mix(in srgb, var(--color-accent) 38%, transparent);
   --color-vignette: color-mix(in srgb, var(--color-neutral-900) 80%, black);
-  --color-gate-bg: color-mix(in srgb, var(--color-ground) 90%, transparent);
-  --color-ember: color-mix(in srgb, var(--color-accent-700) 20%, transparent);
   /* Hero vignette: darkens the lower-left behind the name. */
   --vignette-shape: 72% 68% at 16% 84%;
   --vignette-inner-stop: 10%;
@@ -108,7 +106,6 @@
   --text-subtitle: clamp(0.9375rem, 1.4vw, 1.1875rem); /* 15-19px */
   --text-h1: clamp(3.5rem, 8.5vw, 7.375rem); /* 56-118px */
   --text-h1-print: 3rem;
-  --text-riddle: clamp(1.3125rem, 2vw, 1.5rem); /* 21-24px */
 
   --leading-h1: 0.95;
   --leading-tight: 1.05;
@@ -119,7 +116,6 @@
   --leading-numeral: 0.75;
   --leading-base: 1.55;
   --leading-none: 1;
-  --leading-riddle: 1.45;
 
   --tracking-h1: -0.015em;
   --tracking-heading: -0.015em;
@@ -135,8 +131,6 @@
 
   --measure-profile: 68ch;
   --measure-bullets: 74ch;
-  --measure-riddle: 34ch;
-  --measure-reveal: 44ch;
   --measure-colophon: 52ch;
 
   /* ---- Spacing (Classical 4.6px scale) ---- */
@@ -172,19 +166,10 @@
   --arrow-baseline-shift: -0.1em;
   --size-hidden: 1px; /* visually-hidden helpers */
 
-  /* Riddle gate (src/components/Gate.tsx) */
-  --gate-width: 440px;
-  --gate-width-reveal: 520px;
-  --gate-input-width: 260px;
-  --gate-hint-width: 420px;
-  --gate-rule-width: 44px;
-  --z-gate: 10;
-
   /* Breakpoints. CSS cannot use custom properties inside @media, so these are documentation:
-     the same numbers appear literally in Hero.module.css, Skills.module.css and Gate.module.css. */
+     the same numbers appear literally in Hero.module.css and Skills.module.css. */
   --bp-skills-columns: 560px;
   --bp-cue-clear: 640px;
-  --bp-gate-padding: 640px;
 
   /* ---- Shape ---- */
   --radius-sm: 2px;
@@ -198,13 +183,6 @@
   --duration-cue: 2.2s;
   --duration-instant: 0.01ms; /* what every animation collapses to under reduced motion */
   --glow-cue: 0 0 8px var(--color-accent);
-  /* Riddle gate: the card recedes over --duration-gate; the ruins then fade in over
-     --duration-reveal (the engine reads this token to ease the ash back at the same time) and
-     the page text follows after --delay-gate-content. */
-  --duration-gate: 1.4s;
-  --duration-reveal: 2.4s;
-  --delay-gate-content: 0.8s;
-  --gate-recede: 0.97;
 
   /* ---- Print ---- */
   /* @page cannot read custom properties; base.css repeats this value literally. */
@@ -229,8 +207,6 @@
     --color-visit-underline: rgba(182, 130, 53, 0.45);
     --color-numeral: rgba(182, 130, 53, 0.38);
     --color-vignette: #242222;
-    --color-gate-bg: rgba(35, 34, 34, 0.9);
-    --color-ember: rgba(125, 84, 17, 0.2);
     --color-paper-75: rgba(243, 242, 242, 0.75);
     --color-paper-72: rgba(243, 242, 242, 0.72);
     --color-paper-68: rgba(243, 242, 242, 0.68);

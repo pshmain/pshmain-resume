@@ -8,16 +8,9 @@
   cursor: crosshair;
 }
 
-/* Behind the riddle gate the cursor field is off, so the crosshair would promise nothing. */
-:global(html[data-gate='locked']) .hero,
-:global(html[data-gate='dissolving']) .hero {
-  cursor: auto;
-}
-
 /* z-index -1 on a non-stacking-context parent: painted above the page ground and the fixed
    ash canvas (earlier in the tree), below all content. The engine sets data-shown once the
-   first frame renders; while the riddle gate is up the canvas stays dark regardless, and when
-   the gate opens the ruins take the longer reveal fade. */
+   first frame renders. */
 .canvas {
   position: absolute;
   inset: 0;
@@ -31,32 +24,6 @@
 
 .canvas[data-shown] {
   opacity: 1;
-}
-
-:global(html[data-gate='open']) .canvas {
-  transition-duration: var(--duration-reveal);
-}
-
-:global(html[data-gate='locked']) .canvas,
-:global(html[data-gate='dissolving']) .canvas {
-  opacity: 0;
-}
-
-/* Warm glow at the centre of the locked screen, under the card. Fades with the reveal. */
-.ember {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity var(--duration-reveal) var(--ease);
-  pointer-events: none;
-  background: radial-gradient(38% 34% at 50% 50%, var(--color-ember), transparent 70%);
-}
-
-:global(html[data-gate='locked']) .ember,
-:global(html[data-gate='dissolving']) .ember {
-  opacity: 1;
-  transition: none;
 }
 
 .vignette {
@@ -220,7 +187,6 @@
 
   .canvas,
   .vignette,
-  .ember,
   .cue {
     display: none;
   }

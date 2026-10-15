@@ -43,36 +43,6 @@ export interface SectionMeta {
   title: string;
 }
 
-export interface GateNudge {
-  /** Normalised guesses (lowercase letters only) that earn this reply instead of `miss`. */
-  match: string[];
-  text: string;
-}
-
-/** The riddle that locks the page until it is solved or skipped. See src/components/Gate.tsx. */
-export interface Gate {
-  kicker: string;
-  /** One entry per line. */
-  riddle: string[];
-  inputLabel: string;
-  placeholder: string;
-  submit: string;
-  hint: string;
-  hintLines: string[];
-  skip: string;
-  miss: string;
-  /** Normalised accepted answers (lowercase letters only). */
-  answers: string[];
-  nudges: GateNudge[];
-  /** The answer, shown as the kicker once the riddle is solved or skipped. */
-  answerKicker: string;
-  /** Body lines of the explanation. */
-  reveal: string[];
-  /** Closing lines, set in the riddle's display face. */
-  closing: string[];
-  enter: string;
-}
-
 export interface Resume {
   name: string;
   headline: string;
@@ -91,8 +61,7 @@ export interface Resume {
   skills: SkillRow[];
   education: Education;
   download: { label: string; href: string; filename: string };
-  gate: Gate;
-  /** Footer line explaining the ruins, for anyone who arrives past the gate. */
+  /** Footer line explaining the ruins. */
   colophon: string;
   ui: {
     scrollCue: string;
@@ -232,37 +201,6 @@ export const resume: Resume = {
     label: 'Download résumé',
     href: '/Peter_Shmain_Resume.docx',
     filename: 'Peter_Shmain_Resume.docx',
-  },
-  gate: {
-    kicker: 'Why the ruins, and why Rome?',
-    riddle: ['I stand by leaning on myself.', 'Remove one piece, and I may fall.'],
-    inputLabel: 'Your answer',
-    placeholder: 'one word',
-    submit: 'Enter',
-    hint: 'Hint',
-    hintLines: [
-      'Romans put me everywhere, from bridges to monuments.',
-      'I am a core part of the architecture.',
-      'I am round and vaulted in appearance.',
-    ],
-    skip: 'Skip the riddle',
-    miss: 'Not quite.',
-    answers: ['arch', 'arches', 'archway', 'archways'],
-    nudges: [
-      { match: ['keystone'], text: "That's the stone that locks me. What am I?" },
-      { match: ['bridge', 'aqueduct', 'viaduct'], text: 'Warm. What holds them up?' },
-      { match: ['dome', 'vault'], text: "Close. That's me, spun around." },
-      { match: ['column', 'pillar', 'tower', 'wall'], text: "Straight up won't do it. I curve." },
-      {
-        match: ['ladder', 'tent', 'tripod', 'easel', 'cards', 'houseofcards', 'pyramid'],
-        text: 'Warm. Now make it stone, and Roman.',
-      },
-      { match: ['rome', 'ruins', 'ruin', 'colosseum'], text: 'Not the place. The shape it was built with.' },
-    ],
-    answerKicker: 'Arch',
-    reveal: ["Rome wasn't built in a day.", 'Rome built infrastructure that outlasted the empire.'],
-    closing: ['An arch stands by leaning on itself.', 'So does good software.'],
-    enter: 'View résumé',
   },
   colophon:
     'The ruins are deliberate. Rome built infrastructure to last, and rebuilding infrastructure is the work.',

@@ -27,7 +27,7 @@
   color: var(--color-paper-72);
 }
 
-/* Why the ruins, for anyone who arrived past the riddle gate. */
+/* Why the ruins. */
 .colophon {
   max-width: var(--measure-colophon);
   font-style: italic;

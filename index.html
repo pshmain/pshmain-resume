@@ -11,19 +11,6 @@
     <meta name="color-scheme" content="dark" />
     <!-- Page ground: color-mix(#2d2b2b 78%, black) = #232222. Meta tags cannot read CSS tokens. -->
     <meta name="theme-color" content="#232222" />
-    <!-- Riddle gate (src/components/Gate.tsx). Lock the page before first paint unless this tab
-         already opened it or the URL deep-links to a section. Without JavaScript the attribute
-         never appears and the résumé renders in full. The storage key mirrors Gate.tsx. -->
-    <script>
-      (function () {
-        try {
-          if (location.hash || sessionStorage.getItem('gate') === 'open') return;
-        } catch (e) {
-          /* storage unavailable: lock as on a first visit */
-        }
-        document.documentElement.dataset.gate = 'locked';
-      })();
-    </script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Peter Shmain — Full-Stack Engineer" />
     <meta
