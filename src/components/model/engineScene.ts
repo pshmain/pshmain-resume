@@ -819,11 +819,12 @@ export async function createEngineScene(opts: SceneOptions): Promise<SceneHandle
   }
 
   /* ---- Orbit: drag to turn, with a little inertia ---- */
-  // On touch, a horizontal drag turns the model and a vertical swipe still scrolls the page: the
-  // browser takes vertical pans (pan-y) and cancels the pointer. Tilting there is the view
-  // buttons' job.
+  // A mouse or pen turns and tilts from anywhere on the canvas. On touch, a finger that lands on
+  // the engine grabs it: it turns and tilts, and the page holds still (onTouchStart cancels the
+  // scroll). A finger that lands beside the engine scrolls the page as usual (pan-y), and
+  // pinch-zoom stays available there.
   canvas.style.touchAction = 'pan-y pinch-zoom';
-  let drag: { id: number; x: number; y: number; at: number; tilt: boolean } | null = null;
+  let drag: { id: number; x: number; y: number; at: number } | null = null;
   /** Where a run of keyboard steps is heading, while it lasts. */
   let aim: { theta: number; phi: number } | null = null;
   let spin = { az: 0, pol: 0 }; // radians per frame, after a release
@@ -854,11 +855,16 @@ export async function createEngineScene(opts: SceneOptions): Promise<SceneHandle
   let down: { x: number; y: number } | null = null;
   let pending: PointerEvent | null = null;
 
-  function partAt(e: PointerEvent): Part | null {
+  /** What the pick primitives under a screen point are, nearest first. */
+  function hitsAt(x: number, y: number): ReturnType<Raycaster['intersectObjects']> {
     const box = canvas.getBoundingClientRect();
-    ndc.set(((e.clientX - box.left) / box.width) * 2 - 1, -((e.clientY - box.top) / box.height) * 2 + 1);
+    ndc.set(((x - box.left) / box.width) * 2 - 1, -((y - box.top) / box.height) * 2 + 1);
     raycaster.setFromCamera(ndc, camera);
-    const hits = raycaster.intersectObjects(proxies, false);
+    return raycaster.intersectObjects(proxies, false);
+  }
+
+  function partAt(e: PointerEvent): Part | null {
+    const hits = hitsAt(e.clientX, e.clientY);
     if (!hits.length) return null;
     // In X-ray and wireframe the shell is see-through: a cylinder behind it wins.
     if (display !== 'shaded') {
@@ -874,8 +880,7 @@ export async function createEngineScene(opts: SceneOptions): Promise<SceneHandle
     if (drag && e.pointerId === drag.id) {
       // A full turn per two viewport heights of drag, at any size.
       const speed = (Math.PI * 2 * ORBIT_SPEED) / Math.max(canvas.clientHeight, 1);
-      // Touch only turns: its vertical moves are the start of a page scroll, not a tilt.
-      spin = { az: -(e.clientX - drag.x) * speed, pol: drag.tilt ? -(e.clientY - drag.y) * speed : 0 };
+      spin = { az: -(e.clientX - drag.x) * speed, pol: -(e.clientY - drag.y) * speed };
       turn(spin.az, spin.pol);
       drag = { ...drag, x: e.clientX, y: e.clientY, at: performance.now() };
       requestRender();
@@ -903,10 +908,19 @@ export async function createEngineScene(opts: SceneOptions): Promise<SceneHandle
       opts.onHover(null);
     }
   }
+  /** A finger on the engine grabs it: no page scroll for this touch. Beside it, the page scrolls. */
+  function onTouchStart(e: TouchEvent): void {
+    const touch = e.touches[0];
+    if (e.touches.length === 1 && touch && hitsAt(touch.clientX, touch.clientY).length > 0) e.preventDefault();
+  }
+
   function onDown(e: PointerEvent): void {
     if (e.button !== 0) return;
     down = { x: e.clientX, y: e.clientY };
-    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, at: performance.now(), tilt: e.pointerType !== 'touch' };
+    // On touch, only a finger on the engine turns it; anywhere else the page scrolls. A tap
+    // beside it still reaches onUp (down is set), and picks nothing.
+    if (e.pointerType === 'touch' && hitsAt(e.clientX, e.clientY).length === 0) return;
+    drag = { id: e.pointerId, x: e.clientX, y: e.clientY, at: performance.now() };
     spin = { az: 0, pol: 0 };
     aim = null;
     canvas.setPointerCapture(e.pointerId);
@@ -945,6 +959,8 @@ export async function createEngineScene(opts: SceneOptions): Promise<SceneHandle
   canvas.addEventListener('pointermove', onMove);
   canvas.addEventListener('pointerleave', onLeave);
   canvas.addEventListener('pointerdown', onDown);
+  // Not passive: it may cancel the scroll when a finger lands on the engine.
+  canvas.addEventListener('touchstart', onTouchStart, { passive: false });
   canvas.addEventListener('pointerup', onUp);
   canvas.addEventListener('pointercancel', onCancel);
   canvas.addEventListener('dblclick', onDoubleClick);
@@ -979,6 +995,7 @@ export async function createEngineScene(opts: SceneOptions): Promise<SceneHandle
     canvas.removeEventListener('pointermove', onMove);
     canvas.removeEventListener('pointerleave', onLeave);
     canvas.removeEventListener('pointerdown', onDown);
+    canvas.removeEventListener('touchstart', onTouchStart);
     canvas.removeEventListener('pointerup', onUp);
     canvas.removeEventListener('pointercancel', onCancel);
     canvas.removeEventListener('dblclick', onDoubleClick);

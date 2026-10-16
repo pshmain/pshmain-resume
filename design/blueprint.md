@@ -61,7 +61,8 @@ allowed raw colours, fonts and sizes. Rev A (the Roman ruins dashboard) is tagge
        cylinder or a configuration is in focus, while the engine runs, or when X-ray is the
        chosen display. The pistons, rods and crank show through it.
    - **Driving it:** drag to rotate (orthographic, starting in true isometric); double-click
-     returns to iso. On touch a horizontal drag turns it and a vertical swipe scrolls the page.
+     returns to iso. On touch, a finger that lands on the engine grabs it (it turns and tilts, and
+     the page holds still); one that lands beside it scrolls the page.
      With the graphics area focused, arrow keys rotate it 15 degrees a press.
    - **The heads-up toolbar** above the graphics area: Iso, Front, Top, Right; Explode (the
      coils, cover and head lift, the pistons rise out of the bores, the manifolds move aside, the

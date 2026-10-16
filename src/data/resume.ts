@@ -679,7 +679,7 @@ export const resume: Resume = {
     date: 'Date',
     modelLabel: 'Interactive 3D model of an inline-six engine: a cylinder per skill layer, a configuration per project',
     modelHint: 'Drag to rotate · click a part',
-    modelHintTouch: 'Drag to rotate · tap a part',
+    modelHintTouch: 'Drag the engine to rotate · tap a part',
     modelKeys: 'Arrow keys rotate the model.',
     modelLegend: 'Each cylinder is a skill layer. Run a configuration to see which layers a project fired.',
     cylinder: 'Cylinder',
