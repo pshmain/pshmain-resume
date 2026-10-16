@@ -1,0 +1,84 @@
+/* Dimension line (design/blueprint.md, "Drawing language"). */
+.dimension {
+  --dim-color: var(--color-accent);
+
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--space-4);
+  border-left: var(--hairline) solid var(--dim-color);
+  border-right: var(--hairline) solid var(--dim-color);
+}
+
+.half {
+  position: relative;
+  flex: 1;
+  height: var(--hairline);
+  background: var(--dim-color);
+}
+
+/* Arrowhead at the outer end: a bordered square turned to point at the extension tick. */
+.half::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: var(--dim-head);
+  height: var(--dim-head);
+  border-top: var(--hairline) solid var(--dim-color);
+  border-left: var(--hairline) solid var(--dim-color);
+}
+
+.start::before {
+  left: 0;
+  transform: translate(15%, -50%) rotate(-45deg);
+}
+
+.end::before {
+  right: 0;
+  transform: translate(-15%, -50%) rotate(135deg);
+}
+
+.label {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-mono);
+  color: var(--color-text-2);
+}
+
+/* ---- Motion: the halves spread out from the middle to the ticks. ---- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .start {
+    transform-origin: right;
+  }
+
+  .end {
+    transform-origin: left;
+  }
+
+  :global(html[data-js]) .dimension[data-anim='enter'] .half {
+    animation: spread var(--duration-draw) var(--ease-out) both;
+    animation-delay: calc(var(--enter-step, 0) * var(--stagger));
+  }
+
+  :global(html[data-motion]) :global([data-watch]:not([data-inview])) .dimension[data-anim='view'] .half {
+    transform: scaleX(0);
+  }
+
+  :global(html[data-motion]) :global([data-watch][data-inview]) .dimension[data-anim='view'] .half {
+    animation: spread var(--duration-draw) var(--ease-out) both;
+    animation-delay: calc(var(--reveal-step, 0) * var(--stagger) + var(--stagger) * 2);
+  }
+}
+
+@keyframes spread {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media print {
+  .dimension {
+    border-color: var(--color-line);
+  }
+}

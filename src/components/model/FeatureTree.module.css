@@ -1,0 +1,149 @@
+/* The engine's feature tree: a compact CAD-style panel with folding branches
+   (design/blueprint.md, "Cover sheet"). */
+.tree {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-mono);
+}
+
+.title {
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
+  border-bottom: var(--hairline) solid var(--color-line-faint);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-3);
+}
+
+/* ---- Branches: a caret that turns, a label, a count ---- */
+.summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tree-row);
+  list-style: none;
+  color: var(--color-text);
+  cursor: pointer;
+  user-select: none;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:hover {
+  color: var(--color-accent);
+}
+
+.summary:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: calc(var(--focus-offset) * -1);
+}
+
+.caret {
+  flex-shrink: 0;
+  width: 0;
+  height: 0;
+  border-top: var(--tree-caret) solid transparent;
+  border-bottom: var(--tree-caret) solid transparent;
+  border-left: var(--tree-caret) solid var(--color-text-3);
+  transition: transform var(--duration-hover) var(--ease);
+}
+
+details[open] > .summary > .caret {
+  transform: rotate(90deg);
+}
+
+.count {
+  margin-left: auto;
+  color: var(--color-text-3);
+}
+
+/* A small stack of two plates: the assembly's icon. */
+.rootGlyph {
+  flex-shrink: 0;
+  width: var(--tree-glyph);
+  height: var(--tree-glyph);
+  border: var(--hairline) solid var(--color-accent);
+  box-shadow: var(--tree-glyph-step) var(--tree-glyph-step) 0 calc(var(--hairline) * -1) var(--color-ground),
+    var(--tree-glyph-step) var(--tree-glyph-step) 0 0 var(--color-accent);
+}
+
+/* Indent guides: each level hangs from a hairline. */
+.branches,
+.leaves {
+  margin-left: var(--tree-indent);
+  padding-left: var(--space-2);
+  border-left: var(--hairline) solid var(--color-line-faint);
+}
+
+.branch .summary {
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-2);
+}
+
+.branch .summary:hover {
+  color: var(--color-accent);
+}
+
+/* ---- Leaves: links to their part of the page ---- */
+.leaf {
+  display: grid;
+  grid-template-columns: var(--tree-key) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tree-row);
+  padding: 0 var(--space-2);
+  margin-left: calc(var(--space-2) * -1);
+  border-left: var(--line-bold) solid transparent;
+  color: var(--color-text);
+  text-decoration: none;
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    border-color var(--duration-hover) var(--ease);
+}
+
+.leaf:hover,
+.active {
+  border-left-color: var(--color-accent);
+  background: var(--color-selected-bg);
+}
+
+.leaf:focus-visible {
+  outline-offset: calc(var(--focus-offset) * -1);
+}
+
+.key {
+  color: var(--color-accent);
+}
+
+/* Hardware: a small diamond in place of a number. */
+.partGlyph::before {
+  content: '';
+  display: block;
+  width: var(--tree-glyph);
+  height: var(--tree-glyph);
+  border: var(--hairline) solid var(--color-accent);
+  transform: scale(0.7) rotate(45deg);
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta {
+  font-size: var(--text-micro);
+  color: var(--color-text-3);
+  white-space: nowrap;
+}
+
+@media print {
+  .tree {
+    display: none;
+  }
+}

@@ -1,0 +1,75 @@
+/* The model's property panel (design/blueprint.md, "Cover sheet"). */
+.status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: var(--hairline) solid var(--color-line-faint);
+}
+
+.label {
+  margin-bottom: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-3);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-body);
+  line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
+  text-transform: uppercase;
+}
+
+.line {
+  font-size: var(--text-small);
+  line-height: var(--leading-base);
+  color: var(--color-text-2);
+}
+
+.hint {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-mono);
+  color: var(--color-text-3);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.go,
+.clear {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: var(--model-tool);
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  cursor: pointer;
+}
+
+.go:hover,
+.clear:hover {
+  color: var(--color-text);
+}
+
+@media print {
+  .status {
+    display: none;
+  }
+}

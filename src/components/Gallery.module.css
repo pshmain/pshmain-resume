@@ -1,4 +1,4 @@
-/* Role gallery (design/dashboard.md, "Gallery"). Without JavaScript every slide shows, stacked,
+/* Detail views (design/blueprint.md, "Work"). Without JavaScript every slide shows, stacked,
    and the controls are hidden; [data-js] turns it into one slide at a time. */
 .gallery {
   display: flex;
@@ -15,7 +15,7 @@
 .slide {
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);
+  gap: var(--space-3);
 }
 
 @media screen {
@@ -24,31 +24,13 @@
   }
 }
 
-.caption {
-  font-size: var(--text-meta);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-paper-55);
-}
-
-/* With the slide picker on screen the caption would repeat its label; keep it for assistive
-   tech only. */
-:global(html[data-js]) .caption {
-  position: absolute;
-  width: var(--size-hidden);
-  height: var(--size-hidden);
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-}
-
 /* ---- Desktop + phone pair: the phone overlaps the browser's bottom-right corner ---- */
 .pair {
   position: relative;
 }
 
 .withPhone {
-  padding: 0 calc(var(--phone-width) * 0.35) var(--space-8) 0;
+  padding: 0 calc(var(--phone-width) * 0.35) var(--space-7) 0;
 }
 
 .phoneSlot {
@@ -56,6 +38,10 @@
   right: 0;
   bottom: 0;
   width: var(--phone-width);
+}
+
+.shot {
+  position: relative;
 }
 
 .zoom {
@@ -80,7 +66,7 @@
   height: var(--gallery-button);
   border-radius: var(--radius-sm);
   background: var(--color-bar-bg);
-  color: var(--color-accent-300);
+  color: var(--color-accent);
   opacity: 0;
   transition: opacity var(--duration-hover) var(--ease);
 }
@@ -92,6 +78,81 @@
 
 .phoneShot .zoomHint {
   display: none;
+}
+
+/* ---- Callout balloons: numbered circles on the capture, notes in the legend below ---- */
+.balloons {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.balloon {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: var(--balloon);
+  height: var(--balloon);
+  transform: translate(-50%, -50%);
+  border: var(--line-bold) solid var(--color-mark);
+  border-radius: var(--radius-round);
+  background: var(--color-paper);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-medium);
+  color: var(--color-ink);
+}
+
+.caption {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.captionLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-3);
+}
+
+/* With the slide picker on screen the label would repeat it; keep it for assistive tech only. */
+:global(html[data-js]) .captionLabel {
+  position: absolute;
+  width: var(--size-hidden);
+  height: var(--size-hidden);
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  font-size: var(--text-small);
+  line-height: var(--leading-base);
+  color: var(--color-text-2);
+}
+
+.legend li {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.legendNo {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: calc(var(--balloon) * 0.8);
+  height: calc(var(--balloon) * 0.8);
+  border: var(--hairline) solid var(--color-mark);
+  border-radius: var(--radius-round);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-ink);
 }
 
 /* ---- Controls ---- */
@@ -115,10 +176,9 @@
 
 .pick,
 .arrowButton {
-  border: var(--hairline) solid var(--color-card-border);
+  border: var(--hairline) solid var(--color-line-soft);
   border-radius: var(--radius-sm);
   background: none;
-  font: inherit;
   cursor: pointer;
   transition:
     border-color var(--duration-hover) var(--ease),
@@ -128,9 +188,10 @@
 
 .pick {
   padding: var(--space-1) var(--space-3);
-  font-size: var(--text-meta);
-  letter-spacing: var(--tracking-contact);
-  color: var(--color-paper-68);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-mono);
+  color: var(--color-text-2);
 }
 
 .pick:hover {
@@ -150,7 +211,7 @@
   place-items: center;
   width: var(--gallery-button);
   height: var(--gallery-button);
-  color: var(--color-accent-300);
+  color: var(--color-accent);
 }
 
 .arrowButton:hover {
@@ -167,7 +228,7 @@
   max-width: none;
   max-height: none;
   margin: 0;
-  padding: var(--space-8) var(--gutter);
+  padding: var(--space-6) var(--gutter);
   border: 0;
   background: var(--color-scrim);
   color: var(--color-text);
@@ -196,14 +257,15 @@
   max-height: var(--lightbox-height);
   width: auto;
   height: auto;
-  border-radius: var(--radius-md);
+  border: var(--hairline) solid var(--color-line-soft);
 }
 
 .zoomCaption {
   max-width: var(--measure-profile);
+  font-family: var(--font-mono);
   font-size: var(--text-small);
   text-align: center;
-  color: var(--color-paper-75);
+  color: var(--color-text-2);
 }
 
 .close,
@@ -213,7 +275,7 @@
   place-items: center;
   width: var(--action-height);
   height: var(--action-height);
-  border: var(--hairline) solid var(--color-card-border);
+  border: var(--hairline) solid var(--color-line-soft);
   border-radius: var(--radius-sm);
   background: var(--color-bar-bg);
   color: var(--color-text);
@@ -243,21 +305,38 @@
   right: var(--space-2);
 }
 
-@media print {
-  .gallery {
-    display: none;
-  }
-}
-
-/* ---- Motion: the incoming slide fades in (display none -> block restarts it each time) ---- */
+/* ---- Motion: the incoming slide fades in (display none -> block restarts it each time);
+   balloons pop in one after another once the capture is on screen. ---- */
 @media screen and (prefers-reduced-motion: no-preference) {
   :global(html[data-motion]) .slide[data-current] {
     animation: fade var(--duration-panel) var(--ease-out) both;
+  }
+
+  :global(html[data-motion]) .shot:not([data-inview]) .balloon {
+    opacity: 0;
+  }
+
+  :global(html[data-motion]) .shot[data-inview] .balloon {
+    animation: pop var(--duration-panel) var(--ease-out) both;
+    animation-delay: calc(var(--duration-panel) + var(--n, 0) * var(--draw-step) * 2);
   }
 }
 
 @keyframes fade {
   from {
     opacity: 0;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+}
+
+@media print {
+  .gallery {
+    display: none;
   }
 }

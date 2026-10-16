@@ -1,0 +1,93 @@
+/* A sheet of the drawing set (design/blueprint.md, "Sheets"). */
+.sheet {
+  position: relative;
+  padding: var(--space-6) 0;
+}
+
+/* Registration marks: an L at the top-left and the bottom-right of every sheet. */
+.sheet::before,
+.sheet::after {
+  content: '';
+  position: absolute;
+  width: var(--space-4);
+  height: var(--space-4);
+  pointer-events: none;
+}
+
+.sheet::before {
+  top: var(--space-2);
+  left: calc(var(--space-2) * -1);
+  border-top: var(--hairline) solid var(--color-line);
+  border-left: var(--hairline) solid var(--color-line);
+}
+
+.sheet::after {
+  bottom: var(--space-2);
+  right: calc(var(--space-2) * -1);
+  border-bottom: var(--hairline) solid var(--color-line);
+  border-right: var(--hairline) solid var(--color-line);
+}
+
+/* Title strip: cells divided by hairlines, like a row of a title block. */
+.strip {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: var(--space-5);
+  border: var(--hairline) solid var(--color-line-soft);
+  background: var(--color-panel);
+}
+
+.strip > * {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+}
+
+.strip > * + * {
+  border-left: var(--hairline) solid var(--color-line-soft);
+}
+
+.number,
+.kind,
+.note {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-3);
+  white-space: nowrap;
+}
+
+.number {
+  color: var(--color-accent);
+}
+
+.title {
+  flex: 1;
+  font-size: var(--text-h2);
+  line-height: var(--leading-none);
+  text-transform: uppercase;
+}
+
+/* Phones: the kind of drawing gives way to the title. */
+.kind {
+  display: none;
+}
+
+/* Breakpoint: --bp-narrow in tokens.css. */
+@media (min-width: 560px) {
+  .kind {
+    display: flex;
+  }
+}
+
+@media print {
+  .sheet::before,
+  .sheet::after {
+    display: none;
+  }
+
+  .sheet {
+    padding: var(--space-4) 0;
+  }
+}

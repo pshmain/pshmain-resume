@@ -15,8 +15,9 @@
 }
 
 .copied {
-  font-size: var(--text-meta);
-  letter-spacing: var(--tracking-contact);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-mono);
 }
 
 /* Progressive enhancement: without JavaScript there is nothing to copy with. */

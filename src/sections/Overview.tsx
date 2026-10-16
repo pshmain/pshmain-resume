@@ -1,8 +1,11 @@
-import { useLayoutEffect, useRef, useState, type MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import { resume, type Stat } from '@/data/resume';
-import { Section } from '@/components/Section';
+import { Sheet } from '@/components/drawing/Sheet';
+import { Dimension } from '@/components/drawing/Dimension';
+import { RevisionCloud } from '@/components/drawing/RevisionCloud';
+import { CountUp } from '@/components/CountUp';
 import { Icon } from '@/components/Icon';
-import { enterStep } from '@/lib/motion';
+import { revealStep } from '@/lib/motion';
 import styles from './Overview.module.css';
 
 interface Props {
@@ -10,56 +13,8 @@ interface Props {
   onStat: (stat: Stat) => void;
 }
 
-/** Count-up length, and the pause before it so it lands after the tile has risen in. */
-const COUNT_MS = 1100;
-const COUNT_DELAY_MS = 450;
-
-/**
- * "$750K" counts up from "$0K" the first time it is on screen. The server renders the final
- * value, the client swaps in the zero before paint, and screen readers only ever get the final
- * value (the counting copy is aria-hidden). Values that are not one whole number, and reduced
- * motion, render as they are.
- */
-function CountUp({ value, delayMs }: { value: string; delayMs: number }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const [shown, setShown] = useState(value);
-
-  useLayoutEffect(() => {
-    const match = /^(\D*)(\d+)(\D*)$/.exec(value);
-    const el = ref.current;
-    if (!match || !el || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const [, prefix = '', digits = '0', suffix = ''] = match;
-    const target = Number(digits);
-    const render = (n: number): string => `${prefix}${n}${suffix}`;
-    setShown(render(0));
-    let raf = 0;
-    const io = new IntersectionObserver(([entry]) => {
-      if (!entry?.isIntersecting) return;
-      io.disconnect();
-      const start = performance.now() + delayMs;
-      const tick = (now: number): void => {
-        const t = Math.min(1, Math.max(0, (now - start) / COUNT_MS));
-        setShown(render(Math.round(target * (1 - (1 - t) ** 3))));
-        if (t < 1) raf = requestAnimationFrame(tick);
-      };
-      raf = requestAnimationFrame(tick);
-    });
-    io.observe(el);
-    return () => {
-      io.disconnect();
-      cancelAnimationFrame(raf);
-    };
-  }, [value, delayMs]);
-
-  return (
-    <>
-      <span ref={ref} aria-hidden="true">
-        {shown}
-      </span>
-      <span className="sr-only">{value}</span>
-    </>
-  );
-}
+/** A count-up starts once its dimension line has begun to spread. */
+const COUNT_DELAY_MS = 350;
 
 /**
  * "3 → 1" with the arrow drawn as an icon (neither face carries U+2192); the arrow and what
@@ -85,28 +40,35 @@ function StatValue({ value, index }: { value: string; index: number }) {
   );
 }
 
+/**
+ * Sheet A-002, key dimensions: the profile beside four numbers, each measured off with a
+ * dimension line. The one to notice first wears a redline revision cloud. Each tile links to the
+ * bullet its number comes from.
+ */
 export function Overview({ onStat }: Props) {
   const { sections, profile, stats } = resume;
   return (
-    <Section meta={sections.overview} first headingHidden>
+    <Sheet meta={sections.overview}>
       <div className={styles.grid}>
-        <p className={styles.profile} data-enter style={enterStep(5)}>
+        <p className={styles.profile} data-reveal>
           {profile}
         </p>
-        <ul className={styles.stats} role="list">
+        <ul className={styles.stats} role="list" data-watch>
           {stats.map((stat, i) => {
             const href = stat.roleId ? `#work-${stat.roleId}` : `#${sections.work.id}`;
             const onClick = (e: MouseEvent<HTMLAnchorElement>): void => {
-              if (!stat.roleId) return; // a plain jump to the Work section
+              if (!stat.roleId) return; // a plain jump to the Work sheet
               e.preventDefault();
               onStat(stat);
             };
             return (
-              <li key={stat.label} data-enter style={enterStep(7 + i)}>
+              <li key={stat.label} data-reveal style={revealStep(i + 1)}>
                 <a href={href} className={styles.tile} onClick={onClick}>
                   <span className={styles.value}>
+                    {stat.cloud && <RevisionCloud draw="view" />}
                     <StatValue value={stat.value} index={i} />
                   </span>
+                  <Dimension draw="view" className={styles.dimension} />
                   <span className={styles.label}>{stat.label}</span>
                 </a>
               </li>
@@ -114,6 +76,6 @@ export function Overview({ onStat }: Props) {
           })}
         </ul>
       </div>
-    </Section>
+    </Sheet>
   );
 }

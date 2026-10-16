@@ -1,0 +1,208 @@
+/* Sheet A-301, bill of materials (design/blueprint.md, "Skills"). */
+.status {
+  min-height: calc(1em * var(--leading-base));
+  margin-bottom: var(--space-2);
+  font-size: var(--text-small);
+  color: var(--color-text-2);
+}
+
+.statusName {
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+}
+
+/* Without JavaScript the parts do nothing, so the prompt to pick one would mislead. */
+:global(html:not([data-js])) .status {
+  display: none;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-mono);
+  color: var(--color-text-3);
+}
+
+.legendKey {
+  color: var(--color-accent);
+}
+
+.groups {
+  display: grid;
+  gap: var(--space-4);
+}
+
+/* Breakpoints: --bp-narrow and --bp-wide in tokens.css. */
+@media (min-width: 560px) {
+  .groups {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .groups {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.group {
+  align-self: start;
+  border: var(--hairline) solid var(--color-line-soft);
+  background: var(--color-panel);
+  transition: border-color var(--duration-hover) var(--ease);
+}
+
+.activeGroup {
+  border-color: var(--color-accent);
+}
+
+/* The layer header: cylinder number, name, part count. A button: it pins the layer. */
+.head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-bottom: var(--hairline) solid var(--color-line-soft);
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.head:hover .headLabel,
+.head[aria-pressed='true'] .headLabel,
+.activeGroup .headLabel {
+  color: var(--color-accent);
+}
+
+.headNo,
+.headCount {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-mono);
+  color: var(--color-text-3);
+}
+
+.headNo {
+  color: var(--color-accent);
+}
+
+.headLabel {
+  flex: 1;
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-body);
+  letter-spacing: var(--tracking-heading);
+  text-transform: uppercase;
+  transition: color var(--duration-hover) var(--ease);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.row td,
+.row th {
+  padding: var(--space-1) var(--space-2);
+  border-bottom: var(--hairline) solid var(--color-line-faint);
+  font-weight: var(--weight-body);
+  text-align: left;
+  transition: background-color var(--duration-hover) var(--ease);
+}
+
+.row:last-child td,
+.row:last-child th {
+  border-bottom: 0;
+}
+
+.activeRow td,
+.activeRow th {
+  background: var(--color-selected-bg);
+}
+
+.item {
+  width: 1%;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-text-3);
+  white-space: nowrap;
+}
+
+.partButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: var(--text-small);
+  text-align: left;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.partButton:hover,
+.partButton[aria-pressed='true'] {
+  color: var(--color-accent);
+}
+
+.mark {
+  width: 1%;
+  font-size: var(--text-micro);
+  text-align: center;
+  color: var(--color-text-3);
+}
+
+.used {
+  color: var(--color-accent);
+}
+
+:global(html:not([data-js])) .head,
+:global(html:not([data-js])) .partButton {
+  cursor: default;
+}
+
+/* Paper: each layer prints as its name and a comma-separated list. */
+@media print {
+  .legend,
+  .status,
+  .item,
+  .mark,
+  .headNo,
+  .headCount,
+  thead {
+    display: none;
+  }
+
+  .group {
+    border: 0;
+  }
+
+  .head {
+    padding: 0;
+    border: 0;
+  }
+
+  .table,
+  tbody {
+    display: block;
+  }
+
+  .row {
+    display: inline;
+  }
+
+  .row td,
+  .row th {
+    display: inline;
+    padding: 0;
+    border: 0;
+  }
+
+  .row:not(:last-child) th::after {
+    content: ',';
+  }
+}

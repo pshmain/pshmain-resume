@@ -1,0 +1,23 @@
+/* The title block's drawing number and scale (design/blueprint.md, "Cover sheet"). */
+.specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.specs div {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.specs dt {
+  color: var(--color-text-3);
+}
+
+.specs dd {
+  color: var(--color-accent);
+}

@@ -1,17 +1,11 @@
 # design/
 
-Design source of truth for the site. When the handoff and the code disagree, the handoff wins
-unless a deliberate deviation is recorded in `DEVIATIONS.md`.
+Design source of truth for the site.
 
-- `handoff.md` - the Claude Design handoff: tokens, type, spacing, copy, and the two canvas
-  engines' behaviour. Its single-column layout was replaced on 2026-10-15.
-- `dashboard.md` - the current layout and interaction spec (the recruiter dashboard). Governs
-  layout wherever it and the handoff disagree.
-- `DEVIATIONS.md` - every place the build knowingly departs from the handoff, with the reason.
-- `prototype/` - the working HTML prototype (`Resume.dc.html`) plus the runtime it needs to open
-  locally (`support.js`, `_ds/`). Reference only; nothing here ships.
-- `assets/` - the handoff's original hero video and résumé docx, kept for the record. The site
-  ships the video as a frame sheet (`src/assets/hero-frames.avif` and `.webp`, see
-  `src/assets/heroFrames.ts`). The résumé the site actually serves is
-  `public/Peter_Shmain_Resume.docx`, which is newer than the handoff copy (see `DEVIATIONS.md`,
-  "Copy").
+- `blueprint.md` - the spec for rev B, the Blueprint dashboard: drawing language, sheets,
+  interaction and motion. When it and the code disagree, the spec wins unless a deliberate
+  deviation is recorded in `DEVIATIONS.md`.
+- `DEVIATIONS.md` - every place the build knowingly departs from the spec, with the reason.
+- `archive/roman-v1/` - rev A, the Roman ruins dashboard (git tag `RomanArchitecture_v1`): its
+  Claude Design handoff, dashboard spec, deviations, prototype and original assets. Reference
+  only; nothing here ships.

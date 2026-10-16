@@ -1,0 +1,194 @@
+/* Project schematic (design/blueprint.md, "Work"). Lettering sizes are viewBox units. */
+.schematic {
+  container-type: inline-size;
+  margin: 0;
+  padding: var(--space-4);
+  border: var(--hairline) solid var(--color-line-soft);
+  background: var(--color-panel);
+}
+
+.title {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-3);
+}
+
+.drawing {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Tall drawing on narrow stages, wide drawing once there is room.
+   Breakpoint: --bp-schematic-row in tokens.css. */
+.wide {
+  display: none;
+}
+
+@container (min-width: 640px) {
+  .wide {
+    display: block;
+  }
+
+  .tall {
+    display: none;
+  }
+}
+
+/* ---- Tones: muted = Rev A (superseded), accent = the built system, plain = supporting ---- */
+.muted {
+  --tone-line: var(--color-line-soft);
+  --tone-text: var(--color-text-3);
+  --tone-status: var(--color-mark);
+}
+
+.accent {
+  --tone-line: var(--color-accent);
+  --tone-text: var(--color-text);
+  --tone-status: var(--color-accent);
+}
+
+.plain {
+  --tone-line: var(--color-line);
+  --tone-text: var(--color-text-2);
+  --tone-status: var(--color-text-3);
+}
+
+.box {
+  fill: var(--color-paper-deep);
+  stroke: var(--tone-line);
+  stroke-width: var(--hairline);
+  vector-effect: non-scaling-stroke;
+}
+
+.connector {
+  fill: none;
+  stroke: var(--tone-line);
+  stroke-width: var(--hairline);
+  vector-effect: non-scaling-stroke;
+}
+
+.muted .box,
+.muted .connector {
+  stroke-dasharray: var(--dash);
+}
+
+.head {
+  fill: none;
+  stroke: var(--color-accent);
+  stroke-width: var(--line-bold);
+}
+
+.headMuted {
+  fill: none;
+  stroke: var(--color-line-soft);
+  stroke-width: var(--line-bold);
+}
+
+.nodeLabel {
+  font-family: var(--font-body);
+  font-size: var(--schematic-label);
+  fill: var(--tone-text);
+}
+
+.note {
+  font-family: var(--font-mono);
+  font-size: var(--schematic-note);
+  fill: var(--color-text-3);
+}
+
+.laneLabel,
+.status,
+.rev text {
+  font-family: var(--font-mono);
+  font-size: var(--schematic-lane);
+  letter-spacing: var(--tracking-mono);
+}
+
+.laneLabel {
+  fill: var(--color-text-2);
+}
+
+.status {
+  fill: var(--tone-status);
+}
+
+/* Rev A's status is struck through, as a superseded note is on a drawing. */
+.struck {
+  text-decoration: line-through;
+}
+
+.rev path {
+  fill: none;
+  stroke: var(--tone-status);
+  stroke-width: var(--hairline);
+  vector-effect: non-scaling-stroke;
+}
+
+.rev text {
+  fill: var(--tone-status);
+}
+
+.packet {
+  fill: var(--color-accent);
+}
+
+.outcome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: var(--hairline) solid var(--color-line-faint);
+  font-size: var(--text-card);
+  line-height: var(--leading-base);
+  color: var(--color-text-2);
+}
+
+.outcomeLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-mark);
+}
+
+/* Rev A is not drawn line by line (its dashes would fight the draw); it fades in instead. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  :global(html[data-motion]) .schematic:not([data-inview]) .muted {
+    opacity: 0;
+  }
+
+  :global(html[data-motion]) .schematic[data-inview] .muted {
+    animation: appear var(--duration-enter) var(--ease-out) both;
+  }
+
+  :global(html[data-motion]) .schematic:not([data-inview]) .nodeLabel,
+  :global(html[data-motion]) .schematic:not([data-inview]) .laneLabel,
+  :global(html[data-motion]) .schematic:not([data-inview]) .status {
+    opacity: 0;
+  }
+
+  :global(html[data-motion]) .schematic[data-inview] .nodeLabel,
+  :global(html[data-motion]) .schematic[data-inview] .laneLabel,
+  :global(html[data-motion]) .schematic[data-inview] .status {
+    animation: appear var(--duration-enter) var(--ease-out) both;
+    animation-delay: calc(var(--duration-draw) * 0.5);
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+}
+
+@media print {
+  .schematic {
+    display: none;
+  }
+}

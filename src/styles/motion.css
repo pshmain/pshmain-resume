@@ -1,27 +1,28 @@
-/* Page-wide motion (design/dashboard.md, "Motion"). Consumes tokens only.
+/* Page-wide motion (design/blueprint.md, "Motion"). Consumes tokens only.
 
-   Two mechanisms, both progressive:
-   - [data-enter]: the first screen rises into place on load. Pure CSS keyed on html[data-js],
+   Three mechanisms, all progressive:
+   - [data-enter]: the cover sheet rises into place on load. Pure CSS keyed on html[data-js],
      which the inline script in index.html sets before first paint, so it plays even if the
-     bundle is slow, and ends visible even if it never arrives (fill-mode both).
+     bundle is slow and always ends visible (fill-mode both).
    - [data-reveal]: blocks further down fade up as they scroll into view. src/lib/useReveal.ts
      sets html[data-motion] after hydration and data-inview on each block as it arrives, so
      without JavaScript nothing is ever hidden. Blocks already on screen are marked at once.
-   --enter-step / --reveal-step (set inline) order a staggered group.
+   - [data-draw]: SVG strokes (pathLength="1") that draw themselves. data-draw="enter" draws on
+     load; data-draw="view" waits for its nearest [data-watch] ancestor to be in view.
+   --enter-step, --reveal-step and --draw-i (set inline) order a staggered group.
 
-   Everything sits inside screen + no-preference, so print and reduced motion get the plain
-   page. Component-specific motion lives in each module's own no-preference block. */
+   Everything sits inside screen + no-preference, so print and reduced motion get the finished
+   drawing. Component-specific motion lives in each module's own no-preference block; the one
+   spring (the Work tab selection box) is a CSS transition on --ease-spring. */
+
+[data-draw] {
+  stroke-dasharray: 1;
+}
 
 @media screen and (prefers-reduced-motion: no-preference) {
   html[data-js] [data-enter] {
     animation: enter var(--duration-enter) var(--ease-out) both;
     animation-delay: calc(var(--enter-step, 0) * var(--stagger));
-  }
-
-  /* Rules draw out from the left instead of rising. */
-  html[data-js] [data-enter='grow'] {
-    transform-origin: left;
-    animation-name: grow;
   }
 
   html[data-motion] [data-reveal] {
@@ -35,6 +36,20 @@
     opacity: 0;
     transform: translateY(var(--enter-distance));
   }
+
+  html[data-js] [data-draw='enter'] {
+    animation: draw var(--duration-draw) var(--ease-out) both;
+    animation-delay: calc(var(--draw-i, 0) * var(--draw-step));
+  }
+
+  html[data-motion] [data-watch]:not([data-inview]) [data-draw='view'] {
+    stroke-dashoffset: 1;
+  }
+
+  html[data-motion] [data-watch][data-inview] [data-draw='view'] {
+    animation: draw var(--duration-draw) var(--ease-out) both;
+    animation-delay: calc(var(--draw-i, 0) * var(--draw-step));
+  }
 }
 
 @keyframes enter {
@@ -44,8 +59,12 @@
   }
 }
 
-@keyframes grow {
+@keyframes draw {
   from {
-    transform: scaleX(0);
+    stroke-dashoffset: 1;
+  }
+
+  to {
+    stroke-dashoffset: 0;
   }
 }

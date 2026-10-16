@@ -1,0 +1,59 @@
+/* Drafting crosshair over the cover sheet. Hidden until the pointer moves over it. */
+.crosshair {
+  --x: 0px;
+  --y: 0px;
+
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-crosshair);
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-hover) var(--ease);
+}
+
+.crosshair[data-on] {
+  opacity: 1;
+}
+
+.h,
+.v {
+  position: absolute;
+  background: var(--color-line-faint);
+}
+
+.h {
+  left: 0;
+  right: 0;
+  top: 0;
+  height: var(--hairline);
+  transform: translateY(var(--y));
+}
+
+.v {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--hairline);
+  transform: translateX(var(--x));
+}
+
+.readout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: var(--space-1) var(--space-2);
+  transform: translate(calc(var(--x) + var(--space-3)), calc(var(--y) + var(--space-3)));
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-mono);
+  white-space: pre;
+  color: var(--color-accent);
+  background: var(--color-bar-bg);
+}
+
+@media print {
+  .crosshair {
+    display: none;
+  }
+}

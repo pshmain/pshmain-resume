@@ -1,0 +1,346 @@
+/* The cover's engine model: an unboxed graphics area on the sheet, as in a CAD program
+   (design/blueprint.md, "Cover sheet"). */
+.model {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+/* As tall as the screen allows, but never taller than the engine needs at this width. */
+.viewport {
+  position: relative;
+  height: min(
+    var(--model-height),
+    calc(var(--model-aspect) * 100cqw + var(--model-room-top) + var(--model-room-bottom))
+  );
+  container-type: inline-size;
+}
+
+.viewport:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* ---- Poster: the scene's first frame, as an image, until the scene loads (and without it) ---- */
+/* The poster keeps the room the scene keeps: balloons above, callouts beside (both sides, so it
+   stays centred as the scene does when they fit). */
+.poster {
+  position: absolute;
+  top: var(--model-room-top);
+  bottom: var(--model-room-bottom);
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(100% - var(--model-room-top) - var(--model-room-bottom));
+  object-fit: contain;
+  transition: opacity var(--duration-panel) var(--ease-out);
+}
+
+/* Breakpoint: --bp-model-callouts in tokens.css (EngineModel.tsx, CALLOUT_MIN). */
+@container (min-width: 760px) {
+  .poster {
+    left: var(--model-callout-room);
+    right: var(--model-callout-room);
+    width: calc(100% - var(--model-callout-room) * 2);
+  }
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity var(--duration-panel) var(--ease-out);
+}
+
+.model[data-ready] .poster {
+  opacity: 0;
+}
+
+.model[data-ready] .canvas {
+  opacity: 1;
+}
+
+/* ---- Annotations on leader lines, placed each frame by EngineModel ---- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.leaders {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.leader {
+  stroke: var(--color-line-soft);
+  stroke-width: var(--hairline);
+}
+
+.leader.hot {
+  stroke: var(--color-accent);
+}
+
+.balloon,
+.callout {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  border: var(--hairline) solid var(--color-line-soft);
+  background: var(--color-bar-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-text-2);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    border-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease);
+}
+
+.callout[hidden] {
+  display: none;
+}
+
+/* A drawing's item balloon: a circle with the cylinder's number; the name joins it when lit. */
+.balloon {
+  justify-content: center;
+  min-width: var(--model-balloon);
+  height: var(--model-balloon);
+  padding: 0 var(--space-1);
+  border-radius: var(--model-balloon);
+  color: var(--color-text);
+}
+
+.balloonName {
+  display: none;
+  padding-right: var(--space-1);
+}
+
+.balloon.hot {
+  z-index: 1;
+}
+
+.balloon:hover .balloonName,
+.balloon.hot .balloonName {
+  display: inline;
+}
+
+.balloonNo {
+  color: var(--color-accent);
+}
+
+.callout {
+  gap: var(--space-2);
+  padding: 0 var(--space-2);
+  line-height: var(--model-label-line);
+}
+
+.calloutSection {
+  color: var(--color-text-3);
+}
+
+.balloon:hover,
+.callout:hover,
+.balloon.hot,
+.balloon.lit,
+.callout.hot {
+  border-color: var(--color-accent);
+  color: var(--color-text);
+}
+
+/* ---- Triad ---- */
+.triad {
+  position: absolute;
+  left: var(--space-2);
+  bottom: var(--space-2);
+  width: var(--model-triad);
+  height: var(--model-triad);
+  overflow: visible;
+}
+
+.triad line {
+  stroke-width: var(--line-bold);
+  stroke-linecap: round;
+}
+
+.triad text {
+  font-family: var(--font-mono);
+  font-size: var(--model-triad-text);
+}
+
+.axisX line {
+  stroke: var(--color-mark);
+}
+
+.axisX text {
+  fill: var(--color-mark);
+}
+
+.axisY line {
+  stroke: var(--color-accent);
+}
+
+.axisY text {
+  fill: var(--color-accent);
+}
+
+.axisZ line {
+  stroke: var(--color-text-2);
+}
+
+.axisZ text {
+  fill: var(--color-text-2);
+}
+
+/* ---- Heads-up toolbar: centred over the graphics area; on phones it wraps into rows ---- */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-self: center;
+  max-width: 100%;
+  border: var(--hairline) solid var(--color-line-faint);
+  border-radius: var(--radius-sm);
+  background: var(--color-bar-bg);
+}
+
+:global(html:not([data-js])) .toolbar,
+.model[data-still] .toolbar {
+  display: none;
+}
+
+.toolGroup,
+.config {
+  display: flex;
+  flex: 1 0 auto;
+}
+
+.toolGroup + .toolGroup,
+.config {
+  border-left: var(--hairline) solid var(--color-line-faint);
+}
+
+/* A narrow graphics area (phones, and tablets beside the tree): a keypad of three rows divided
+   by hairlines, the toolbar's own colour showing through the gaps: the four views; Explode and
+   the three displays; the configuration. Breakpoint: --bp-narrow in tokens.css, as a container
+   query on the model. */
+@container (max-width: 559px) {
+  .toolbar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--hairline);
+    align-self: stretch;
+    background: var(--color-line-faint);
+  }
+
+  .toolGroup {
+    display: contents;
+  }
+
+  /* .toolbar-qualified to win over the base rules below; the pressed style still follows. */
+  .toolbar .tool,
+  .toolbar .config {
+    background: var(--color-paper-deep);
+  }
+
+  .toolbar .tool {
+    padding: 0 var(--space-1);
+    letter-spacing: var(--tracking-mono);
+  }
+
+  .toolbar .config {
+    grid-column: 1 / -1;
+    border-left: 0;
+  }
+}
+
+.tool {
+  flex: 1 0 auto;
+  min-height: var(--model-tool);
+  padding: 0 var(--space-3);
+  border: 0;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-2);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-hover) var(--ease),
+    color var(--duration-hover) var(--ease);
+}
+
+.tool:hover:not(:disabled),
+.configSelect:hover:not(:disabled) {
+  color: var(--color-accent);
+}
+
+.tool:disabled,
+.configSelect:disabled {
+  color: var(--color-text-3);
+  cursor: default;
+}
+
+.tool:focus-visible,
+.configSelect:focus-visible {
+  outline-offset: calc(var(--focus-offset) * -1);
+}
+
+.tool[aria-pressed='true'] {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
+.config {
+  align-items: center;
+  gap: var(--space-2);
+  padding-left: var(--space-3);
+}
+
+.configLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-3);
+}
+
+.configSelect {
+  flex: 1;
+  min-height: var(--model-tool);
+  padding: 0 var(--space-2);
+  border: 0;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.configSelect option {
+  background: var(--color-paper-deep);
+  color: var(--color-text);
+}
+
+@media print {
+  .model {
+    display: none;
+  }
+}

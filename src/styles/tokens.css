@@ -1,35 +1,65 @@
-/* Design tokens. The single source of truth for colour, type, spacing, radius and motion.
-   Every value here comes from design/handoff.md (the Classical token sheet). Nothing outside
-   this file may contain a raw colour, font, or spacing value; everything references var(--...). */
+/* Design tokens: the single source of truth for colour, type, spacing, line and motion.
+   Spec: design/blueprint.md (cyanotype drawing set). Nothing outside this file may contain a
+   raw colour, font, or spacing value; everything references var(--...). */
 
-/* ---- Fonts (self-hosted latin subsets from Google Fonts). Cormorant is a variable file
-   covering 300-700; the two Lora files are static 400 cuts, the only weight the design uses. ---- */
+/* ---- Fonts: IBM Plex, self-hosted latin subsets from Google Fonts. Plex Sans is a variable
+   file (400-500); the others are static cuts. ---- */
 @font-face {
-  font-family: 'Cormorant Garamond';
+  font-family: 'IBM Plex Sans Condensed';
   font-style: normal;
-  font-weight: 300 700;
+  font-weight: 500;
   font-display: swap;
-  src: url('/fonts/cormorant-garamond-latin.woff2') format('woff2');
+  src: url('/fonts/plex-sans-condensed-500-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'Lora';
+  font-family: 'IBM Plex Sans Condensed';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-display: swap;
-  src: url('/fonts/lora-latin.woff2') format('woff2');
+  src: url('/fonts/plex-sans-condensed-600-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 @font-face {
-  font-family: 'Lora';
+  font-family: 'IBM Plex Sans';
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url('/fonts/plex-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans';
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/lora-italic-latin.woff2') format('woff2');
+  src: url('/fonts/plex-sans-italic-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/plex-mono-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/plex-mono-500-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
@@ -37,201 +67,195 @@
 :root {
   color-scheme: dark;
 
-  /* ---- Palette (plain hex only: the canvas engines read these at runtime) ---- */
-  --color-paper: #f3f2f2;
-  --color-neutral-900: #2d2b2b;
-  --color-accent: #b68235;
-  --color-accent-200: #ffe3bf;
-  --color-accent-300: #facb8d;
-  --color-accent-500: #c28d41;
-  --color-accent-700: #7d5411;
-  --color-accent-800: #5a3b0a;
+  /* ---- Palette (plain hex). Contrast on the paper: ink 12.7:1, ink-2 7.8:1, ink-3 6.1:1,
+     cyan 8.4:1, redline 5.6:1. ---- */
+  --color-paper: #0d2b4e;
+  --color-paper-deep: #0a2341;
+  --color-ink: #eaf3ff;
+  --color-ink-2: #9cc3ea;
+  --color-ink-3: #86aed6;
+  --color-cyan: #7fd0ff;
+  --color-redline: #ff7a59;
+  --color-print-ink: #10243f;
 
   /* ---- Roles ---- */
-  --color-ground: color-mix(in srgb, var(--color-neutral-900) 78%, black);
-  --color-text: var(--color-paper);
-  --color-link: var(--color-accent-300);
-  --color-link-hover: var(--color-accent-200);
-  --color-rule: var(--color-accent);
-  --color-focus: var(--color-accent);
-  --color-selection: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  --color-ground: var(--color-paper);
+  --color-text: var(--color-ink);
+  --color-text-2: var(--color-ink-2);
+  --color-text-3: var(--color-ink-3);
+  --color-link: var(--color-cyan);
+  --color-link-hover: var(--color-ink);
+  --color-focus: var(--color-cyan);
+  --color-accent: var(--color-cyan); /* dimensions, active states, the built system */
+  --color-mark: var(--color-redline); /* revision clouds, struck-out "before", emphasis */
+  --color-selection: color-mix(in srgb, var(--color-cyan) 30%, transparent);
 
-  --color-hairline: color-mix(in srgb, var(--color-paper) 15%, transparent);
-  --color-card-border: color-mix(in srgb, var(--color-paper) 18%, transparent);
-  --color-card-bg: color-mix(in srgb, var(--color-neutral-900) 22%, transparent);
-  --color-card-border-hover: var(--color-accent);
-  --color-card-bg-hover: color-mix(in srgb, var(--color-accent) 10%, transparent);
-  --color-button-bg-hover: color-mix(in srgb, var(--color-accent) 16%, transparent);
-  --color-visit-underline: color-mix(in srgb, var(--color-accent) 45%, transparent);
-  --color-numeral: color-mix(in srgb, var(--color-accent) 38%, transparent);
-  --color-vignette: color-mix(in srgb, var(--color-neutral-900) 80%, black);
-  /* Dashboard states and surfaces (design/dashboard.md). */
-  --color-selected-bg: color-mix(in srgb, var(--color-accent) 14%, transparent);
-  --color-mark: color-mix(in srgb, var(--color-accent) 18%, transparent);
-  --color-bar-bg: color-mix(in srgb, var(--color-ground) 86%, transparent);
+  /* Linework, by weight. */
+  --color-line: color-mix(in srgb, var(--color-ink) 55%, transparent);
+  --color-line-soft: color-mix(in srgb, var(--color-ink) 28%, transparent);
+  --color-line-faint: color-mix(in srgb, var(--color-ink) 14%, transparent);
+  --color-grid-minor: color-mix(in srgb, var(--color-ink) 5%, transparent);
+  --color-grid-major: color-mix(in srgb, var(--color-ink) 10%, transparent);
+
+  /* Surfaces drawn on the paper. */
+  --color-panel: color-mix(in srgb, var(--color-paper-deep) 70%, transparent);
+  --color-panel-hover: color-mix(in srgb, var(--color-cyan) 8%, var(--color-paper));
+  --color-selected-bg: color-mix(in srgb, var(--color-cyan) 12%, transparent);
+  --color-mark-bg: color-mix(in srgb, var(--color-redline) 14%, transparent);
+  --color-mark-flash: color-mix(in srgb, var(--color-redline) 35%, transparent);
+  --color-hatch: color-mix(in srgb, var(--color-cyan) 45%, transparent);
+  /* The engine model's surface finishes (engineScene.ts). Lit and tone-mapped in 3D, so they
+     read lighter and richer on screen than these base values. */
+  --model-alu: #a3b3c5;
+  --model-cast: #8796aa;
+  --model-paint: #24467a;
+  --model-steel: #c6d0db;
+  --model-exhaust: #6c7480;
+  --model-plastic: #1a2638;
+  --model-rubber: #121820;
+  --model-gasket: #3b4b60;
+  --model-bore: #b6c2cf;
+  --model-edge: var(--color-paper-deep); /* edge lines over shaded surfaces */
+  --color-bar-bg: color-mix(in srgb, var(--color-paper-deep) 92%, transparent);
   --color-scrim: color-mix(in srgb, black 84%, transparent);
-  --color-frame: var(--color-neutral-900);
-  --color-frame-edge: var(--color-card-border);
-  --color-frame-dot: var(--color-paper-22);
-  --color-image-bg: var(--color-neutral-900);
-  --color-gantt-bar: var(--color-accent-500);
-  --color-gantt-bar-selected: var(--color-accent-300);
-  --color-monogram-dot: var(--color-accent-800);
-  /* Hero vignette: darkens the lower-left behind the name. */
-  --vignette-shape: 72% 68% at 16% 84%;
-  --vignette-inner-stop: 10%;
-  --vignette-outer-stop: 60%;
-
-  /* Muted paper, by alpha. Names carry the handoff percentage. */
-  --color-paper-75: color-mix(in srgb, var(--color-paper) 75%, transparent);
-  --color-paper-72: color-mix(in srgb, var(--color-paper) 72%, transparent);
-  --color-paper-68: color-mix(in srgb, var(--color-paper) 68%, transparent);
-  --color-paper-55: color-mix(in srgb, var(--color-paper) 55%, transparent);
-  /* 45% (4.01:1 on the ground) is below AA for text: decorative separators and arrows only. */
-  --color-paper-45: color-mix(in srgb, var(--color-paper) 45%, transparent);
-  --color-paper-22: color-mix(in srgb, var(--color-paper) 22%, transparent);
+  --color-image-bg: var(--color-paper-deep);
 
   /* ---- Type ---- */
-  --font-heading: 'Cormorant Garamond', 'Times New Roman', Georgia, serif;
-  --font-body: 'Lora', Georgia, 'Times New Roman', serif;
-  --weight-display: 400;
-  --weight-heading: 600;
+  --font-display: 'IBM Plex Sans Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --font-body: 'IBM Plex Sans', system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
   --weight-body: 400;
+  --weight-medium: 500;
+  --weight-display: 600;
 
-  /* Sizes: handoff px, expressed in rem so browser font-size preferences still apply. */
-  --text-base: 0.9375rem; /* 15px: the Classical body baseline, inherited by unstyled glyphs */
-  --text-kicker: 0.65625rem; /* 10.5px */
-  --text-label: 0.6875rem; /* 11px */
-  --text-meta: 0.75rem; /* 12px */
+  /* Sizes in rem so browser font-size preferences still apply. */
+  --text-micro: 0.6875rem; /* 11px: drawing labels */
+  --text-label: 0.75rem; /* 12px */
   --text-small: 0.8125rem; /* 13px */
   --text-card: 0.875rem; /* 14px */
-  --text-body-sm: 0.90625rem; /* 14.5px */
+  --text-base: 0.9375rem; /* 15px */
   --text-body: 1rem; /* 16px */
-  --text-button: 1.125rem; /* 18px */
-  --text-h3: 1.3125rem; /* 21px */
-  --text-h2: 1.6875rem; /* 27px */
-  --text-numeral: 3.25rem; /* 52px */
-  --text-subtitle: clamp(0.9375rem, 1.4vw, 1.1875rem); /* 15-19px */
-  /* 44-84px: the handoff's 56-118px was sized for a full-screen hero; the banner is ~42svh. */
-  --text-h1: clamp(2.75rem, 6vw, 5.25rem);
-  --text-stat: clamp(2rem, 3.2vw, 2.75rem); /* 32-44px */
-  --text-tab-title: 1.375rem; /* 22px */
-  --text-action-primary: 1.0625rem; /* 17px */
-  --text-h1-print: 3rem;
+  --text-h3: 1.25rem; /* 20px */
+  --text-h2: 1.5rem; /* 24px */
+  --text-stat: clamp(2rem, 3.4vw, 2.875rem); /* 32-46px */
+  --text-name: clamp(2.75rem, 7.2vw, 6.25rem); /* 44-100px */
+  --text-name-print: 2.5rem;
 
-  --leading-h1: 0.95;
-  --leading-tight: 1.05;
-  --leading-heading: 1.12;
-  --leading-body: 1.7;
-  --leading-bullets: 1.65;
-  --leading-card: 1.6;
-  --leading-numeral: 0.75;
-  --leading-base: 1.55;
   --leading-none: 1;
+  --leading-tight: 1.05;
+  --leading-heading: 1.15;
+  --leading-base: 1.55;
+  --leading-body: 1.65;
 
-  --tracking-h1: -0.015em;
-  --tracking-heading: -0.015em;
-  --tracking-card-title: -0.01em;
-  --tracking-numeral: -0.02em;
-  --tracking-stat: -0.01em;
-  --tracking-button: 0.01em;
-  --tracking-contact: 0.02em;
-  --tracking-caps: 0.08em;
-  --tracking-caps-wide: 0.12em;
-  --tracking-kicker: 0.16em;
-  --tracking-footer: 0.18em;
+  --tracking-name: 0.01em;
+  --tracking-heading: 0.04em;
+  --tracking-label: 0.1em;
+  --tracking-mono: 0.02em;
 
-  --measure-profile: 68ch;
-  --measure-bullets: 74ch;
-  --measure-colophon: 52ch;
+  --measure-profile: 62ch;
 
-  /* ---- Spacing (Classical 4.6px scale) ---- */
-  --space-1: 4.6px;
-  --space-2: 9.2px;
-  --space-3: 13.8px;
-  --space-4: 18.4px;
-  --space-6: 27.6px;
-  --space-8: 36.8px;
+  /* ---- Spacing (4px scale) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
 
   /* ---- Layout ---- */
-  --container: 920px; /* footer */
-  --container-wide: 1200px; /* banner and dashboard */
-  --gutter: clamp(20px, 5vw, 72px);
-  --banner-height: clamp(280px, 36svh, 420px);
-  --banner-padding-top: clamp(56px, 8svh, 96px); /* ruins left showing above the name */
-  --hero-inset-bottom: clamp(20px, 4svh, 40px);
-  --main-padding-top: clamp(18px, 3svh, 32px);
-  --footer-padding-top: calc(var(--space-8) * 1.4); /* 51.5px */
-  --footer-padding-bottom: calc(var(--space-8) * 1.2); /* 44px */
-  --hero-rule-width: 72px;
-  --footer-rule-width: 44px;
+  --container: 1200px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --grid-cell: 24px; /* minor grid; major lines every 5 cells */
+  --grid-major: calc(var(--grid-cell) * 5);
   --hairline: 1px;
-  --action-height: 36px;
-  --thumb-ratio: 2 / 1; /* tab card thumbnails, cropped from the top of a 16:10 capture */
-  --mark-rule: 2px;
-  --selected-bar: 2px;
-  --frame-bar-height: 24px;
-  --frame-dot: 7px;
+  --line-bold: 1.5px;
+  --dim-head: 7px; /* dimension arrowheads */
+  --spec-label: minmax(64px, 88px); /* label column of a project's specifications */
+  --stat-arrow: 0.6em; /* the arrow in "3 → 1", sized to its number */
+  --stat-arrow-gap: 0.15em;
+  --bar-height: 48px;
+  --action-height: 40px;
+  --thumb-ratio: 2 / 1;
+  --cover-min-height: clamp(440px, 60svh, 600px);
+  /* The engine model's graphics area and feature tree (src/components/model). */
+  --model-height: clamp(360px, 62svh, 640px);
+  --model-aspect: 0.96; /* the engine's framed height over its width (engineScene.ts, fit()) */
+  /* The room the scene keeps around the engine (engineScene.ts repeats the top and bottom). */
+  --model-room-top: 44px; /* the cylinder balloons */
+  --model-room-bottom: 8px;
+  --model-callout-room: 190px; /* the hardware callouts, when the area is --bp-model-callouts wide */
+  --model-triad: 60px;
+  --model-triad-text: 9px; /* viewBox units of the triad */
+  --model-tool: 30px;
+  --model-label-line: 20px;
+  --model-balloon: 22px;
+  --tree-width: 248px;
+  --tree-row: 24px; /* also the touch target (WCAG 2.5.8 minimum) */
+  --tree-key: 2.5ch;
+  --tree-indent: 5px;
+  --tree-caret: 4px;
+  --tree-glyph: 10px;
+  --tree-glyph-step: 3px;
+  /* Lettering inside a project schematic, in viewBox units. */
+  --schematic-label: 15px;
+  --schematic-note: 12px;
+  --schematic-lane: 11px;
+  --dash: 5 4; /* superseded (Rev A) linework */
+  --timeline-label: 200px;
+  --timeline-row: 32px;
+  --timeline-bar: 12px;
+  --balloon: 22px;
+  --frame-bar-height: 22px;
+  --frame-dot: 6px;
   --frame-pill-width: 52%;
   --phone-width: 22%;
-  --phone-radius: 16px;
+  --phone-radius: 14px;
   --phone-bezel: 3px;
   --lightbox-width: min(1440px, 94vw);
-  --lightbox-height: 86svh;
+  --lightbox-height: 84svh;
   --gallery-button: 32px;
-  --diagram-arrow: 18px;
-  --diagram-arrow-head: 6px;
-  --timeline-label: 200px;
-  --timeline-row: 28px;
-  --timeline-bar: 10px;
-  --monogram-dot-gap: 8px;
-  --monogram-dot-size: 1.6px;
-  --bar-height: 52px;
-  --bar-blur: 8px;
   --dim-opacity: 0.3;
-  --z-bar: 10;
   --icon-size: 16px;
   --icon-stroke: 1.75;
-  --arrow-size: 1em; /* the handoff sets the arrow glyph at the surrounding text size */
+  --arrow-size: 1em;
   --arrow-stroke: 1.5;
   --arrow-baseline-shift: -0.1em;
-  --size-hidden: 1px; /* visually-hidden helpers */
+  --size-hidden: 1px;
+  --z-crosshair: 2;
+  --z-bar: 10;
 
   /* Breakpoints. CSS cannot use custom properties inside @media or @container, so these are
      documentation: the same numbers appear literally in the modules named. */
-  --bp-narrow: 560px; /* Work (card layout), Career (timeline label column) */
-  --bp-two-up: 768px; /* Overview, Work, StickyBar */
-  --bp-wide: 1100px; /* App, Overview, Work */
-  --bp-diagram-row: 480px; /* Diagram (container query on its own content box) */
+  --bp-narrow: 560px; /* Work tab layout, Career label column, BOM columns, model toolbar (container) */
+  --bp-two-up: 768px; /* Overview tiles, bullets columns, StickyBar links */
+  --bp-wide: 1024px; /* CoverSheet two columns, Work panel columns */
+  --bp-schematic-row: 640px; /* Schematic: wide drawing instead of tall (container query) */
+  --bp-model-callouts: 760px; /* EngineModel: room for the hardware callouts (container query) */
 
   /* ---- Shape ---- */
   --radius-sm: 2px;
-  --radius-md: 4px;
   --radius-round: 50%;
 
-  /* ---- Motion ---- */
+  /* ---- Motion (design/blueprint.md, "Motion"). Everything that moves sits behind
+     prefers-reduced-motion: no-preference and screen media. ---- */
   --ease: ease;
-  --duration-hover: 0.25s;
-  --duration-hero-fade: 1.4s;
-  --duration-bar: 0.3s;
-  --duration-instant: 0.01ms; /* what every animation collapses to under reduced motion */
-
-  /* Dashboard motion (src/styles/motion.css, design/dashboard.md "Motion"). All of it sits behind
-     prefers-reduced-motion: no-preference and screen media. */
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-enter: 0.7s; /* first-screen entrance */
-  --duration-reveal: 0.7s; /* sections fading up as they scroll in */
-  --duration-panel: 0.45s; /* a role's panel or a gallery slide switching in */
-  --duration-grow: 0.9s; /* timeline bars */
-  --duration-flow: 1s; /* one node lighting up in a diagram */
+  --ease-spring: cubic-bezier(0.34, 1.28, 0.64, 1); /* overshoots a little, then settles */
+  --duration-spring: 0.5s;
+  --duration-hover: 0.2s;
+  --duration-bar: 0.3s;
+  --duration-enter: 0.7s;
+  --duration-reveal: 0.7s;
+  --duration-panel: 0.45s;
+  --duration-draw: 1.4s; /* a line drawing itself */
+  --duration-grow: 0.9s;
+  --duration-instant: 0.01ms; /* what every animation collapses to under reduced motion */
   --stagger: 0.06s;
-  --flow-step: 0.22s; /* delay between diagram nodes */
+  --draw-step: 0.12s;
   --enter-distance: 14px;
-  --lift: -2px; /* hover lift on cards and tiles */
+  --lift: -2px;
   --thumb-zoom: 1.04;
-  --glow-node: 0 0 0 var(--hairline) var(--color-accent-300),
-    0 0 18px color-mix(in srgb, var(--color-accent) 45%, transparent);
-  --color-mark-flash: color-mix(in srgb, var(--color-accent) 40%, transparent);
 
   /* ---- Print ---- */
   /* @page cannot read custom properties; base.css repeats this value literally. */
@@ -242,47 +266,41 @@
   --focus-offset: 2px;
 }
 
-/* Browsers without color-mix() (Safari < 16.2, Chrome < 111, Firefox < 113) would otherwise
-   drop the ground to white under paper-coloured text. Same values, pre-mixed. */
+/* Browsers without color-mix() (Safari < 16.2, Chrome < 111, Firefox < 113): same values,
+   pre-mixed. */
 @supports not (color: color-mix(in srgb, red, blue)) {
   :root {
-    --color-ground: #232222;
-    --color-selection: rgba(182, 130, 53, 0.3);
-    --color-hairline: rgba(243, 242, 242, 0.15);
-    --color-card-border: rgba(243, 242, 242, 0.18);
-    --color-card-bg: rgba(45, 43, 43, 0.22);
-    --color-card-bg-hover: rgba(182, 130, 53, 0.1);
-    --color-button-bg-hover: rgba(182, 130, 53, 0.16);
-    --color-visit-underline: rgba(182, 130, 53, 0.45);
-    --color-numeral: rgba(182, 130, 53, 0.38);
-    --color-vignette: #242222;
-    --color-paper-75: rgba(243, 242, 242, 0.75);
-    --color-paper-72: rgba(243, 242, 242, 0.72);
-    --color-paper-68: rgba(243, 242, 242, 0.68);
-    --color-paper-55: rgba(243, 242, 242, 0.55);
-    --color-paper-45: rgba(243, 242, 242, 0.45);
-    --color-paper-22: rgba(243, 242, 242, 0.22);
-    --color-selected-bg: rgba(182, 130, 53, 0.14);
-    --color-mark: rgba(182, 130, 53, 0.18);
-    --color-bar-bg: rgba(35, 34, 34, 0.86);
+    --color-selection: rgba(127, 208, 255, 0.3);
+    --color-line: rgba(234, 243, 255, 0.55);
+    --color-line-soft: rgba(234, 243, 255, 0.28);
+    --color-line-faint: rgba(234, 243, 255, 0.14);
+    --color-grid-minor: rgba(234, 243, 255, 0.05);
+    --color-grid-major: rgba(234, 243, 255, 0.1);
+    --color-panel: rgba(10, 35, 65, 0.7);
+    --color-panel-hover: #142f51;
+    --color-selected-bg: rgba(127, 208, 255, 0.12);
+    --color-mark-bg: rgba(255, 122, 89, 0.14);
+    --color-mark-flash: rgba(255, 122, 89, 0.35);
+    --color-hatch: rgba(127, 208, 255, 0.45);
+    --color-bar-bg: rgba(10, 35, 65, 0.92);
     --color-scrim: rgba(0, 0, 0, 0.84);
-    --color-mark-flash: rgba(182, 130, 53, 0.4);
-    --glow-node: 0 0 0 1px #facb8d, 0 0 18px rgba(182, 130, 53, 0.45);
   }
 }
 
-/* Print re-theme: the same tokens, on paper. Everything derived from them follows. */
+/* Print: the same drawing set, as ink on white paper. Everything derived from these follows. */
 @media print {
   :root {
     color-scheme: light;
-    --color-paper: #111111;
     --color-ground: #ffffff;
-    --color-link: var(--color-accent-800);
-    --color-link-hover: var(--color-accent-800);
-    /* Light gold labels and kickers would wash out on white. The canvases that read the palette
-       are not printed. */
-    --color-accent-300: var(--color-accent-800);
-    --color-card-bg: transparent;
-    --color-numeral: rgba(182, 130, 53, 0.55); /* accent at 55%, pre-mixed so print needs no color-mix */
+    --color-text: var(--color-print-ink);
+    --color-text-2: var(--color-print-ink);
+    --color-text-3: var(--color-print-ink);
+    --color-link: var(--color-print-ink);
+    --color-link-hover: var(--color-print-ink);
+    --color-accent: var(--color-print-ink);
+    --color-line: rgba(16, 36, 63, 0.6);
+    --color-line-soft: rgba(16, 36, 63, 0.3);
+    --color-line-faint: rgba(16, 36, 63, 0.15);
+    --color-panel: transparent;
   }
 }

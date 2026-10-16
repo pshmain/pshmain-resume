@@ -1,5 +1,5 @@
-/* Career Gantt (design/dashboard.md, "III · Career"). Label above track on phones, a label
-   column beside it from 560px. */
+/* Career schedule (design/blueprint.md, "Career"). Label above track on phones, a label column
+   beside it from 560px. */
 .timeline {
   margin: 0;
 }
@@ -7,8 +7,8 @@
 .row {
   display: grid;
   gap: var(--space-1);
-  padding: var(--space-2) 0;
-  border-top: var(--hairline) solid var(--color-hairline);
+  padding: var(--space-3) 0 var(--space-2);
+  border-top: var(--hairline) solid var(--color-line-faint);
 }
 
 .row:first-child {
@@ -18,6 +18,7 @@
 .axis {
   display: grid;
   padding-top: var(--space-1);
+  border-top: var(--hairline) solid var(--color-line-soft);
 }
 
 /* Breakpoint: --bp-narrow in tokens.css. */
@@ -40,31 +41,37 @@
 }
 
 .company {
-  font-family: var(--font-heading);
-  font-weight: var(--weight-heading);
-  font-size: var(--text-button);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-h3);
   line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-heading);
+  text-transform: uppercase;
   transition: color var(--duration-hover) var(--ease);
+}
+
+.kicker,
+.dates {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-mono);
 }
 
 .kicker {
   margin-top: var(--space-1);
-  font-size: var(--text-kicker);
-  letter-spacing: var(--tracking-kicker);
   text-transform: uppercase;
-  color: var(--color-accent-300);
+  color: var(--color-accent);
 }
 
 .dates {
   white-space: nowrap;
-  font-size: var(--text-meta);
-  font-feature-settings: 'tnum';
-  color: var(--color-paper-55);
+  color: var(--color-text-3);
 }
 
+/* Room above each bar for its dimension line. */
 .track {
   position: relative;
-  height: var(--timeline-row);
+  height: calc(var(--timeline-row) + var(--space-4));
 }
 
 .grid {
@@ -72,16 +79,18 @@
   top: 0;
   bottom: 0;
   width: var(--hairline);
-  background: var(--color-hairline);
+  background: var(--color-line-faint);
 }
 
-/* The link is the full row height (the hit area); the visible bar is its ::before. */
+/* The link is the full row height (the hit area); the visible bar is its ::before, hatched
+   like a scheduled activity on a construction programme. */
 .bar {
   position: absolute;
   top: 0;
   bottom: 0;
   left: var(--left);
   width: var(--width);
+  color: inherit;
 }
 
 .bar::before {
@@ -89,23 +98,35 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
+  bottom: var(--space-2);
   height: var(--timeline-bar);
-  transform: translateY(-50%);
-  border-radius: var(--radius-sm);
-  background: var(--color-gantt-bar);
+  border: var(--hairline) solid var(--color-accent);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-hatch) 0 var(--hairline),
+    transparent var(--hairline) var(--space-1)
+  );
   transition:
     background-color var(--duration-hover) var(--ease),
     opacity var(--duration-hover) var(--ease);
 }
 
+.plain::before {
+  border-color: var(--color-line);
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--color-line-soft) 0 var(--hairline),
+    transparent var(--hairline) var(--space-1)
+  );
+}
+
 a.bar:hover::before,
 .selected .bar::before {
-  background: var(--color-gantt-bar-selected);
+  background-color: var(--color-selected-bg);
 }
 
 .selected .company {
-  color: var(--color-link);
+  color: var(--color-accent);
 }
 
 .dim .bar::before {
@@ -113,7 +134,59 @@ a.bar:hover::before,
 }
 
 .dim .company {
-  color: var(--color-paper-55);
+  color: var(--color-text-3);
+}
+
+/* Dimension line over the bar: ticks at both ends, a line between, the duration on a patch of
+   paper in the middle. Shown on hover, on focus, and for the picked role. */
+.measure {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  padding: var(--space-1) 0;
+  border-left: var(--hairline) solid var(--color-accent);
+  border-right: var(--hairline) solid var(--color-accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  line-height: var(--leading-none);
+  white-space: nowrap;
+  color: var(--color-accent);
+  opacity: 0;
+  transition: opacity var(--duration-hover) var(--ease);
+}
+
+.measure::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 50%;
+  border-top: var(--hairline) solid currentColor;
+}
+
+.bar:hover .measure,
+.bar:focus-visible .measure,
+.selected .measure {
+  opacity: 1;
+}
+
+.plain .measure {
+  border-color: var(--color-line);
+  color: var(--color-text-2);
+}
+
+/* The measure's text sits on a patch of paper so the line breaks around it. */
+.measure {
+  isolation: isolate;
+}
+
+.measureText {
+  padding: 0 var(--space-1);
+  background: var(--color-ground);
 }
 
 .axisTrack {
@@ -123,11 +196,27 @@ a.bar:hover::before,
 
 .tick {
   position: absolute;
-  top: 0;
+  top: var(--space-1);
   transform: translateX(-50%);
-  font-size: var(--text-label);
-  font-feature-settings: 'tnum';
-  color: var(--color-paper-55);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-text-3);
+}
+
+/* ---- Motion: bars draw out from their start month once the chart is on screen, one row
+   after another (--row set inline). Before that they are collapsed to their left edge. ---- */
+@media screen and (prefers-reduced-motion: no-preference) {
+  :global(html[data-motion]) .bar::before {
+    transform-origin: left;
+    transition:
+      transform var(--duration-grow) var(--ease-out) calc(var(--row, 0) * var(--stagger) * 2),
+      background-color var(--duration-hover) var(--ease),
+      opacity var(--duration-hover) var(--ease);
+  }
+
+  :global(html[data-motion]) .timeline:not([data-inview]) .bar::before {
+    transform: scaleX(0);
+  }
 }
 
 /* Paper gets the labels only: a plain list of roles and dates. */
@@ -139,21 +228,5 @@ a.bar:hover::before,
   .track,
   .axis {
     display: none;
-  }
-}
-
-/* ---- Motion: bars draw out from their start month once the chart is on screen, one row after
-   another (--row set inline). Before that they are collapsed to their left edge. ---- */
-@media screen and (prefers-reduced-motion: no-preference) {
-  :global(html[data-motion]) .bar::before {
-    transform-origin: left;
-    transition:
-      transform var(--duration-grow) var(--ease-out) calc(var(--row, 0) * var(--stagger) * 2),
-      background-color var(--duration-hover) var(--ease),
-      opacity var(--duration-hover) var(--ease);
-  }
-
-  :global(html[data-motion]) .timeline:not([data-inview]) .bar::before {
-    transform: translateY(-50%) scaleX(0);
   }
 }

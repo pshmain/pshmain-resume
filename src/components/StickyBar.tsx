@@ -5,11 +5,11 @@ import { Icon } from '@/components/Icon';
 import styles from './StickyBar.module.css';
 
 interface Props {
-  /** The banner; the bar shows once it has scrolled fully out of view. */
+  /** The cover sheet; the bar shows once it has scrolled fully out of view. */
   watch: RefObject<HTMLElement | null>;
 }
 
-/** Name, section links and contact, pinned to the top once the banner is gone. */
+/** The drawing set's index strip: name, sheet links and contact, pinned once the cover is gone. */
 export function StickyBar({ watch }: Props) {
   const { name, sections, contact, download, ui } = resume;
   const [shown, setShown] = useState(false);
@@ -31,7 +31,9 @@ export function StickyBar({ watch }: Props) {
         <ul className={styles.links} role="list">
           {[sections.work, sections.career, sections.skills].map((s) => (
             <li key={s.id}>
-              <a href={`#${s.id}`}>{s.title}</a>
+              <a href={`#${s.id}`}>
+                <span className={styles.sheet}>{s.sheet}</span> {s.title}
+              </a>
             </li>
           ))}
         </ul>

@@ -10,8 +10,20 @@
   margin: 0;
 }
 
+/* The paper: cyanotype ground with a drafting grid, minor lines every cell and major lines every
+   five. Gradients, not an image or canvas, so it costs nothing and prints away cleanly. */
 html {
-  background: var(--color-ground);
+  background-color: var(--color-ground);
+  background-image:
+    linear-gradient(var(--color-grid-major) var(--hairline), transparent var(--hairline)),
+    linear-gradient(90deg, var(--color-grid-major) var(--hairline), transparent var(--hairline)),
+    linear-gradient(var(--color-grid-minor) var(--hairline), transparent var(--hairline)),
+    linear-gradient(90deg, var(--color-grid-minor) var(--hairline), transparent var(--hairline));
+  background-size:
+    var(--grid-major) var(--grid-major),
+    var(--grid-major) var(--grid-major),
+    var(--grid-cell) var(--grid-cell),
+    var(--grid-cell) var(--grid-cell);
   color: var(--color-text);
   font-family: var(--font-body);
   font-weight: var(--weight-body);
@@ -20,7 +32,7 @@ html {
   text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   /* Reserve the scrollbar's space so content that changes height (a panel opening) never
-     shifts the layout sideways or reseeds the ash field. */
+     shifts the layout sideways. */
   scrollbar-gutter: stable;
   /* Anchor jumps land below the sticky bar instead of under it. */
   scroll-padding-top: var(--bar-height);
@@ -32,18 +44,17 @@ html {
   }
 }
 
-/* Transparent so the fixed ash canvas (z-index -1) shows through the page. */
 body {
-  min-height: 100svh; /* stable on mobile while the address bar collapses; see Hero.module.css */
-  background: transparent;
+  min-height: 100svh;
   font-size: var(--text-base);
 }
 
 h1,
 h2,
-h3 {
-  font-family: var(--font-heading);
-  font-weight: var(--weight-heading);
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
   line-height: var(--leading-heading);
   letter-spacing: var(--tracking-heading);
   overflow-wrap: anywhere;
@@ -52,7 +63,9 @@ h3 {
 p,
 li,
 dd,
-dt {
+dt,
+td,
+th {
   overflow-wrap: anywhere;
 }
 
@@ -73,6 +86,11 @@ a:hover {
   color: var(--color-link-hover);
 }
 
+button {
+  font: inherit;
+  color: inherit;
+}
+
 canvas,
 svg {
   display: block;
@@ -91,7 +109,7 @@ svg {
   background: var(--color-selection);
 }
 
-/* Screen-reader-only text (new-tab notices, expanded link names). */
+/* Screen-reader-only text (new-tab notices, expanded link names, drawing descriptions). */
 .sr-only {
   position: absolute;
   width: var(--size-hidden);
@@ -124,17 +142,14 @@ svg {
     background: var(--color-ground);
   }
 
-  canvas {
-    display: none !important;
-  }
-
   h2,
   h3 {
     break-after: avoid;
   }
 
   article,
-  li {
+  li,
+  tr {
     break-inside: avoid;
   }
 }

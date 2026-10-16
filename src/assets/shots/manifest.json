@@ -1,5 +1,44 @@
 [
   {
+    "file": "provenance-signup-desktop.webp",
+    "site": "provenance",
+    "page": "signup",
+    "label": "Signup, step 1 of 7",
+    "device": "desktop",
+    "width": 1440,
+    "height": 900,
+    "bytes": 35816,
+    "url": "https://app.provenance.co/signup-step1",
+    "address": "app.provenance.co",
+    "captured": "2026-10-16"
+  },
+  {
+    "file": "provenance-signup-phone.webp",
+    "site": "provenance",
+    "page": "signup",
+    "label": "Signup, step 1 of 7",
+    "device": "phone",
+    "width": 780,
+    "height": 1688,
+    "bytes": 24504,
+    "url": "https://app.provenance.co/signup-step1",
+    "address": "app.provenance.co",
+    "captured": "2026-10-16"
+  },
+  {
+    "file": "provenance-signup-thumb.webp",
+    "site": "provenance",
+    "page": "signup",
+    "label": "Signup, step 1 of 7",
+    "device": "thumb",
+    "width": 480,
+    "height": 300,
+    "bytes": 6910,
+    "url": "https://app.provenance.co/signup-step1",
+    "address": "app.provenance.co",
+    "captured": "2026-10-16"
+  },
+  {
     "file": "codriverhq-home-desktop.webp",
     "site": "codriverhq",
     "page": "home",
@@ -214,5 +253,57 @@
     "bytes": 16390,
     "url": "https://sneakerheadmelrose.com/catalog/jordan-1-high-off-white-unc-sz-12",
     "captured": "2026-10-15"
+  },
+  {
+    "file": "provenance-ordination-panel-desktop.webp",
+    "site": "provenance",
+    "page": "ordination-panel",
+    "label": "Ordination panel",
+    "device": "desktop",
+    "width": 2000,
+    "height": 958,
+    "bytes": 70158,
+    "url": "",
+    "address": "Internal admin",
+    "captured": "supplied, redacted"
+  },
+  {
+    "file": "provenance-ordination-panel-thumb.webp",
+    "site": "provenance",
+    "page": "ordination-panel",
+    "label": "Ordination panel",
+    "device": "thumb",
+    "width": 480,
+    "height": 300,
+    "bytes": 8392,
+    "url": "",
+    "address": "Internal admin",
+    "captured": "supplied, redacted"
+  },
+  {
+    "file": "provenance-checklist-desktop.webp",
+    "site": "provenance",
+    "page": "checklist",
+    "label": "Ceremony checklist",
+    "device": "desktop",
+    "width": 2000,
+    "height": 956,
+    "bytes": 87398,
+    "url": "",
+    "address": "app.provenance.co",
+    "captured": "supplied, redacted"
+  },
+  {
+    "file": "provenance-checklist-thumb.webp",
+    "site": "provenance",
+    "page": "checklist",
+    "label": "Ceremony checklist",
+    "device": "thumb",
+    "width": 480,
+    "height": 300,
+    "bytes": 10650,
+    "url": "",
+    "address": "app.provenance.co",
+    "captured": "supplied, redacted"
   }
 ]

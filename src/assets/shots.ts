@@ -2,7 +2,8 @@ import type { RoleId } from '@/data/resume';
 
 /**
  * Live-site screenshots, captured by `npm run shots` (scripts/capture-shots.mjs) into
- * src/assets/shots/ with a manifest of each file's size. Globbed rather than imported so a
+ * src/assets/shots/ with a manifest of each file's size, plus a few screens of internal tools
+ * supplied by hand (the script's MANUAL list), redacted before they were added. Globbed rather than imported so a
  * missing capture drops its gallery slide instead of breaking the build.
  */
 
@@ -15,8 +16,10 @@ interface ManifestEntry {
   device: ShotDevice;
   site: string;
   page: string;
-  /** The live page that was captured. */
+  /** The live page that was captured; empty for screens supplied by hand. */
   url: string;
+  /** What the browser frame's address pill says, when not the URL. */
+  address?: string;
 }
 
 export interface ShotImage {
@@ -24,6 +27,7 @@ export interface ShotImage {
   width: number;
   height: number;
   url: string;
+  address?: string;
 }
 
 type Manifest = ManifestEntry[] | { shots: ManifestEntry[] };
@@ -37,5 +41,5 @@ export function findShot(site: RoleId, page: string, device: ShotDevice): ShotIm
   const entry = entries.find((e) => e.site === site && e.page === page && e.device === device);
   if (!entry) return undefined;
   const src = files[`./shots/${entry.file.split('/').pop()}`];
-  return src ? { src, width: entry.width, height: entry.height, url: entry.url } : undefined;
+  return src ? { src, width: entry.width, height: entry.height, url: entry.url, address: entry.address } : undefined;
 }

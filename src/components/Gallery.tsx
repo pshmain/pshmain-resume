@@ -1,9 +1,8 @@
-import { useRef, useState, type KeyboardEvent, type MouseEvent } from 'react';
-import { resume, type ShowcaseRole } from '@/data/resume';
+import { useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent } from 'react';
+import { resume, type Callout, type ShowcaseRole } from '@/data/resume';
 import { findShot, type ShotImage } from '@/assets/shots';
 import { cx } from '@/lib/cx';
 import { BrowserFrame, PhoneFrame } from '@/components/DeviceFrame';
-import { Diagram } from '@/components/Diagram';
 import { Icon } from '@/components/Icon';
 import styles from './Gallery.module.css';
 
@@ -11,9 +10,12 @@ interface Zoomable extends ShotImage {
   alt: string;
 }
 
-type Resolved =
-  | { kind: 'diagram'; label: string }
-  | { kind: 'shot'; label: string; desktop: Zoomable; phone?: Zoomable };
+interface Resolved {
+  label: string;
+  desktop: Zoomable;
+  phone?: Zoomable;
+  callouts: Callout[];
+}
 
 /** "https://www.example.com/a/" -> "example.com/a", for the browser frame's address pill. */
 function addressOf(url: string): string {
@@ -23,19 +25,23 @@ function addressOf(url: string): string {
 /** The role's slides with their files looked up; a slide whose capture is missing is dropped. */
 function resolveSlides(role: ShowcaseRole): Resolved[] {
   return role.showcase.slides.flatMap((slide): Resolved[] => {
-    if (slide.kind === 'diagram') return [slide];
     const desktop = findShot(role.id, slide.page, 'desktop');
     if (!desktop) return [];
     const phone = findShot(role.id, slide.page, 'phone');
     return [
       {
-        kind: 'shot',
         label: slide.label,
+        callouts: slide.callouts ?? [],
         desktop: { ...desktop, alt: slide.alt.desktop },
-        ...(phone && { phone: { ...phone, alt: slide.alt.phone } }),
+        ...(phone && { phone: { ...phone, alt: slide.alt.phone ?? '' } }),
       },
     ];
   });
+}
+
+/** Whether a role has any captured page to show; a role without one gets no gallery. */
+export function hasGallery(role: ShowcaseRole): boolean {
+  return resolveSlides(role).length > 0;
 }
 
 interface Props {
@@ -43,14 +49,15 @@ interface Props {
 }
 
 /**
- * One slide at a time (screenshots in device frames, or the role's diagram), with previous/next
- * and labelled slide buttons. Screenshots open full size in a <dialog>. Without JavaScript every
+ * Detail views: one captured page at a time, desktop in a browser frame with the phone capture
+ * overlapping it, and numbered callout balloons keyed to notes below. Previous/next and labelled
+ * slide buttons switch pages; screenshots open full size in a <dialog>. Without JavaScript every
  * slide shows, stacked, and each screenshot is a plain link to its file.
  */
 export function Gallery({ role }: Props) {
   const { ui } = resume;
   const slides = resolveSlides(role);
-  const zoomables = slides.flatMap((s) => (s.kind === 'shot' ? [s.desktop, ...(s.phone ? [s.phone] : [])] : []));
+  const zoomables = slides.flatMap((s) => [s.desktop, ...(s.phone ? [s.phone] : [])]);
   const [index, setIndex] = useState(0);
   const [zoom, setZoom] = useState<number | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -105,21 +112,50 @@ export function Gallery({ role }: Props) {
       <div className={styles.stage}>
         {slides.map((slide, i) => (
           <figure key={slide.label} className={styles.slide} data-current={i === index || undefined}>
-            {slide.kind === 'diagram' ? (
-              <Diagram diagram={role.showcase.diagram} />
-            ) : (
-              <div className={cx(styles.pair, slide.phone && styles.withPhone)}>
-                <BrowserFrame address={addressOf(slide.desktop.url)} url={slide.desktop.url}>
+            <div className={cx(styles.pair, slide.phone && styles.withPhone)}>
+              {/* A role with no live site to visit gets a plain address, not a link. */}
+              <BrowserFrame
+                address={slide.desktop.address ?? addressOf(slide.desktop.url)}
+                url={role.href && slide.desktop.url ? slide.desktop.url : undefined}
+              >
+                <div className={styles.shot} data-watch>
                   {zoomLink(slide.desktop)}
-                </BrowserFrame>
-                {slide.phone && (
-                  <div className={styles.phoneSlot}>
-                    <PhoneFrame>{zoomLink(slide.phone, styles.phoneShot)}</PhoneFrame>
-                  </div>
-                )}
-              </div>
-            )}
-            <figcaption className={styles.caption}>{slide.label}</figcaption>
+                  {slide.callouts.length > 0 && (
+                    <ol className={styles.balloons} aria-hidden="true">
+                      {slide.callouts.map((c, n) => (
+                        <li
+                          key={c.note}
+                          className={styles.balloon}
+                          style={{ left: `${c.x}%`, top: `${c.y}%`, '--n': n } as CSSProperties}
+                        >
+                          {n + 1}
+                        </li>
+                      ))}
+                    </ol>
+                  )}
+                </div>
+              </BrowserFrame>
+              {slide.phone && (
+                <div className={styles.phoneSlot}>
+                  <PhoneFrame>{zoomLink(slide.phone, styles.phoneShot)}</PhoneFrame>
+                </div>
+              )}
+            </div>
+            <figcaption className={styles.caption}>
+              <span className={styles.captionLabel}>{slide.label}</span>
+              {slide.callouts.length > 0 && (
+                <ol className={styles.legend}>
+                  {slide.callouts.map((c, n) => (
+                    <li key={c.note}>
+                      <span className={styles.legendNo} aria-hidden="true">
+                        {n + 1}
+                      </span>
+                      {c.note}
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </figcaption>
           </figure>
         ))}
       </div>

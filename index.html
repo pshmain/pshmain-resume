@@ -8,15 +8,15 @@
       name="description"
       content="Résumé of Peter Shmain, a full-stack engineer in Los Angeles: Provenance, CoDriverHQ, and Sneakerhead. Impact, live work, career timeline, skills, and contact."
     />
-    <!-- Progressive enhancement switch (design/dashboard.md). Set before first paint so the
+    <!-- Progressive enhancement switch (design/blueprint.md). Set before first paint so the
          prerendered page collapses into its interactive layout without a flash. Without
          JavaScript the attribute never appears and every role renders expanded. -->
     <script>
       document.documentElement.dataset.js = '';
     </script>
     <meta name="color-scheme" content="dark" />
-    <!-- Page ground: color-mix(#2d2b2b 78%, black) = #232222. Meta tags cannot read CSS tokens. -->
-    <meta name="theme-color" content="#232222" />
+    <!-- Blueprint paper, --color-paper in tokens.css. Meta tags cannot read CSS tokens. -->
+    <meta name="theme-color" content="#0d2b4e" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Peter Shmain — Full-Stack Engineer" />
     <meta
@@ -33,13 +33,10 @@
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <!-- Every face is used above the fold (name, subtitle, contact row). -->
-    <link rel="preload" href="/fonts/cormorant-garamond-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/lora-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/lora-italic-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- Hero frame sheet: start the download before the script that consumes it. Browsers
-         that cannot decode AVIF skip this preload and the engine fetches the WebP instead. -->
-    <link rel="preload" href="/src/assets/hero-frames.avif" as="image" type="image/avif" fetchpriority="low" />
+    <!-- The faces on the cover sheet: the name (condensed), body text, and drawing labels. -->
+    <link rel="preload" href="/fonts/plex-sans-condensed-600-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
     <div id="root"><!--app--></div>

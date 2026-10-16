@@ -11,8 +11,9 @@
 //
 // Writes src/assets/shots/<site>-<page>-{desktop,phone,thumb}.webp and manifest.json, an array of
 // entries read by src/assets/shots.ts (merged, so a filtered run keeps the other entries). `site`
-// is the role id in src/data/resume.ts and `page` the slide's page. WebP files in that folder that
-// no SHOTS entry produces are deleted, since the dashboard globs the folder.
+// is the role id in src/data/resume.ts and `page` the slide's page. Captures from an earlier run
+// that no SHOTS entry produces any more are deleted, since the dashboard globs the folder; a WebP
+// the manifest has never listed is reported and kept.
 // CHROME_PATH overrides the browser executable.
 import { spawn, spawnSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
@@ -26,6 +27,15 @@ const outDir = path.join(root, 'src', 'assets', 'shots');
 const manifestPath = path.join(outDir, 'manifest.json');
 
 const SHOTS = [
+  // Provenance's public ordination signup: the native intake flow. The frame shows the app's
+  // own address (address) instead of wherever the page redirects.
+  {
+    site: 'provenance',
+    page: 'signup',
+    label: 'Signup, step 1 of 7',
+    url: 'https://app.provenance.co/signup-step1',
+    address: 'app.provenance.co',
+  },
   { site: 'codriverhq', page: 'home', label: 'Home', url: 'https://codriverhq.com/' },
   { site: 'codriverhq', page: 'how-it-works', label: 'How it works', url: 'https://codriverhq.com/how' },
   // "Find My Car" (/signup) redirects signed-out visitors here; the buyer intake needs an account.
@@ -40,10 +50,22 @@ const SHOTS = [
   },
 ];
 
+// Screens of internal tools that cannot be captured from outside: supplied as screenshots, with
+// every customer's details redacted by hand before they were added. The script never captures,
+// overwrites or deletes these files, and keeps their manifest entries as they are.
+const MANUAL = ['provenance-ordination-panel', 'provenance-checklist'];
+
 // Per-site elements to remove besides the generic lists below.
 const SITE_HIDE = {
   codriverhq: [],
   sneakerhead: [],
+  // A site-wide announcement bar, and a testimonial card that quotes customers by name.
+  provenance: ['.fixed.inset-x-0.top-0', '.QuoteCard'],
+};
+
+// Per-site CSS applied with the removals, for layout that made room for a removed element.
+const SITE_CSS = {
+  provenance: ':root, .root-content { --rebrand-banner-height: 0px !important; }',
 };
 
 // Common consent managers and chat launchers.
@@ -311,7 +333,7 @@ function skeletonsGone(timeout) {
 // Removes consent banners and chat widgets: the given selectors (also hidden by a style rule, in
 // case a script re-inserts them), plus any fixed or sticky wide bar along the bottom of the
 // viewport that talks about cookies or consent. Returns a description of what it removed.
-function removeOverlays(selectors) {
+function removeOverlays({ selectors, css }) {
   const removed = [];
   const describe = (el) => {
     const cls = typeof el.className === 'string' ? el.className.trim().split(/\s+/).slice(0, 2).join('.') : '';
@@ -328,7 +350,7 @@ function removeOverlays(selectors) {
   if (valid.length && !document.getElementById('capture-shots-hide')) {
     const style = document.createElement('style');
     style.id = 'capture-shots-hide';
-    style.textContent = `${valid.join(',\n')} { display: none !important; }`;
+    style.textContent = `${valid.join(',\n')} { display: none !important; }\n${css}`;
     document.head.append(style);
   }
   for (const el of valid.length ? document.querySelectorAll(valid.join(',')) : []) {
@@ -391,10 +413,11 @@ async function captureShot(cdp, browserVersion, shot, deviceName) {
     if (skeletons) warnings.push(`${skeletons} loading skeleton(s) still in view`);
 
     const selectors = [...GENERIC_HIDE, ...(SITE_HIDE[shot.site] ?? [])];
-    const removed = await tab.evaluate(removeOverlays, selectors);
+    const hide = { selectors, css: SITE_CSS[shot.site] ?? '' };
+    const removed = await tab.evaluate(removeOverlays, hide);
     // Let entrance animations settle and late widgets arrive, then sweep again.
     await sleep(1500);
-    removed.push(...(await tab.evaluate(removeOverlays, selectors)));
+    removed.push(...(await tab.evaluate(removeOverlays, hide)));
     await tab.networkQuiet(500, 8_000);
     await sleep(300);
 
@@ -426,6 +449,19 @@ function webpSize(buf) {
 }
 
 // ---- Browser lifecycle ----
+
+async function readManifest() {
+  if (!existsSync(manifestPath)) return [];
+  const where = path.relative(root, manifestPath);
+  let parsed;
+  try {
+    parsed = JSON.parse(await readFile(manifestPath, 'utf8'));
+  } catch (error) {
+    throw new Error(`${where} is not valid JSON (${error.message}); fix it before capturing`);
+  }
+  if (!Array.isArray(parsed)) throw new Error(`${where} must be an array of entries`);
+  return parsed;
+}
 
 function findChrome() {
   const found = CHROME_CANDIDATES.find((candidate) => existsSync(candidate));
@@ -491,6 +527,12 @@ async function stopChrome(child, cdp) {
 // ---- Main ----
 
 const filter = process.argv[2] ?? '';
+// Read the manifest before capturing anything: if it cannot be read, rewriting it would drop
+// every entry this run does not capture, the hand-supplied ones included.
+const previous = await readManifest();
+for (const name of MANUAL)
+  if (!previous.some((entry) => entry.file === `${name}-desktop.webp`))
+    console.warn(`! MANUAL ${name} has no manifest entry, so its gallery slide will not show`);
 const selected = SHOTS.filter((shot) => shotName(shot).includes(filter));
 if (!selected.length) {
   console.error(`no shots match "${filter}"; names: ${SHOTS.map(shotName).join(', ')}`);
@@ -541,7 +583,9 @@ try {
             width,
             height,
             bytes: data.length,
-            url: result.finalUrl,
+            // With an address set, the page's own URL is the one on record, not a redirect's.
+            url: shot.address ? shot.url : result.finalUrl,
+            ...(shot.address && { address: shot.address }),
             captured: today,
           });
           console.log(`  ${file}  ${width}x${height}  ${(data.length / 1024).toFixed(0)} KB`);
@@ -560,25 +604,26 @@ try {
   await cleanup();
 }
 
-// Merge into the existing manifest so a filtered run keeps the other shots, in SHOTS order, and
-// delete WebP files that no SHOTS entry produces any more.
-let previous = [];
-try {
-  const parsed = JSON.parse(await readFile(manifestPath, 'utf8'));
-  if (Array.isArray(parsed)) previous = parsed;
-} catch {}
+// Merge into the existing manifest so a filtered run keeps the other shots, in SHOTS order.
 const previousByFile = new Map(
   previous.filter((entry) => existsSync(path.join(outDir, entry.file))).map((entry) => [entry.file, entry]),
 );
-const order = SHOTS.flatMap((shot) => ['desktop', 'phone', 'thumb'].map((device) => `${shotName(shot)}-${device}.webp`));
+const order = [
+  ...SHOTS.flatMap((shot) => ['desktop', 'phone', 'thumb'].map((device) => `${shotName(shot)}-${device}.webp`)),
+  ...MANUAL.flatMap((name) => ['desktop', 'phone', 'thumb'].map((device) => `${name}-${device}.webp`)),
+];
 const entries = order.map((file) => captured.get(file) ?? previousByFile.get(file)).filter(Boolean);
 await writeFile(manifestPath, `${JSON.stringify(entries, null, 2)}\n`);
 console.log(`wrote ${path.relative(root, manifestPath)} (${entries.length} entries, ${captured.size} new)`);
+// Delete only captures an earlier run recorded and no entry produces any more. A WebP the
+// manifest has never listed (a screenshot just added by hand, say) is reported and kept.
+const known = new Set(previous.map((entry) => entry.file));
 for (const file of await readdir(outDir)) {
-  if (file.endsWith('.webp') && !order.includes(file)) {
+  if (!file.endsWith('.webp') || order.includes(file)) continue;
+  if (known.has(file)) {
     await rm(path.join(outDir, file));
     console.log(`deleted stale ${file}`);
-  }
+  } else console.warn(`! ${file} is in no SHOTS or MANUAL entry and not in the manifest; left in place`);
 }
 
 if (failures.length) {

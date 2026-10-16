@@ -21,7 +21,8 @@ const ticks: { year: number; at: number }[] = [];
 for (let y = yearOf(first) + 1; y * 12 < last; y++) ticks.push({ year: y, at: pct(y * 12) });
 
 /**
- * Gantt chart of the roles (design/dashboard.md, "III · Career"). Each row is directly labelled
+ * Gantt chart of the roles, drawn as a construction schedule (design/blueprint.md, "Career"):
+ * hatched bars, and a dimension line over a bar on hover or focus. Each row is directly labelled
  * with company, role, dates and duration, so the bars need no tooltip. A role in the Work
  * explorer gets a bar that links to its panel (a plain jump without JavaScript, a selection with
  * it); a role without a showcase gets a plain bar.
@@ -74,9 +75,16 @@ export function Timeline({ selected, picked, onSelect, lit }: Props) {
                     onClick={onClick}
                   >
                     <span className="sr-only">{role.company}</span>
+                    <span className={styles.measure} aria-hidden="true">
+                      <span className={styles.measureText}>{formatSpan(start, end)}</span>
+                    </span>
                   </a>
                 ) : (
-                  <span className={styles.bar} style={position} aria-hidden="true" />
+                  <span className={cx(styles.bar, styles.plain)} style={position} aria-hidden="true">
+                    <span className={styles.measure}>
+                      <span className={styles.measureText}>{formatSpan(start, end)}</span>
+                    </span>
+                  </span>
                 )}
               </span>
             </li>

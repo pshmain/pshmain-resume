@@ -1,0 +1,316 @@
+/* Sheet A-001, the cover (design/blueprint.md, "Cover sheet"). */
+.cover {
+  position: relative;
+  padding: var(--space-6) var(--gutter) var(--space-5);
+  cursor: crosshair;
+}
+
+/* The drawing border: a double rule with zone markers along the top and left edges. */
+.frame {
+  position: relative;
+  max-width: var(--container);
+  min-height: var(--cover-min-height);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  border: var(--hairline) solid var(--color-line-soft);
+  outline: var(--hairline) solid var(--color-line-faint);
+  outline-offset: var(--space-1);
+  cursor: auto;
+}
+
+.zonesAcross,
+.zonesDown {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  color: var(--color-text-3);
+  pointer-events: none;
+}
+
+.zonesAcross {
+  top: calc(var(--space-2) * -1);
+  left: 0;
+  right: 0;
+  line-height: var(--leading-none);
+}
+
+.zonesAcross li,
+.zonesDown li {
+  padding: 0 var(--space-1);
+  background: var(--color-ground);
+}
+
+.zonesDown {
+  top: 0;
+  bottom: 0;
+  left: calc(var(--space-2) * -1);
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- The CAD workspace: the engine at the centre, unboxed on the sheet; the feature tree and
+   the property panel down the left, as in a CAD program. Phones stack them, the model first. ---- */
+.workspace {
+  flex: 1;
+  display: grid;
+  grid-template-areas:
+    'model'
+    'status'
+    'tree';
+  gap: var(--space-5);
+}
+
+.model {
+  grid-area: model;
+  min-width: 0;
+}
+
+.status {
+  grid-area: status;
+}
+
+.tree {
+  grid-area: tree;
+}
+
+/* Breakpoint: --bp-two-up in tokens.css. */
+@media (min-width: 768px) {
+  .workspace {
+    grid-template-columns: var(--tree-width) minmax(0, 1fr);
+    /* The model sets the height; the property panel takes what the tree leaves, and scrolls
+       on the rare card longer than that, so pointing at parts never moves the page. */
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+      'tree model'
+      'status model';
+    column-gap: var(--space-4);
+    row-gap: var(--space-4);
+  }
+
+  /* contain: size keeps the panel's text out of the row's sizing; it fills what is left. */
+  .status {
+    contain: size;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* A splitter rule between the left panel and the graphics area. */
+  .model {
+    padding-left: var(--space-4);
+    border-left: var(--hairline) solid var(--color-line-faint);
+  }
+}
+
+.identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.sheetLabel,
+.cellLabel {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-3);
+}
+
+.sheetLabel {
+  color: var(--color-accent);
+}
+
+/* The name and its dimension line share one width: the line measures the name. */
+.nameBlock {
+  display: inline-grid;
+  gap: var(--space-3);
+  max-width: 100%;
+}
+
+.name {
+  font-size: var(--text-name);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-name);
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.subtitle {
+  font-size: var(--text-body);
+}
+
+
+/* ---- Title block: label/value cells divided by hairlines ---- */
+.titleBlock {
+  display: grid;
+  border: var(--hairline) solid var(--color-line-soft);
+  background: var(--color-panel);
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  min-width: 0;
+}
+
+.cell + .cell {
+  border-top: var(--hairline) solid var(--color-line-soft);
+}
+
+/* Breakpoint: --bp-wide in tokens.css. */
+@media (min-width: 1024px) {
+  .titleBlock {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .cell + .cell {
+    border-top: 0;
+    border-left: var(--hairline) solid var(--color-line-soft);
+  }
+}
+
+.cellValue {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-h3);
+  line-height: var(--leading-none);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-heading);
+  white-space: nowrap;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.action {
+  display: inline-flex;
+  align-items: stretch;
+  min-height: var(--action-height);
+  border: var(--hairline) solid var(--color-line-soft);
+  border-radius: var(--radius-sm);
+  background: var(--color-bar-bg);
+  transition: border-color var(--duration-hover) var(--ease);
+}
+
+.action:hover {
+  border-color: var(--color-accent);
+}
+
+.actionLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-mono);
+  color: var(--color-text);
+}
+
+.actionLink :global(svg),
+.copy {
+  color: var(--color-accent);
+}
+
+.actionLink:hover {
+  color: var(--color-accent);
+}
+
+.copy {
+  padding: 0 var(--space-3);
+  border-left: var(--hairline) solid var(--color-line-soft);
+}
+
+.phone {
+  white-space: nowrap;
+}
+
+/* The one filled button on the page. Paper-coloured text on cyan: 8.4:1. */
+.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--action-height);
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-sm);
+  background: var(--color-accent);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-body);
+  letter-spacing: var(--tracking-heading);
+  text-transform: uppercase;
+  color: var(--color-paper);
+  white-space: nowrap;
+  transition: background-color var(--duration-hover) var(--ease);
+}
+
+.primary:hover {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+@media print {
+  .cover {
+    padding: 0 var(--gutter);
+    cursor: auto;
+  }
+
+  .frame {
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+  }
+
+  .zonesAcross,
+  .zonesDown,
+  .workspace,
+  .primary,
+  .cellLabel {
+    display: none;
+  }
+
+  .name {
+    font-size: var(--text-name-print);
+  }
+
+  .titleBlock {
+    border: 0;
+  }
+
+  .cell {
+    padding: 0;
+  }
+
+  .cell:first-child {
+    display: none;
+  }
+
+  .action {
+    border: 0;
+    min-height: 0;
+    background: none;
+  }
+
+  .actionLink {
+    padding: 0 var(--space-3) 0 0;
+  }
+
+  .actionLink :global(svg) {
+    display: none;
+  }
+}

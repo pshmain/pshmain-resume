@@ -1,5 +1,6 @@
-/* Hidden above the viewport until the banner leaves it (design/dashboard.md, "Sticky bar").
-   Without JavaScript it never appears: the banner and footer carry the same links. */
+/* The index strip (design/blueprint.md, "Sticky bar"). Hidden above the viewport until the
+   cover sheet leaves it. Without JavaScript it never appears: the cover and footer carry the
+   same links. */
 .bar {
   position: fixed;
   top: 0;
@@ -7,9 +8,8 @@
   right: 0;
   z-index: var(--z-bar);
   height: var(--bar-height);
-  border-bottom: var(--hairline) solid var(--color-hairline);
+  border-bottom: var(--hairline) solid var(--color-line-soft);
   background: var(--color-bar-bg);
-  backdrop-filter: blur(var(--bar-blur));
   transform: translateY(-100%);
   visibility: hidden;
   transition:
@@ -27,41 +27,47 @@
 
 .inner {
   height: 100%;
-  max-width: var(--container-wide);
+  max-width: var(--container);
   margin: 0 auto;
   padding: 0 var(--gutter);
   display: flex;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
 .name {
-  font-family: var(--font-heading);
-  font-weight: var(--weight-heading);
-  font-size: var(--text-button);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-body);
   letter-spacing: var(--tracking-heading);
+  text-transform: uppercase;
   color: var(--color-text);
   white-space: nowrap;
 }
 
 .name:hover {
-  color: var(--color-link-hover);
+  color: var(--color-accent);
 }
 
 .links {
   display: none;
   gap: var(--space-4);
-  font-size: var(--text-meta);
-  letter-spacing: var(--tracking-caps);
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
   text-transform: uppercase;
 }
 
 .links a {
-  color: var(--color-paper-68);
+  color: var(--color-text-2);
 }
 
 .links a:hover {
-  color: var(--color-link-hover);
+  color: var(--color-accent);
+}
+
+.sheet {
+  color: var(--color-accent);
 }
 
 /* Breakpoint: --bp-two-up in tokens.css. */
@@ -83,33 +89,31 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  min-height: var(--action-height);
+  min-height: calc(var(--action-height) - var(--space-2));
   border-radius: var(--radius-sm);
 }
 
 .icon {
   justify-content: center;
-  min-width: var(--action-height);
-  color: var(--color-accent-300);
+  min-width: calc(var(--action-height) - var(--space-2));
+  color: var(--color-accent);
 }
 
 .download {
   padding: 0 var(--space-3);
-  border: var(--hairline) solid var(--color-accent);
-  font-family: var(--font-heading);
-  font-weight: var(--weight-heading);
-  font-size: var(--text-action-primary);
-  color: var(--color-text);
+  background: var(--color-accent);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-small);
+  letter-spacing: var(--tracking-heading);
+  text-transform: uppercase;
+  color: var(--color-paper);
   transition: background-color var(--duration-hover) var(--ease);
 }
 
-.download :global(svg) {
-  color: var(--color-accent);
-}
-
 .download:hover {
-  background: var(--color-button-bg-hover);
-  color: var(--color-link-hover);
+  background: var(--color-ink);
+  color: var(--color-paper);
 }
 
 :global(html:not([data-js])) .bar {

@@ -1,61 +1,134 @@
+/* Closing title block (design/blueprint.md, "Footer"). */
 .footer {
-  margin-top: var(--space-6);
-  border-top: var(--hairline) solid var(--color-hairline);
-  padding: var(--footer-padding-top) var(--gutter) var(--footer-padding-bottom);
+  padding: var(--space-6) var(--gutter) var(--space-7);
 }
 
-.inner {
+.block {
   max-width: var(--container);
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-4);
-  text-align: center;
+  display: grid;
+  border: var(--hairline) solid var(--color-line-soft);
+  outline: var(--hairline) solid var(--color-line-faint);
+  outline-offset: var(--space-1);
+  background: var(--color-panel);
 }
 
-.rule {
-  width: var(--footer-rule-width);
-  height: var(--hairline);
-  background: var(--color-rule);
+/* Breakpoint: --bp-two-up in tokens.css. */
+@media (min-width: 768px) {
+  .block {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  }
+
+  .cell + .cell {
+    border-top: 0;
+    border-left: var(--hairline) solid var(--color-line-soft);
+  }
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  min-width: 0;
+}
+
+.cell + .cell {
+  border-top: var(--hairline) solid var(--color-line-soft);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  text-align: left;
+  color: var(--color-text-3);
 }
 
 .name {
-  font-size: var(--text-label);
-  letter-spacing: var(--tracking-footer);
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--text-h2);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-heading);
   text-transform: uppercase;
-  color: var(--color-paper-72);
 }
 
-/* Why the ruins. */
 .colophon {
-  max-width: var(--measure-colophon);
+  font-size: var(--text-small);
   font-style: italic;
-  font-size: var(--text-card);
-  color: var(--color-paper-68);
-  text-wrap: balance;
+  color: var(--color-text-2);
 }
 
 .contact {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  gap: var(--space-2);
+  flex-direction: column;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
   font-size: var(--text-small);
-  color: var(--color-paper-45);
-}
-
-.contact li {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-}
-
-.contact li:not(:last-child)::after {
-  content: '·';
 }
 
 .phone {
-  font-feature-settings: 'tnum';
+  white-space: nowrap;
+}
+
+.revisions {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-small);
+}
+
+.revisions caption {
+  margin-bottom: var(--space-2);
+}
+
+.revisions th,
+.revisions td {
+  padding: var(--space-1) var(--space-2) var(--space-1) 0;
+  border-bottom: var(--hairline) solid var(--color-line-faint);
+  text-align: left;
+}
+
+.revisions th {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  font-weight: var(--weight-body);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  color: var(--color-text-3);
+  white-space: nowrap;
+}
+
+.rev,
+.date {
+  font-family: var(--font-mono);
+  color: var(--color-accent);
+  white-space: nowrap;
+}
+
+.date {
+  color: var(--color-text-3);
+}
+
+/* The open revision (not yet released) is marked in redline. */
+.open td,
+.open .rev,
+.open .date {
+  color: var(--color-mark);
+}
+
+@media print {
+  .footer {
+    padding: var(--space-4) 0 0;
+  }
+
+  .block {
+    border: 0;
+    outline: 0;
+  }
+
+  .cell:last-child {
+    display: none;
+  }
 }

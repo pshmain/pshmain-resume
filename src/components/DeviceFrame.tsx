@@ -5,8 +5,8 @@ import styles from './DeviceFrame.module.css';
 interface BrowserProps {
   /** Shown in the address pill. */
   address: string;
-  /** Where the address pill links. */
-  url: string;
+  /** Where the address pill links; without it the pill is plain text. */
+  url?: string;
   children: ReactNode;
 }
 
@@ -20,9 +20,13 @@ export function BrowserFrame({ address, url, children }: BrowserProps) {
           <span />
           <span />
         </span>
-        <ExternalLink href={url} className={styles.address}>
-          {address}
-        </ExternalLink>
+        {url ? (
+          <ExternalLink href={url} className={styles.address}>
+            {address}
+          </ExternalLink>
+        ) : (
+          <span className={styles.address}>{address}</span>
+        )}
       </div>
       <div className={styles.screen}>{children}</div>
     </div>
